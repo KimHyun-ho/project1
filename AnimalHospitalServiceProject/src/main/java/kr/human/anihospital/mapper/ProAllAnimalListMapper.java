@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import kr.human.anihospital.vo.PatientListVO;
+import kr.human.anihospital.vo.ProAllAnimalListVO;
 
 @Mapper
-public interface PatientListMapper {
+public interface ProAllAnimalListMapper {
 	//----------------------------------------------------------------------------------------------------
-	// 환자 정보를 리스트로 화면에 표시해줄 메서드
+	// 한 명의 보호자에 따른 환자의 진료내역 리스트를 화면에 표시해줄 메서드
 	//----------------------------------------------------------------------------------------------------
-	List<PatientListVO> selectPatientList() throws Exception;
+	List<ProAllAnimalListVO> selectAnimalList(int seqMember) throws Exception;
+	
 }

@@ -7,14 +7,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class postscriptOneDiagnosisVO {
+public class ProAllAnimalListVO {
 	//-----------------------------------------------------------
-	// 진료화면에 띄워줄 후기 내용을 가지고 있는 VO
+	// 보호자에 따른 환자의 진료내역 리스트를 가지고 있는 VO
 	//-----------------------------------------------------------
+	private int seqMember;
+	private int seqAnimal;
 	private int seqDiagnosis;
-	private int seqPostscript;
-	private String postscriptUpdateDate;
+	private int seqAnimalHospital;
+	private String animalName;
+	private String diagnosisSymptom;
 	private String animalHospitalName;
-	private int postscriptSatisfaction;
-	private String postscriptContent;
+	private String diagnosisDate;
 }
