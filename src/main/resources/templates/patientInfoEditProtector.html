@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>환자 정보 수정(보호자 용)</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+<!-- Vendor CSS Files -->
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+<!-- Template Main CSS File -->
+<link href="css/style.css" rel="stylesheet">
+
+<script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"></script>
+<style type="text/css">
+input::-webkit-input-placeholder {
+	background-size: contain;
+	background-position: 1px center;
+	background-repeat: no-repeat;
+	text-align: left;
+	text-indent: 0;
+}
+
+select option[value=""][disabled] {
+	display: none;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+	display: block;
+	border-radius: 10%;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+}
+
+video {
+	width: 300px;
+	height: 200px;
+	margin: auto;
+	border-radius: 10%;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+}
+
+.no_content {
+	width: 300px;
+	height: 200px;
+	margin: auto;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+	text-align: center;
+	font-size: 9pt;
+}
+
+table {
+	margin: auto;
+}
+</style>
+</head>
+<body>
+	<div th:replace="~{fragment/header :: #header}"></div>
+	<main id="main">
+		<!-- ======= Breadcrumbs Section ======= -->
+		<section class="breadcrumbs">
+			<div class="container">
+				<br />
+				<div class="section-title">
+					<h2 style="font-weight: bold; font-size: 30px;">환자 정보 수정</h2>
+					<!-- 환자정보 추가했을 때 입력된 정보를 띄움 -->
+				</div>
+			</div>
+		</section>
+		<!-- End Breadcrumbs Section -->
+		<section class="inner-page">
+			<br> <br>
+			<!-- 사진 및 동영상 모두 등록되어 있을 경우-->
+			<div class="contact-form pt-20"></div>
+			<br />
+			
+			<form action="patientInfoEditProtectorOk" method="post" id="patientInfoEditProtectorOk">
+			<input type="hidden" name="seqAnimal" th:value="${animalVO.seqAnimal}">
+			<input type="hidden" name="seqProtector" th:value="${animalVO.seqProtector}">
+			<table>
+				<tr>
+					<td><img src="img/dog.jpg" /></td>
+					<td><video controls="controls">
+							<source src="videos/dog.mp4" type="video/mp4">
+						</video></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;"><label class="btn btn-primary" for="file1" style="border-radius: 50px; width: 90px">수정</label></td>
+					<td style="text-align: center;"><label class="btn btn-primary" for="file2" style="border-radius: 50px; width: 90px">수정</label></td>
+				</tr>
+				<tr>
+					<td><input type="file" class="form-control" name="animalPicture" id="file1" style="display: none;" accept="image/*" th:value="${animalVO.animalPicture}"></td>
+					<td><input type="file" class="form-control" name="animalVideo" id="file2" style="display: none;" accept="video/*" th:value="${animalVO.animalVideo}"></td>
+				</tr>
+			</table>
+			<br> <br>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="name">이름</label>
+					<input type="text" class="form-control" name="animalName" id="name" th:value="${animalVO.animalName}" data-rule="name" data-msg="필수입력 항목입니다.">
+					<div class="validate" id="name_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="species">종</label>
+					<input type="text" class="form-control" name="animalType" id="species" th:value="${animalVO.animalType}" data-rule="species" data-msg="필수입력 항목입니다.">
+					<div class="validate" id="species_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="size">크기</label>
+					<select class="form-control" id="size" name="animalSize" >
+						<option th:value="${animalVO.animalSize}" hidden="">[[${animalVO.animalSize}]]</option>
+						<option id="size" value="소형">소형</option>
+						<option id="size" value="중형">중형</option>
+						<option id="size" value="대형">대형</option>
+					</select>
+					<div class="validate" id="size_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="age">나이</label>
+					<!-- 수정할때 입력하는 나이는 날짜로 입력해야 DB에 넣을 수 있음 -->
+					<input type="date" class="form-control" name="animalAge" th:value="${#calendars.format(animalVO.animalAge,'yyyy-MM-dd')}" id="age" data-rule="age" data-msg="필수입력 항목입니다.">
+					<div class="validate" id="animalAge_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+				<!-- 성별은 수정할 수 없으므로 환자 정보 조회 쿼리에서 가져와야함 -->
+					<label for="age">성별</label>
+					<br />
+					<input type="radio" name="gender" id="gender" data-rule="gender" value="Female" onclick="return(false);" th:checked="${animalVO.animalGender} ? 'true' : 'false'">
+					<label for="Female"> 여자</label>
+					<input type="radio" name="gender" id="gender" data-rule="gender" value="Male" onclick="return(false);" th:checked="${animalVO.animalGender} ? 'false' : 'true'">
+					<label for="Male"> 남자</label>
+					<div class="validate" id="gender_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="weight">몸무게</label>
+					<input type="number" min="1" class="form-control" name="animalWeight" step="0.1" id="weight" th:value="${animalVO.animalWeight}" data-rule="weight" data-msg="필수입력 항목입니다.">
+					<div class="validate" id="weight_val"></div>
+				</div>
+			</div>
+			<!-- animal 테이블에 특이사항 컬럼 없어서 일단 빼놨음
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="etc">특이사항</label>
+					<input type="text" class="form-control" name="etc" id="etc" placeholder="특이사항을 입력해주세요.">
+					<div class="validate"></div>
+				</div>
+			</div> 
+			-->
+			<div class="row">
+				<p></p>
+				<p></p>
+				<br />
+				<div class="col-md-4 form-group" style="margin: auto;">
+					<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/myPageProtector'"
+						style="border-radius: 50px; width: 110px; text-align: center; color: white;">
+					<input type="button" class="btn btn-primary" name="patient_edit_ok" id=patient_edit_ok value="확인" 
+						style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">
+				</div>
+			</div>
+			<div class="container"></div>
+			</form>
+		</section>
+	</main>
+	<!-- End #main -->
+	<!-- Template Main JS File -->
+	<div th:replace="~{fragment/footer :: #footer}"></div>
+</body>
+<script type="text/javascript">
+function changeFn(){
+	var size  = document.getElementById("size");
+	var value = (size.options[size.selectedIndex].value);
+	alert(value);
+	value.submit();
+};
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#patient_edit_ok').on('click', function() {
+			var name = $('#name').val();
+			var species = $('#species').val();
+			var size = $('#size').val();
+			var age = $('#age').val();
+			var weight = $('#weight').val();
+			if (name.length == 0 || name.trim().length == 0 || name.includes(' ')) {
+				$('#name').focus();
+				$('#name').attr('style', 'border-color: #dc3545;');
+				$('#name').val('');
+				$('#name_val').html('<div id="name_warning"><b style="color: red;">이름을 입력해주세요.</b></div>');
+			} else if (species == null || species.trim().length == 0 || species.includes(' ')) {
+				$('#species').focus();
+				$('#species').attr('style', 'border-color: #dc3545;');
+				$('#species_val').html('<div id="species_warning"><b style="color: red;">종을 입력해주세요.</b></div>');
+			} else if (size = null) {
+				$('#size').focus();
+				$('#size').attr('style', 'border-color: #dc3545;');
+				$('#size_val').html('<div id="size_warning"><b style="color: red;">크기를 입력해주세요.</b></div>');
+			} else if (age == '') {
+				$('#age').focus();
+				$('#age').attr('style', 'border-color: #dc3545;');
+				$('#animalAge_val').html('<div id="age_warning"><b style="color: red;">나이를 입력해주세요.</b></div>');
+			} else if (weight == null || weight.trim().length == 0) {
+				$('#weight').focus();
+				$('#weight').attr('style', 'border-color: #dc3545;');
+				$('#weight').val('');
+				$('#weight_val').html('<div id="weight_warning"><b style="color: red;">몸무게를 입력해주세요.</b></div>');
+			} else {
+				var result = window.confirm('작성한 내용을 수정하시겠습니까?');
+				if (result) {
+					alert('정상적으로 처리되었습니다.');
+					$('#patientInfoEditProtectorOk').submit();
+				}
+			}
+		});
+	});
+	$('#name').on('input', function() {
+		if ($('#name').val() != '') {
+			$('#name').attr('style', 'border-color : #ced4da;');
+			$('#name_warning').remove();
+		}
+	})
+	$('#species').on('input', function() {
+		if ($('#species').val() != '') {
+			$('#species').attr('style', 'border-color : #ced4da;');
+			$('#species_warning').remove();
+		}
+	})
+	$('#size').on('input', function() {
+		if ($('#size').val() != '') {
+			$('#size').attr('style', 'border-color : #ced4da;');
+			$('#size_warning').remove();
+		}
+	})
+	$('#age').on('input', function() {
+		if ($('#age').val() != '') {
+			$('#age').attr('style', 'border-color : #ced4da;');
+			$('#age_warning').remove();
+		}
+	})
+	$('#weight').on('input', function() {
+		if ($('#weight').val() != '') {
+			$('#weight').attr('style', 'border-color : #ced4da;');
+			$('#weight_warning').remove();
+		}
+	})
+</script>
+</html>

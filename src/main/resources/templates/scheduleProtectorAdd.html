@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>보호자 스케줄(예약) 등록</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+<!-- Favicons -->
+<link href="img/favicon.png" rel="icon">
+<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+<!-- Template Main CSS File -->
+<link href="css/style.css" rel="stylesheet">
+<style type="text/css">
+.scheduleForm {
+	margin-bottom: 60px;
+	margin-left: 20%;
+	margin-right: 10%;
+	width: 60%;
+}
+textarea {
+	border-radius: 5px;
+	border: 1px solid gray;
+	resize: none
+}
+
+</style>
+</head>
+<body>
+	<div th:replace="~{fragment/header :: #header}"></div>
+	<main id="main">
+			<!-- ======= Breadcrumbs Section ======= -->
+			<section class="breadcrumbs">
+				<div class="container">
+					<br />
+					<div class="section-title">
+						<h2 style="font-weight: bold; font-size: 30px;">
+							<br /> 보호자 스케줄(예약) 등록
+						</h2>
+					</div>
+				</div>
+			</section>
+			<!-- End Breadcrumbs Section -->
+			<section class="inner-page">
+				<div class="container">
+					<div class="scheduleForm">
+						<div id="scheduleDoctor" class="form-control" style="width: 700px;">
+							<table>
+								<tr>
+									<td>진료병원 : </td>
+								</tr>
+								<tr>
+									<td>담당의사 : </td>
+								</tr>
+								<tr>
+									<td>예약불가시간 : </td>
+								</tr>
+								<tr>
+									<td>사유 : </td>
+								</tr>
+							</table>
+						</div><br />
+						<div style="margin: auto;">
+						<p style="width: 600px;">
+							예약불가시간을 제외한 날짜와 시간을 선택하실 수 있습니다.
+						</p>
+						<br />예약시간 <br />
+							<input type="date" id="date" name="Date" class="form-control" style="width: 200px; display:inline-block; " />
+							<input type="time" id="time1" name="time1" class="form-control" style="width: 200px; display:inline-block;" />
+						<br /> <br />
+							예약하기 <br />
+						<select onchange="handleOnChange1(this)" id="selectPatient" class="form-control" style="width: 150px;">
+							<option value="" selected="selected" >환자선택하기</option>
+							<option value="patient1">두둥</option>
+							<option value="patient2">나비</option>
+							<option value="patient3">초코</option>
+						</select>
+						<!-- <input type="button" class="btn btn-primary btn-sm" onclick="location.href='/patientAdd'" value="환자등록"
+							style="border-radius: 50px; width: 90px; margin-top: 4px; text-align: center; color: white; float: right;" /> -->
+						<br />
+						<textarea style="width: 100%" rows="5" cols="30" id="diagnosis" class="form-control"
+							placeholder="증상 혹은 내원 이유를 입력해주세요."></textarea>
+						<br />
+						증상을 확인하기 위한 사진 및 동영상을 올리실 수 있습니다.
+						<input type="file" class="form-control" accept=".jpg,.jpeg,.png,.gif,.bmp,.tif,.m4v,.mp4,.avi" name="file"
+							id="file">
+					</div>
+					<div  style="margin-top: 20%;">
+					<!--  완료 후 어떤페이지로 갈지 보류 -->
+						<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지"
+							onclick="location='/'" style="border-radius: 50px; width: 110px; text-align: center; color: white;">
+						<input type="button" class="btn btn-primary" name="schedule_add" id="schedule_add" value="확인"
+							style="border-radius: 50px; width: 110px; text-align: center; float: right; margin-right:40%; color: white;">
+					</div>
+				</div>
+				</div>
+			</section>
+	</main>
+	<!-- End #main -->
+	<!-- Template Main JS File -->
+	<div th:replace="~{fragment/footer :: #footer}"></div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+       $('#schedule_add').on('click', function() {
+          var subject = $('#scheduleSubject').val();
+          var content = $('#scheduleprotectorContent').val();
+          if(subject==null||subject.trim().length==0){
+               $('#scheduleSubject').attr('style','border-color: #dc3545; margin:auto;width:700px;');
+           	   $('#scheduleSubject').val('');
+           	   $('#scheduleSubject').html('<div id="warning" style=" width:700px;"><b style="color: red; width:700px;">제목을 입력해주세요</b></div>');
+               $('#scheduleSubject').focus();
+           }else if(content==null||content.trim().length==0){
+               $('#scheduleprotectorContent').attr('style','border-color: #dc3545; margin:auto; width:700px; height: 500px;');
+           	   $('#scheduleprotectorContent').val('');
+           	   $('#scheduleprotectorContent').html('<div id="warning" style=" width:700px;"><b style="color: red; width:700px;">내용을 입력해주세요.</b></div>');
+        	   $('#scheduleprotectorContent').focus();
+           }else{
+				var result = window.confirm('작성한 내용을 추가하시겠습니까?');
+				if (result) {
+					alert('정상적으로 처리되었습니다.');
+					var scheduleSubjectVal = $("#scheduleSubject").val();
+					var scheduleprotectorContenttVal = $("#scheduleprotectorContent").val();
+					$.ajax({
+						url: "/scheduleprotectorAdd",
+						dataType: "text",
+						type: "post",
+						contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+						data: {
+							scheduleSubject : scheduleSubjectVal,
+							scheduleprotectorContent : scheduleprotectorContentVal
+						},
+						success: function(data) {
+							location.href=''; // 완료 후 어떤페이지로 갈지 보류
+						},
+						error: function(data) {
+							alert("Error");
+						}
+					});				
+				} else if (!result) {
+					alert('취소되었습니다.');
+					return false;
+				}
+           }
+       	});
+       
+	$('#schedule_add').on('click', function() {
+		
+	});
+ });
+
+$('#scheduleSubject').on('input',function(){
+	if($('#scheduleSubject').val() !=''){
+		$('#scheduleSubject').attr('style','width:700px;');
+		$('#warning').remove();
+	}
+})
+$('#scheduleprotectorContent').on('input',function(){
+	if($('#scheduleprotectorContent').val() !=''){
+		$('#scheduleprotectorContent').attr('style','width:700px;');
+		$('#warning').remove();
+	}
+})
+
+
+</script>
+</html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.DiagnosisAddMapper">	
+	<!-- 환자 정보를 조회하는 SQL -->
+	<select id="selectPatientInfo" resultType="PatientInfoVO" parameterType="int">
+		    SELECT 
+		    	seq_animal as seqAnimal,
+		    	seq_protector as seqProtector,
+				animal_name AS animalName,
+				animal_type AS animalType,
+				animal_size AS animalSize,
+				(DATE_FORMAT(NOW(), '%y') - DATE_FORMAT(animal_age, '%y')) AS animalAge,
+				(case when animal_gender = 0 then 'Male' else 'Female' END) AS animalGender,
+				animal_weight AS animalWeight,
+				animal_important_symptom as animalImportantSymptom 
+			FROM animal
+			WHERE seq_animal = #{seqAnimal}
+	</select>
+  
+	<!-- 진료 내용 추가하는 SQL -->
+	<insert id="insertDiagnosis" parameterType="DiagnosisAddVO">
+			INSERT INTO Diagnosis 
+			   (seq_doctor,
+				seq_animal,
+				seq_protector,
+				seq_medicine, 
+			    seq_animal_hospital, 
+			    diagnosis_date, 
+			    diagnosis_symptom, 
+			    diagnosis_update_date,
+				medicine_update_date
+			 )VALUES (
+				1, 
+				#{seqAnimal}, 
+				#{seqProtector}, 
+				1, 
+				1, 
+				now(), 
+				#{diagnosisSymptom},
+				now(),
+				NOW()
+			)
+	</insert>
+  
+   <!-- 처방약을 조회하는 SQL -->
+   <select id="selectMedicine" resultType="MedicineVO">
+		SELECT 
+			medicine_name as medicineName,
+			medicine_detail_name as medicineDetailName,
+			medicinemedication_guide as medicinemedicationGuide
+		FROM 
+			Medicine
+		WHERE
+			seq_medicine = 2
+   </select>
+</mapper>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>환자 정보 수정(수의사용)</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+<!-- Favicons -->
+<link href="img/favicon.png" rel="icon">
+<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+<!-- Template Main CSS File -->
+<link href="css/style.css" rel="stylesheet">
+
+<style type="text/css">
+input::-webkit-input-placeholder {
+	background-size: contain;
+	background-position: 1px center;
+	background-repeat: no-repeat;
+	text-align: left;
+	text-indent: 0;
+}
+
+select option[value=""][disabled] {
+	display: none;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+	display: block;
+	border-radius: 10%;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+}
+
+video {
+	width: 300px;
+	height: 200px;
+	margin: auto;
+	border-radius: 10%;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+}
+
+.no_content {
+	width: 300px;
+	height: 200px;
+	margin: auto;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+	text-align: center;
+	font-size: 9pt;
+}
+
+table {
+	margin: auto;
+}
+</style>
+</head>
+<body>
+	<div th:replace="~{fragment/header :: #header}"></div>
+		<main id="main">
+		<section class="breadcrumbs">
+			<div class="container">
+				<br />
+				<div class="section-title">
+					<h2 style="font-weight: bold; font-size: 30px;">환자 정보 수정</h2>
+					<!-- 환자정보 추가했을 때 입력된 정보를 띄움 -->
+				</div>
+			</div>
+		</section>
+		<section class="inner-page">
+			<br> <br>
+			<!-- 사진 및 동영상 모두 등록되어 있을 경우-->
+			<div class="contact-form pt-20"></div>
+			<br />
+			
+			<form action="patientInfoEditDoctorOk" method="post" id="patientInfoEditDoctorOk">
+			<input type="hidden" name="seqAnimal" th:value="${animalVO.seqAnimal}">
+			<table>
+				<tr>
+					<td><img src="img/dog.jpg" /></td>
+					<td><video controls="controls">
+							<source src="videos/dog.mp4" type="video/mp4">
+						</video></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;"><label class="btn btn-primary" for="file1" style="border-radius: 50px; width: 90px">수정</label></td>
+					<td style="text-align: center;"><label class="btn btn-primary" for="file2" style="border-radius: 50px; width: 90px">수정</label></td>
+				</tr>
+				<tr>
+					<td><input type="file" class="form-control" name="animalPicture" id="file1" style="display: none;" accept="image/*" th:value="${animalVO.animalPicture}"></td>
+					<td><input type="file" class="form-control" name="animalVideo" id="file2" style="display: none;" accept="video/*" th:value="${animalVO.animalVideo}"></td>
+				</tr>
+			</table>
+			<br> <br>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="animalName">이름</label>
+					<input type="text" class="form-control" name="animalName" id="animalName" th:value="${animalVO.animalName}">
+					<div class="validate" id="name_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="species">종</label>
+					<input type="text" class="form-control" name="animalType" id="animalType" th:value="${animalVO.animalType}">
+					<div class="validate" id="species_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="size">크기</label>
+					<select class="form-control" id="animalSize" name="animalSize" >
+						<option th:value="${animalVO.animalSize}" hidden="">[[${animalVO.animalSize}]]</option>
+						<option id="animalSize" value="소형">소형</option>
+						<option id="animalSize" value="중형">중형</option>
+						<option id="animalSize" value="대형">대형</option>
+					</select>
+					<div class="validate" id="size_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="animalAgeLabel">나이</label>
+					<!-- 수정할때 입력하는 나이는 날짜로 입력해야 DB에 넣을 수 있음 -->
+					<input type="date" class="form-control" name="animalAge" th:value="${#calendars.format(animalVO.animalAge,'yyyy-MM-dd')}" id="animalAge">
+					<div class="validate" id="animalAge_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+				<!-- 성별은 수정할 수 없으므로 환자 정보 조회 쿼리에서 가져와야함 -->
+					<label for="age">성별</label>
+					<br />
+					<input type="radio" name="animalGender" id="animalGenderFemale" value="Female" onclick="return(false);" th:checked="${animalVO.animalGender} ? 'true' : 'false'">
+					<label for="Female"> 여자</label>
+					<input type="radio" name="animalGender" id="animalGenderMale" value="Male" onclick="return(false);" th:checked="${animalVO.animalGender} ? 'false' : 'true'">
+					<label for="Male"> 남자</label>
+					<div class="validate" id="gender_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+				<div class="col-md-4 form-group mt-3">
+					<label for="weight">몸무게</label>
+					<input type="number" min="1" class="form-control" name="animalWeight" step="0.1" id="animalWeight" th:value="${animalVO.animalWeight}" >
+					<div class="validate" id="weight_val"></div>
+				</div>
+			</div>
+			<div class="row">
+				<p></p>
+				<p></p>
+				<br />
+				<div class="col-md-4 form-group" style="margin: auto;">
+					<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/myPageProtector'"
+						style="border-radius: 50px; width: 110px; text-align: center; color: white;">
+					<input type="button" class="btn btn-primary" name="patient_edit_ok" id=patient_edit_ok value="확인" 
+						style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">
+				</div>
+			</div>
+			<div class="container"></div>
+			</form>
+		</section>
+	</main>
+	<!-- End #main -->
+	<!-- Template Main JS File -->
+	<div th:replace="~{fragment/footer :: #footer}"></div>
+</body>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script type="text/javascript">
+function changeFn(){
+	var size  = document.getElementById("animalSize");
+	var value = (size.options[size.selectedIndex].value);
+	alert(value);
+	value.submit();
+};
+</script>
+<script type="text/javascript">
+	$(function() {
+		$('#patient_edit_ok').on('click', function() {
+			var animalName = $('#animalName').val();
+			var animalType = $('#animalType').val();
+			var animalSize = $('#animalSize').val();
+			var animalAge = $('#animalAge').val();
+			var animalWeight = $('#animalWeight').val();
+			var weightReg = /^\d{1,3}\.\d{0,1}$/;
+			if (animalName.length == 0 || animalName.trim().length == 0 || animalName.includes(' ')) {
+				$('#animalName').focus();
+				$('#animalName').attr('style', 'border-color: #dc3545;');
+				$('#animalName').val('');
+				$('#name_val').html('<div id="name_warning"><b style="color: red;">이름을 입력해주세요.</b></div>');
+			} else if (animalType == null || animalType.trim().length == 0 || animalType.includes(' ')) {
+				$('#animalType').focus();
+				$('#animalType').attr('style', 'border-color: #dc3545;');
+				$('#species_val').html('<div id="species_warning"><b style="color: red;">종을 입력해주세요.</b></div>');
+			} else if (animalSize = null) {
+				$('#animalSize').focus();
+				$('#animalSize').attr('style', 'border-color: #dc3545;');
+				$('#size_val').html('<div id="size_warning"><b style="color: red;">크기를 입력해주세요.</b></div>');
+			} else if (animalAge == null) {
+				$('#animalAge').focus();
+				$('#animalAge').attr('style', 'border-color: #dc3545;');
+				$('#animalAge_val').html('<div id="age_warning"><b style="color: red;">나이를 입력해주세요.</b></div>');
+			} else if (!weightReg.test(animalWeight)) {
+				$('#animalWeight').focus();
+				$('#animalWeight').attr('style', 'border-color: #dc3545;');
+				$('#animalWeight').val('');
+				$('#weight_val').html('<div id="weight_warning"><b style="color: red;">몸무게를 입력해주세요.</b></div>');
+			} else {
+				var result = window.confirm('작성한 내용을 수정하시겠습니까?');
+				if (result) {
+					alert('정상적으로 처리되었습니다.');
+					$('#patientInfoEditDoctorOk').submit();
+				}
+			}
+		});
+	});
+	$('#animalName').on('input', function() {
+		if ($('#animalName').val() != '') {
+			$('#animalName').attr('style', 'border-color : #ced4da;');
+			$('#name_warning').remove();
+		}
+	})
+	$('#animalType').on('input', function() {
+		if ($('#animalType').val() != '') {
+			$('#animalType').attr('style', 'border-color : #ced4da;');
+			$('#species_warning').remove();
+		}
+	})
+	$('#animalSize').on('input', function() {
+		if ($('#animalSize').val() != '') {
+			$('#animalSize').attr('style', 'border-color : #ced4da;');
+			$('#size_warning').remove();
+		}
+	})
+	$('#animalAge').on('input', function() {
+		if ($('#animalAge').val() != '') {
+			$('#animalAge').attr('style', 'border-color : #ced4da;');
+			$('#age_warning').remove();
+		}
+	})
+	$('#animalWeight').on('input', function() {
+		if ($('#animalWeight').val() != '') {
+			$('#animalWeight').attr('style', 'border-color : #ced4da;');
+			$('#weight_warning').remove();
+		}
+	})
+</script>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.AnimallookupMapper">
+	<!-- 보호자의 환자 조회  -->
+	<select id="selectAnimallookup" resultType="animallookupVO" parameterType="int">
+			SELECT 
+				p.seq_protector AS seqProtector,
+				a.seq_animal as seqAnimal,
+				d.seq_diagnosis as seqDiagnosis,
+				a.animal_name as animalName,
+				d.diagnosis_symptom as diagnosisSymptom, 
+				ah.animal_hospital_name as animalHospitalName,
+				DATE_FORMAT(d.diagnosis_date, '%Y-%m-%d') as diagnosisDate
+			FROM
+				diagnosis as d 
+						JOIN animal as a ON d.seq_animal = a.seq_animal
+						JOIN protector as p ON d.seq_protector = p.seq_protector
+						JOIN animalhospital as ah ON ah.seq_animal_hospital = d.seq_animal_hospital
+			WHERE
+				d.seq_protector = #{seqProtector}
+			ORDER BY
+				d.diagnosis_date desc
+	</select>
+</mapper>

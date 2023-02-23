@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.DiagnosisMapper">
+	<select id="selectDiagnosisAnimalInfo" resultType="DiagnosisAnimalVO" parameterType="int">
+			select
+				d.seq_diagnosis AS seqDiagnosis,
+				a.seq_animal AS seqAnimal, 
+				a.animal_picture AS animalPicture,
+				a.animal_name AS animalName, 
+				(DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(a.animal_age, '%Y')) AS animalAge, 
+				a.animal_type AS animalType,
+				a.animal_size AS animalSize,
+				a.animal_gender AS animalGender,
+				a.animal_weight AS animalWeight
+			from
+				diagnosis AS d 
+					inner JOIN Animal AS a ON d.seq_animal = a.seq_animal
+			where
+				d.seq_diagnosis = #{seqDiagnosis}
+	</select>
+	
+	<select id="selectDiagnosisDetailInMedicine" resultType="DiagnosisDetailInMedicineVO" parameterType="int">
+			SELECT 
+				dia.seq_diagnosis AS seqDiagnosis,
+				date_format(dia.diagnosis_date, '%Y-%m-%d') AS diagnosisDate,
+				ah.animal_hospital_name AS animalHospitalName,
+				dia.seq_doctor AS seqDoctor,
+				d.doctor_name AS doctorName,
+				a.animal_name AS animalName,
+				dia.diagnosis_symptom AS diagnosisSymptom,
+				m.medicine_manufacture_company AS medicineManufactureCompany,
+				m.medicine_name AS medicineName,
+				date_format(m.medicine_manufacture_date, '%Y-%m-%d') AS medicineManufactureDate,
+				m.medicine_detail_name AS medicineDetailName,
+				m.medicinemedication_guide AS medicineMedicationGuide,
+				m.medicine_side_effect AS medicineSideEffect
+			FROM
+				diagnosis AS dia JOIN medicine AS m ON dia.seq_medicine = m.seq_medicine
+								 JOIN doctor AS d ON dia.seq_doctor = d.seq_doctor
+								 JOIN animal AS a ON dia.seq_animal = a.seq_animal
+								 JOIN animalhospital AS ah ON dia.seq_animal_hospital = ah.seq_animal_hospital
+			WHERE
+				dia.seq_diagnosis =  #{seqDiagnosis}
+	</select>
+	
+	<select id="selectPostscriptOneDiagnosis" resultType="postscriptOneDiagnosisVO">
+			select 
+				d.seq_diagnosis AS seqDiagnosis,
+				p.seq_postscript as seqPostscript,
+				date_format(p.postscript_update_date, '%Y-%m-%d') as postscriptUpdateDate,
+				a.animal_hospital_name as animalHospitalName, 
+				p.postscript_satisfaction as postscriptSatisfaction,
+				p.postscript_content as postscriptContent  
+			from 
+				diagnosis as d inner JOIN postscript AS p on p.seq_diagnosis = d.seq_diagnosis  
+							inner join animalhospital as a on d.seq_animal_hospital = a.seq_animal_hospital
+			where
+				d.seq_diagnosis = #{seqDiagnosis}
+	</select>
+	<delete id="deletePostscript" parameterType="int">
+		delete from postscript where seq_postscript = #{seqPostscript};
+	</delete>
+</mapper>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>공지사항 상세</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+<!-- Favicons -->
+<link href="img/favicon.png" rel="icon">
+<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap"
+	rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+<!-- Template Main CSS File -->
+<link href="css/style.css" rel="stylesheet">
+<style type="text/css">
+#noticeForm {
+	margin-bottom: 60px;
+	margin-left: 15%;
+	margin-right: 10%;
+	width: 20%;
+}
+#animalHospital, #username, #writeDate, #subject, #content{
+	background-color:  #F0F8FF;
+}
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+	<div th:replace="~{fragment/header :: #header}"></div>
+	<main id="main">
+		<!-- ======= Breadcrumbs Section ======= -->
+		<section class="breadcrumbs">
+			<div class="container">
+				<br />
+				<div class="section-title">
+					<h2 style="font-weight: bold; font-size: 30px;">공지사항 상세</h2>
+				</div>
+			</div>
+		</section>
+		<!-- End Breadcrumbs Section -->
+		<section class="inner-page">
+			<div class="container">
+				<div id="noticeForm">
+					<div class="col-md-4 form-group" style="margin: auto;">
+						작성자 <br />
+						<input type="hidden" name="seqNotice" id="seqNotice" th:value="${noticeDetailList.seqNotice}">
+						<div id="username" class="form-control" name="username" style="width: 700px;">
+							[[${noticeDetailList.doctorName}]]					
+						</div>
+						<br /> 진료병원 <br /> 
+						<div id="animalHospital" class="form-control" name="animalHospital" style="width: 700px;">
+							[[${noticeDetailList.animalHospitalName}]]
+						</div>
+						 <br /> 작성일 <br /> 
+						 <div class="form-control" id="writeDate" style="width: 700px;" >
+						 	[[${noticeDetailList.noticeUpdateDate}]]
+						 </div>
+						 <br /> 제목 <br />
+						 <div id="subject" class="form-control" name="subject" style="width: 700px;">
+						 	[[${noticeDetailList.noticeSubject}]]
+						 </div>
+						<br /> 내용 <br />
+						<div id="content" class="form-control" name="content" style="width: 700px; height: 400px;">
+							[[${noticeDetailList.noticeContent}]]
+						</div>
+						<br />
+					</div>
+				</div>
+				<div>
+					<!-- 보호자로 로그인했을 때는 이전페이지 버튼만 보인다. -->
+					<div style="position: relative;">
+						<button type="button" id="move_pre_page" name="move_pre_page" class="btn btn-secondary" style="border-radius: 50px; width: 110px; float: left; margin-left: 22%;" onclick="history.go(-1)">이전페이지</button>
+						<button type="button" id="modify_btn" name="modify_btn" class="btn btn-primary bt-sm" style="border-radius: 50px; width: 110px; display: inline; margin-left: 180px;" th:onclick="|location.href='@{/noticeEdit(seqNotice=${noticeDetailList.seqNotice})}'|">수정</button>
+						<button type="submit" id="delete_btn" name="delete_btn" class="btn btn-danger bt-sm" style="border-radius: 50px; width: 110px; display: inline; float: right; margin-right: 15%;">삭제</button>
+						<br />
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<!-- End #main -->
+	<!-- Template Main JS File -->
+	<div th:replace="~{fragment/footer :: #footer}"></div>
+</body>
+<script type="text/javascript">
+	$(function() {
+		$('#delete_btn').on('click', function() {
+			var result = window.confirm('정말로 삭제하시겠습니까?');
+			if (result) {
+				alert('정상적으로 삭제되었습니다.');
+				
+				var seqNoticeVal = $('#seqNotice').val();
+				
+				$.ajax({
+					url:"/noticeDetail",
+					dataType: "text",
+					type: "post",
+					contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+					data: {
+						seqNotice : seqNoticeVal
+					},
+					success: function (data) {
+						location.href='/notice';
+					},
+					error: function (data) {
+						alert("Error");
+					}
+				});
+			} else if (!result) {
+				alert('취소 되었습니다.');
+			}
+		});
+	});
+</script>
+</html>

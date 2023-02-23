@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.HospitalMapper">
+	<select id="selectHospital" parameterType="int" resultType="AnimalHospitalVO">
+		select
+			seq_animal_hospital seqAnimalHospital,
+			seq_doctor seqDoctor,
+			animal_hospital_name animalHospitalName,
+			animal_hospital_address animalHospitalAddress,
+			animal_hospital_phoneNo animalHospitalPhoneNo,
+			hospital_location_latitude hospitalLocationLatitude,
+			hospital_location_longitude hospitalLocationLongitude
+		from animalhospital
+		where seq_animal_hospital = #{seq}
+	</select>
+	<!-- 병원을 추가하는 메소드 -->
+	<insert id="insertAnimalHospital"
+		parameterType="AnimalHospitalVO">
+		<![CDATA[
+		    insert into AnimalHospital(
+				seq_doctor,  
+				animal_hospital_name, 
+				animal_hospital_address, 
+				animal_hospital_phoneNo, 
+				hospital_location_latitude, 
+				hospital_location_longitude
+			) VALUES (
+				1, 
+				#{animalHospitalName}, 
+				#{animalHospitalAddress}, 
+				#{animalHospitalPhoneNo}, 
+				#{hospitalLocationLatitude}, 
+				#{hospitalLocationLongitude}
+			)
+	   ]]>
+	</insert>
+
+	<!-- 병원을 수정하는 메소드 -->
+	<update id="updateAnimalHospital"
+		parameterType="AnimalHospitalVO">
+		<![CDATA[
+		   	UPDATE animalhospital SET 
+				animal_hospital_name = #{animalHospitalName},
+				animal_hospital_address = #{animalHospitalAddress},
+				animal_hospital_phoneNo = #{animalHospitalPhoneNo},
+				hospital_location_latitude = #{hospitalLocationLatitude},
+				hospital_location_longitude = #{hospitalLocationLongitude}
+			WHERE 
+				seq_animal_hospital = #{seqAnimalHospital};
+	   ]]>
+	</update>
+</mapper>

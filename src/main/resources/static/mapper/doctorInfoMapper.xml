@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.DoctorInfoMapper">
+	<select id="viewMyInfoDoctor" parameterType="int"
+		resultType="DoctorVO">
+		SELECT
+			seq_doctor seqDoctor,
+			doctor_id doctorId,
+			doctor_name doctorName,
+			doctor_work_year doctorWorkYear,
+			doctor_age doctorAge,
+			doctor_gender doctorGender,
+			doctor_address doctorAddress,
+			doctor_phoneNo doctorPhoneNo,
+			doctor_registration_number doctorRegistrationNumber,
+			doctor_picture doctorPicture,
+			doctor_say doctorSay,
+			doctor_join_date doctorJoinDate,
+			doctor_role doctorRole,
+			doctor_work_space doctorWorkSpace,
+			doctor_education doctorEducation,
+			doctor_update_date doctorUpdateDate
+		FROM
+			doctor
+		WHERE
+			seq_doctor = #{seqDoctor}
+	</select>
+	<update id="editMyInfoDoctor" parameterType="map" >
+		UPDATE
+			doctor
+		SET
+			doctor_password = #{password},
+			doctor_phoneNo = #{phone},
+			doctor_address = #{doctorAddress},
+			doctor_education = #{educationRecord},
+			doctor_work_space = #{careerRecord},
+			doctor_say = #{greetings}
+		WHERE
+			seq_doctor = #{seqDoctor}
+	</update>
+</mapper>

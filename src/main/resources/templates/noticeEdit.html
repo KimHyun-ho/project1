@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>공지사항 수정</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+<!-- Favicons -->
+<link href="img/favicon.png" rel="icon">
+<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+<!-- Template Main CSS File -->
+<link href="css/style.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<style type="text/css">
+	#editform{
+	margin-bottom : 60px;
+	margin-left : 15%;
+	margin-right: 10%;
+	width: 20%;
+	}
+	
+	input{
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: 1px solid gray;
+	}
+	
+	textarea {
+	border-radius: 5px;
+	border: 1px solid gray;
+	resize: none;
+	}
+</style>
+</head>
+<body>
+<div th:replace="~{fragment/header :: #header}"></div>
+<main id="main">
+<!-- ======= Breadcrumbs Section ======= -->
+<section class="breadcrumbs">
+	<div class="container">
+		<br />
+		<div class="section-title">
+			<h2 style="font-weight: bold; font-size: 30px;">공지사항 수정</h2>
+		</div>
+	</div>
+</section><!-- End Breadcrumbs Section -->
+<section class="inner-page">
+	<div class="container">
+		<div id="editform">       
+			<div class="col-md-4 form-group" style="margin: auto;">작성자 <br />
+				<input type="hidden" name="seqNotice" id="seqNotice" th:value="${noticeOneDatailList[0].seqNotice}">
+				<div id="doctorName" class="form-control" style="width: 700px; background-color: #F0F8FF;" th:value="${noticeOneDatailList[0].doctorName}" th:text="${noticeOneDatailList[0].doctorName}">
+					[[${noticeOneDatailList[0].doctorName}]]
+				</div> <br />
+					진료병원 <br />
+				<div id="animalHospitalName" class="form-control" style="width: 700px; background-color: #F0F8FF;">
+					[[${noticeOneDatailList[0].animalHospitalName}]]
+				</div> <br />
+					작성일 <br />
+				<div class="form-control" id="noticeUpdateDate" style="width: 700px; background-color: #F0F8FF;">
+					[[${noticeOneDatailList[0].noticeUpdateDate}]]
+				</div> <br />
+					제목 <br />
+				<textarea id="noticeSubject" class="form-control" name="noticeSubject" rows="1" maxlength="50" th:value="${noticeOneDatailList[0].noticeSubject}" th:text="${noticeOneDatailList[0].noticeSubject}" required="required" style="width: 700px;"></textarea>
+				<div id="warningMessage1"></div>
+				<br />내용<br />
+				<textarea id="noticeContent" class="form-control" name="noticeContent" rows="20" cols="100" maxlength="500" required="required" style="width: 700px;" th:value="${noticeOneDatailList[0].noticeContent}" th:text="${noticeOneDatailList[0].noticeContent}"></textarea>
+				<div id="warningMessage2"></div>
+				<br />
+			</div>
+		</div>
+		<div class="col-md-4 form-group" style="margin: auto;">
+			<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/noticeDetail'" style="border-radius:50px;width: 110px;text-align: center;color: white;">
+			<input type="button" class="btn btn-primary" name="notice_edit" id="notice_edit" value="확인" style="border-radius:50px;width: 110px;text-align: center;float: right;color: white; ">
+		</div>
+	</div>
+</section>
+</main><!-- End #main -->
+<!-- Template Main JS File -->
+<div th:replace="~{fragment/footer :: #footer}"></div>
+</body>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+       $('#notice_edit').on('click', function() {
+          var noticeSubject = $('#noticeSubject').val();
+          var noticeContent = $('#noticeContent').val();
+          if(noticeSubject==null||noticeSubject.trim().length==0){
+               $('#noticeSubject').attr('style','border-color: #dc3545; margin:auto;width:700px;');
+           	   $('#noticeSubject').val('');
+           	   $('#warningMessage1').html('<div id="warning" style=" width:700px;"><b style="color: red; width:700px;">제목을 입력해주세요</b></div>');
+               $('#noticeSubject').focus();
+           }else if(noticeContent==null||noticeContent.trim().length==0){
+               $('#noticeContent').attr('style','border-color: #dc3545; margin:auto; width:700px; height: 500px;');
+           	   $('#noticeContent').val('');
+           	   $('#warningMessage2').html('<div id="warning" style=" width:700px;"><b style="color: red; width:700px;">내용을 입력해주세요.</b></div>');
+        	   $('#noticeContent').focus();
+           }else{
+				var result = window.confirm('작성한 내용으로 수정하시겠습니까?');
+				if (result) {
+					alert('정상적으로 처리되었습니다.');
+					var seqNoticeVar = $("#seqNotice").val();
+					var doctorNameVar = $("#doctorName").val();
+					var animalHospitalVar = $("#animalHospitalName").val();
+					var noticeWriteDateVar = $("#noticeUpdateDate").val();
+					var noticeSubjectVar = $("#noticeSubject").val();
+					var noticeContentVar = $("#noticeContent").val();
+					$.ajax({
+						url:"/noticeEdit",
+						dataType: "text",
+						type: "post",
+						contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+						data: {
+							seqNotice : seqNoticeVar,
+							noticeSubject : noticeSubjectVar,
+							noticeContent : noticeContentVar
+						},
+						success: function(data) {
+							location.href='/notice';
+						},
+						error: function(data) {
+							alert("Error");
+						}
+					});					
+				} else if (!result) {
+					alert('취소되었습니다.');
+				}
+           }
+       });
+});       
+$('#noticeSubject').on('input',function(){
+	if($('#noticeSubject').val() !=''){
+		$('#noticeSubject').attr('style','width:700px;');
+		$('#warning').remove();
+	}
+})
+$('#noticeContent').on('input',function(){
+	if($('#noticeContent').val() !=''){
+		$('#noticeContent').attr('style','width:700px;');
+		$('#warning').remove();
+	}
+})
+</script>
+</html>
