@@ -55,15 +55,19 @@ textarea {
 			<section class="inner-page">
 				<div class="container">
 					<div class="noticeForm">
+						<input type="hidden" id="seqDoctor" name="seqDoctor" th:value="${insertWriterInfoMap.seqDoctor}">
+						<input type="hidden" id="seqAnimalHospital" name="seqAnimalHospital" th:value="${insertWriterInfoMap.seqAnimalHospital}">
 						<div class="col-md-4 form-group" style="margin: auto;">
 							작성자 <br />
-							<input id="writer" class="form-control" type="text" name="writer" value="김아무개" readonly
-								style="width: 700px; background-color: #F5F5F5; " />
+							<div id="doctorName" class="form-control" type="text" style="width: 700px; background-color: #f1f7fd">
+								[[${insertWriterInfoMap.doctorName}]]
+							</div>
 							<br /> <!-- 회원가입했을 때 입력된 정보를 띄움 --> 진료병원 <br />
-							<input id="animalHospital" class="form-control" type="text" name="animalHospital" value="A동물병원" readonly
-								style="width: 700px; background-color: #F5F5F5" />
+							<div id="animalHospitalName" class="form-control" style="width: 700px; background-color: #f1f7fd">
+								[[${insertWriterInfoMap.animalHospitalName}]]
+							</div>
 							<br /> <!-- 회원가입했을 때 입력된 정보를 띄움 --> 작성일 <br />
-							<input id="writeDate" name="writeDate" class="form-control" type="date" value="2023-01-30" style="width: 700px;" />
+							<input id="today" name="today" class="form-control" type="date" th:value="${insertWriterInfoMap.today}" style="width: 700px;" />
 							<br /> <!-- 현재날짜를 띄움 --> 제목 <br />
 							<textarea id="noticeSubject" class="form-control" name="noticeSubject" rows="1" maxlength="50"
 								required="required" placeholder="제목을 입력해주세요." style="width: 700px;"></textarea>
@@ -106,6 +110,9 @@ $(function(){
 				var result = window.confirm('작성한 내용을 추가하시겠습니까?');
 				if (result) {
 					alert('정상적으로 처리되었습니다.');
+					var seqDoctorVar = $('#seqDoctor').val();
+		    	  	var seqAnimalHospitalVar = $('#seqAnimalHospital').val();
+		    	  	var todayVar = $('#today').val();
 					var noticeSubjectVal = $("#noticeSubject").val();
 					var noticeContentVal = $("#noticeContent").val();
 					$.ajax({
@@ -114,6 +121,9 @@ $(function(){
 						type: "post",
 						contentType:"application/x-www-form-urlencoded; charset=UTF-8",
 						data: {
+							seqDoctor : seqDoctorVar,
+							seqAnimalHospital : seqAnimalHospitalVar,
+							today : todayVar,
 							noticeSubject : noticeSubjectVal,
 							noticeContent : noticeContentVal
 						},

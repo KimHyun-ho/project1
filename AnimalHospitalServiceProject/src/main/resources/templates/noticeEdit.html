@@ -60,23 +60,20 @@
 	<div class="container">
 		<div id="editform">       
 			<div class="col-md-4 form-group" style="margin: auto;">작성자 <br />
-				<input type="hidden" name="seqNotice" id="seqNotice" th:value="${noticeOneDatailList[0].seqNotice}">
-				<div id="doctorName" class="form-control" style="width: 700px; background-color: #F0F8FF;" th:value="${noticeOneDatailList[0].doctorName}" th:text="${noticeOneDatailList[0].doctorName}">
-					[[${noticeOneDatailList[0].doctorName}]]
-				</div> <br />
+				<input type="hidden" name="seqNotice" id="seqNotice" th:value="${noticeDetailList.seqNotice}">
+				<div id="doctorName" class="form-control" style="width: 700px; background-color: #F0F8FF;" th:value="${noticeDetailList.doctorName}" th:text="${noticeDetailList.doctorName}"></div> 
+				<br />
 					진료병원 <br />
-				<div id="animalHospitalName" class="form-control" style="width: 700px; background-color: #F0F8FF;">
-					[[${noticeOneDatailList[0].animalHospitalName}]]
-				</div> <br />
+				<div id="animalHospitalName" class="form-control" style="width: 700px; background-color: #F0F8FF;" th:value="${noticeDetailList.animalHospitalName}" th:text="${noticeDetailList.animalHospitalName}"></div> 
+				<br />
 					작성일 <br />
-				<div class="form-control" id="noticeUpdateDate" style="width: 700px; background-color: #F0F8FF;">
-					[[${noticeOneDatailList[0].noticeUpdateDate}]]
-				</div> <br />
+				<div class="form-control" id="noticeUpdateDate" style="width: 700px; background-color: #F0F8FF;" th:value="${noticeDetailList.noticeUpdateDate}" th:text="${noticeDetailList.noticeUpdateDate}"></div> 
+				<br />
 					제목 <br />
-				<textarea id="noticeSubject" class="form-control" name="noticeSubject" rows="1" maxlength="50" th:value="${noticeOneDatailList[0].noticeSubject}" th:text="${noticeOneDatailList[0].noticeSubject}" required="required" style="width: 700px;"></textarea>
+				<textarea id="noticeSubject" class="form-control" name="noticeSubject" rows="1" maxlength="50" th:value="${noticeDetailList.noticeSubject}" th:text="${noticeDetailList.noticeSubject}" required="required" style="width: 700px;"></textarea>
 				<div id="warningMessage1"></div>
 				<br />내용<br />
-				<textarea id="noticeContent" class="form-control" name="noticeContent" rows="20" cols="100" maxlength="500" required="required" style="width: 700px;" th:value="${noticeOneDatailList[0].noticeContent}" th:text="${noticeOneDatailList[0].noticeContent}"></textarea>
+				<textarea id="noticeContent" class="form-control" name="noticeContent" rows="20" cols="100" maxlength="500" required="required" style="width: 700px;" th:value="${noticeDetailList.noticeContent}" th:text="${noticeDetailList.noticeContent}"></textarea>
 				<div id="warningMessage2"></div>
 				<br />
 			</div>
