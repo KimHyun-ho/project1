@@ -42,10 +42,10 @@ public class MainController {
 	//	}
 
 	// 공지 사항 추가
-	@GetMapping("/noticeAdd")
-	public String noticeAdd() {
-		return "noticeAdd";
-	}
+//	@GetMapping("/noticeAdd")
+//	public String noticeAdd() {
+//		return "noticeAdd";
+//	}
 
 //	// 환자 정보 수정 (의사 용)
 //	@GetMapping("/patientInfoEditDoctor")

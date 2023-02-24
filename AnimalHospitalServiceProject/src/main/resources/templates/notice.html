@@ -63,19 +63,19 @@
 								<thead>
 									<tr>
 										<th style="width: 5%">No</th>
-										<th style="width: 60%">제목</th>
-										<th>진료병원</th>
-										<th>작성자</th>
-										<th>작성일</th>
+										<th style="width: 48%;">제목</th>
+										<th style="width: 28%">진료병원</th>
+										<th style="width: 7%">작성자</th>
+										<th style="width: 18%">작성일</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="noticeList : ${noticeList}" th:onclick="|location.href='@{/noticeDetail(seqNotice=${noticeList.seqNotice})}'|">
-										<td th:text="${noticeList.seqNotice}"></td>
-										<td th:text="${noticeList.noticeSubject}"></td>
-										<td th:text="${noticeList.animalHospitalName}"></td>
-										<td th:text="${noticeList.doctorName}"></td>
-										<td th:text="${noticeList.noticeUpdateDate}"></td>
+									<tr th:each="allNoticeList : ${allNoticeList}" th:onclick="|location.href='@{/noticeDetail(seqNotice=${allNoticeList.seqNotice})}'|" style="cursor : pointer;">
+										<td th:text="${allNoticeList.seqNotice}"></td>
+										<td th:text="${allNoticeList.noticeSubject}"></td>
+										<td th:text="${allNoticeList.animalHospitalName}"></td>
+										<td th:text="${allNoticeList.doctorName}"></td>
+										<td th:text="${allNoticeList.noticeUpdateDate}"></td>
 									</tr>
 								</tbody>
 							</table>

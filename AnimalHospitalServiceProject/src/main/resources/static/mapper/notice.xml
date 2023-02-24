@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.NoticeMapper">
+	<!-- 공지 전체 리스트 데이터 가져오기 -->
+	<select id="selectAllNoticeListVO" resultType="AllNoticeListVO">
+		 	SELECT
+				n.seq_notice AS seqNotice,
+				n.seq_doctor AS seqDoctor,
+				-- session seq_member
+				-- d.seq_member AS seqMember,
+				n.seq_animal_hospital AS seqAnimalHospital,
+				n.notice_subject AS noticeSubject,
+				n.notice_content AS noticeContent,
+				date_format(n.notice_write_date, '%Y-%m-%d') AS noticeWriteDate,
+				a.animal_hospital_name AS animalHospitalName,
+				d.doctor_name AS doctorName,
+				date_format(n.notice_update_date, '%Y-%m-%d') AS noticeUpdateDate
+			from
+				notice AS n
+				join animalhospital AS a ON n.seq_animal_hospital = a.seq_animal_hospital
+				JOIN (
+					SELECT 
+						doc.seq_doctor AS seq_doctor,
+						-- ac.seq_member AS seq_member,
+						ac.member_name AS doctor_name
+					FROM doctor AS doc JOIN account AS ac ON doc.seq_member = ac.seq_member
+				) AS d on n.seq_doctor = d.seq_doctor
+			order by
+				n.notice_update_date DESC
+	</select>
+	
+	<!-- 공지 상세 정보 가져오기 -->
+	<select id="selectOneDetailNoticeVO" resultType="AllNoticeListVO">
+		SELECT
+			n.seq_notice AS seqNotice,
+			n.seq_doctor AS seqDoctor,
+			-- session seq_member
+			-- d.seq_member AS seqMember,
+			n.seq_animal_hospital AS seqAnimalHospital,
+			n.notice_subject AS noticeSubject,
+			n.notice_content AS noticeContent,
+			date_format(n.notice_write_date, '%Y-%m-%d') AS noticeWriteDate,
+			a.animal_hospital_name AS animalHospitalName,
+			d.doctor_name AS doctorName,
+			date_format(n.notice_update_date, '%Y-%m-%d') AS noticeUpdateDate
+		from
+			notice AS n
+			join animalhospital AS a ON n.seq_animal_hospital = a.seq_animal_hospital
+			JOIN (
+				SELECT 
+					doc.seq_doctor AS seq_doctor,
+					-- ac.seq_member AS seq_member,
+					ac.member_name AS doctor_name
+				FROM doctor AS doc JOIN account AS ac ON doc.seq_member = ac.seq_member
+			) AS d on n.seq_doctor = d.seq_doctor
+		WHERE 
+			n.seq_notice = #{seqNotice}
+	</select>
+	
+	<!-- 공지 추가시 글쓰는 의사 정보 가져오기 -->
+	<select id="selectInsertNoticeWriterInfo" resultType="InsertWriterInfoVO">
+		SELECT 
+			doc.seq_doctor AS seqDoctor,
+			ah.seq_animal_hospital AS seqAnimalHospital,
+			doc.doctor_name AS doctorName,
+			ah.animal_hospital_name AS animalHospitalName,
+			date_format(NOW(), '%Y-%m-%d') AS today
+		FROM (
+					SELECT 
+						d.seq_doctor AS seq_doctor,
+						d.seq_animal_hospital AS seq_animal_hospital,
+						ac.member_name AS doctor_name
+					FROM doctor AS d JOIN account AS ac ON d.seq_member = ac.seq_member
+				) AS doc JOIN animalhospital AS ah ON doc.seq_animal_hospital = ah.seq_animal_hospital
+		WHERE 
+			doc.seq_doctor = #{seqDoctor}
+		AND 
+			ah.seq_animal_hospital = #{seqAnimalHospital}
+	</select>
+	
+	<!-- 공지 추가하기 -->
+	<insert id="insertOneNotice" parameterType="map">
+		    INSERT INTO Notice(
+				seq_doctor, 
+				seq_animal_hospital, 
+				notice_subject, 
+				notice_content, 
+				notice_write_date,
+				notice_update_date
+			) VALUES (
+				#{seqDoctor}, 
+				#{seqAnimalHospital}, 
+				#{noticeSubject}, 
+				#{noticeContent}, 
+				#{today},
+				now()
+			)
+	</insert>
+	
+	<!-- 공지 수정하기 -->
+	<update id="updateOneNotice" parameterType="map">
+		    UPDATE Notice SET
+				notice_subject = #{noticeSubject}, 
+				notice_content = #{noticeContent}, 
+				notice_update_date = now()
+			WHERE
+				seq_notice = #{seqNotice}
+	</update>
+	
+	<!-- 공지 삭제하기 -->
+	<update id="deleteOneNotice" parameterType="int">
+		    delete from notice
+			WHERE
+				seq_notice = #{seq_notice}
+	</update>
+</mapper>  
