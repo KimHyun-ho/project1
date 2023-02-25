@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>담당 환자 전체 조회</title>
+<title>진료내역 조회</title>
 <meta content="" name="description">
 <meta content="" name="keywords">
 <!-- Favicons -->
@@ -55,7 +55,8 @@ input[name="searchPatientBtn"] {
 			<br />
 			<div class="section-title">
 				<h2 style="font-weight: bold; font-size: 30px;">
-					<br />담당 환자 전체 조회
+					<br />
+					진료내역 조회
 				</h2>
 			</div>
 		</div>
@@ -72,7 +73,9 @@ input[name="searchPatientBtn"] {
 					<input type="submit" class="btn btn-primary" name="searchPatientBtn" id="searchPatientBtn" value="검색" style="width: 70px; text-align: center; border-radius: 50px; margin-top: -4px;">
 				</form>
 				<div>
-					<br /> <br /> <br />
+					<br />
+					<br />
+					<br />
 				</div>
 				<div class="white_shd full margin_bottom_30">
 					<div class="full graph_head"></div>
@@ -81,44 +84,70 @@ input[name="searchPatientBtn"] {
 							<table class="table table-hover" style="text-align: center">
 								<thead>
 									<tr>
-										<th style="width: 6%">보호자명</th>
-										<th style="width: 10%">환자명</th>
-										<th style="width: 6%">나이</th>
-										<th style="width: 10%">종</th>
-										<th style="width: 6%">성별</th>
-										<th style="width: 6%">몸무게</th>
-										<th style="width: 20%">특이사항</th>
+										<th style="width: 7%">보호자명</th>
+										<th style="width: 9%">환자명</th>
+										<th style="width: 10%">생년월일</th>
+										<th style="width: 9%">종</th>
+										<th style="width: 7%">성별</th>
+										<th style="width: 7%">몸무게</th>
+										<th style="width: 15%">진료일시</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="patientList : ${patientList}" th:onclick="|location.href='@{/patientInfo(seqAnimal=${patientList.seqAnimal},seqProtector=${patientList.seqProtector})}'|">
-										<td th:text="${patientList.protectorName}"></td>
-										<td th:text="${patientList.animalName}"></td>
-										<td th:text="${patientList.animalAge}"></td>
-										<td th:text="${patientList.animalType}"></td>
-										<td th:text="${patientList.animalGender}"></td>
-										<td th:text="${patientList.animalWeight}"></td>
-										<td th:text="${patientList.animalImportantSymptom}"></td>
+									<tr th:each="patientInfo : ${patientInfoList}" th:onclick="|location.href='@{/patientInfo(seqAnimal=${patientInfo.seqAnimal})}'|">
+										<td th:text="${patientInfo.memberName}"></td>
+										<td th:text="${patientInfo.animalName}"></td>
+										<td th:text="${#dates.format(patientInfo.animalBirthDay,'yyyy년 MM월 dd일')}"></td>
+										<td th:text="${patientInfo.animalType}"></td>
+										<td th:text="${patientInfo.animalGender} ? '암컷' : '수컷'"></td>
+										<td th:text="${patientInfo.animalWeight + 'kg'}"></td>
+										<td th:text="${#dates.format(patientInfo.diagnosisDate,'yyyy-MM-dd hh시')}"></td>
 									</tr>
 								</tbody>
 							</table>
 							<br />
 							<nav aria-label="Page navigation example">
 								<ul class="pagination">
-									<li class="page-item"><a class="page-link" href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-									</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item"><a class="page-link" href="#">4</a></li>
-									<li class="page-item"><a class="page-link" href="#">5</a></li>
-									<li class="page-item"><a class="page-link" href="#">6</a></li>
-									<li class="page-item"><a class="page-link" href="#">7</a></li>
-									<li class="page-item"><a class="page-link" href="#">8</a></li>
-									<li class="page-item"><a class="page-link" href="#">9</a></li>
-									<li class="page-item"><a class="page-link" href="#">10</a></li>
-									<li class="page-item"><a class="page-link" href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-									</a></li>
+									<li class="page-item">
+										<a class="page-link" href="#" aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">1</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">2</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">3</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">4</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">5</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">6</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">7</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">8</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">9</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#">10</a>
+									</li>
+									<li class="page-item">
+										<a class="page-link" href="#" aria-label="Next">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
 								</ul>
 							</nav>
 							<!-- 각 번호 페이지 버튼

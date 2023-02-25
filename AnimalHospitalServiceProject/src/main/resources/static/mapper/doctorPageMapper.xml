@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.DoctorPageMapper">
+	<!-- 세션에서 seqMember값을 받아 내정보(의사) 조회 -->
+	<select id="selectOneDoctorInfoVO" parameterType="int"
+		resultType="DoctorInfoVO">
+		SELECT
+			a.seq_member as seqMember,
+			a.member_email_id as
+			memberEmailId,
+			a.member_name as memberName,
+			a.member_gender as
+			memberGender,
+			a.member_birthdate as memberBirthDay,
+			a.member_phoneNo as
+			memberPhoneNo,
+			a.member_role as memberRole,
+			a.member_join_date as
+			memberJoinDate,
+			a.member_update_date as memberUpdateDate,
+			a.member_leave_flag as memberLeaveFlag,
+			ah.animal_hospital_name as
+			animalHospitalName,
+			d.seq_doctor as seqDoctor,
+			d.doctor_work_year as doctorWorkYear,
+			d.doctor_registration_number as doctorRegNo,
+			d.doctor_update_date as doctorUpdateDate,
+			d.doctor_work_space as doctorWorkSpace,
+			d.doctor_say as doctorSay,
+			d.doctor_education as doctorEducation,
+			d.doctor_picture as doctorPicture,
+			d.doctor_picture_path as doctorPicturePath
+		FROM
+			account a , doctor d ,
+			animalhospital ah
+		WHERE
+			a.seq_member = d.seq_member 
+			AND a.seq_member = #{seqMember} 
+			AND d.seq_animal_hospital =ah.seq_animal_hospital 
+			AND a.member_role = 0
+	</select>
+	
+	<!-- /doctorInfo 페이지로부터 seqMember, seqDoctor 값과
+	 /doctorInfoEdit 페이지에서 수정된 정보값을 받아 업데이트  -->
+	<update id="updateOneDoctorInfoVO" parameterType="DoctorInfoVO">
+		UPDATE
+			account a, doctor d
+		SET
+			a.member_phoneNo = #{memberPhoneNo}, 
+			d.doctor_education = #{doctorEducation} ,
+			d.doctor_work_space = #{doctorWorkSpace} ,
+			d.doctor_say = #{doctorSay},
+			d.doctor_update_date = now(),
+			a.member_update_date = now()
+		WHERE
+			a.seq_member = #{seqMember} 
+			AND d.seq_doctor = #{seqDoctor}
+	</update>
+
+	<!--  -->
+	<select id="selectAllPatientInfoVO" parameterType="int"
+		resultType="kr.human.anihospital.vo.PatientInfoVO">
+		select
+			ac.seq_member as seqMember,
+			ac.member_name as memberName,
+			a.seq_animal as seqAnimal,
+			a.animal_name as animalName,
+			a.animal_age as animalBirthDay,
+			a.animal_type as animalType,
+			a.animal_size as animalSize,
+			a.animal_gender as animalGender,
+			a.animal_weight as animalWeight,
+			d.seq_diagnosis as seqDiagnosis,
+			d.diagnosis_date as diagnosisDate
+		from
+			animal a,
+			diagnosis d,
+			account ac
+		where
+			a.seq_animal in
+			(
+			select
+				seq_animal
+			from
+				diagnosis dia
+			where
+				dia.seq_doctor = #{seqDoctor} )
+			and a.seq_animal = d.seq_animal
+			and a.seq_member = ac.seq_member
+		order by
+			d.diagnosis_date desc
+	</select>
+	
+		<!--  -->
+	<select id="selectOnePatientInfoVO" parameterType="int"
+		resultType="kr.human.anihospital.vo.PatientInfoVO">
+		select
+			ac.seq_member as seqMember,
+			ac.member_name as memberName,
+			a.seq_animal as seqAnimal,
+			a.animal_name as animalName,
+			a.animal_age as animalBirthDay,
+			a.animal_type as animalType,
+			a.animal_size as animalSize,
+			a.animal_gender as animalGender,
+			a.animal_weight as animalWeight
+		from
+			animal a,
+			account ac
+		where
+			a.seq_animal = #{seqAnimal}
+			and a.seq_member = ac.seq_member
+	</select>
+	<select id="selectAllPatientDiaRecord" parameterType="int"
+		resultType="kr.human.anihospital.vo.PatientInfoVO$PatientDiaRecord">
+		select
+			a.animal_hospital_name as animalHospitalName,
+			d.diagnosis_symptom as diagnosisSymptom,
+			d.diagnosis_date as diagnosisDate  
+		from 
+			diagnosis d, 
+			animalhospital a 
+		where
+			d.seq_animal = #{seqAnimal} 
+			and d.seq_animal_hospital = a.seq_animal_hospital  
+		order by 
+			d.diagnosis_date desc
+	</select>
+</mapper>
