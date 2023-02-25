@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientInfoVO {
+public class DocPatientInfoVO {
 
 	private int seqMember;
 	private String memberName;

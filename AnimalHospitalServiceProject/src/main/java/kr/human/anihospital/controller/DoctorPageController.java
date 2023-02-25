@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.human.anihospital.service.DoctorPageService;
 import kr.human.anihospital.vo.DoctorInfoVO;
-import kr.human.anihospital.vo.PatientInfoVO;
-import kr.human.anihospital.vo.PatientInfoVO.PatientDiaRecord;
+import kr.human.anihospital.vo.DocPatientInfoVO;
+import kr.human.anihospital.vo.DocPatientInfoVO.PatientDiaRecord;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -33,7 +33,9 @@ public class DoctorPageController {
 		// ## seqMember는 로그인 정보 Session에서 받아와야 합니다.##
 		// #########################################################
 		int seqMember = 1;
-		model.addAttribute("doctorInfo", doctorPageService.selectOneDoctorInfoVO(seqMember));
+		DoctorInfoVO doctorInfoVO = doctorPageService.selectOneDoctorInfoVO(seqMember);
+		model.addAttribute("doctorInfo", doctorInfoVO);
+		log.info("의사정보 : {}", doctorInfoVO);
 		return "doctorInfo";
 	}
 
@@ -58,7 +60,7 @@ public class DoctorPageController {
 	}
 
 	// #############################################
-	// #### 수의사 전용 페이지 -> 전체환자 조회 ####
+	// #### 수의사 전용 페이지 -> 진료내역 조회 ####
 	// #############################################
 	@GetMapping("/patientInfoList")
 	public String patientInfoList(Model model) {
@@ -71,14 +73,17 @@ public class DoctorPageController {
 		return "patientInfoList";
 	}
 
+	// ###############################################################
+	// #### 수의사 전용 페이지 -> 진료내역 조회 -> 환자 정보 조회 ####
+	// ###############################################################
 	@GetMapping("/patientInfo")
 	public String patientInfo(@RequestParam int seqAnimal, Model model) {
-		PatientInfoVO patientInfoVO = doctorPageService.selectOnePatientInfoVO(seqAnimal);
+		DocPatientInfoVO patientInfoVO = doctorPageService.selectOnePatientInfoVO(seqAnimal);
 		List<PatientDiaRecord> patientDiaRecords = doctorPageService.selectAllPatientDiaRecord(seqAnimal);
 		model.addAttribute("patientInfoVO", patientInfoVO);
 		model.addAttribute("diaRecords", patientDiaRecords);
-		log.info("환자정보 : {}", doctorPageService.selectOnePatientInfoVO(seqAnimal));
-		log.info("환자 이전 진료 내역 정보 : {}", doctorPageService.selectAllPatientDiaRecord(seqAnimal));
+		log.info("환자정보 : {}", patientInfoVO);
+		log.info("환자 이전 진료 내역 정보 : {}", patientDiaRecords);
 		return "patientInfo";
 	}
 }

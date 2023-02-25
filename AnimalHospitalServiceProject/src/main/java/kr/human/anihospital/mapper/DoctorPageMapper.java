@@ -7,8 +7,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.human.anihospital.vo.DoctorInfoVO;
-import kr.human.anihospital.vo.PatientInfoVO;
-import kr.human.anihospital.vo.PatientInfoVO.PatientDiaRecord;
+import kr.human.anihospital.vo.DocPatientInfoVO;
+import kr.human.anihospital.vo.DocPatientInfoVO.PatientDiaRecord;
 
 // ###################################################################
 // ##수의사 전용 페이지의 모든 CRUD를 담은 Mapper 클래스 파일입니다.##
@@ -23,11 +23,11 @@ public interface DoctorPageMapper {
 	void updateOneDoctorInfoVO(DoctorInfoVO doctorInfoVO) throws SQLException;
 
 	// 세션으로부터 seqDoctor값을 받아 /patientInfoList 페이지에서 진료내역을 리스트로 조회하는 매퍼 메소드
-	List<PatientInfoVO> selectAllPatientInfoVO(int seqDoctor) throws SQLException;
+	List<DocPatientInfoVO> selectAllPatientInfoVO(int seqDoctor) throws SQLException;
 
 	// /patientInfoList 페이지에서 진료내역을 클릭하여 /patientInfo 페이지로 이동할 때 seqAnimal 값을 받아
 	// 환자 정보를 조회하는 매퍼 메소드
-	PatientInfoVO selectOnePatientInfoVO(int seqAnimal) throws SQLException;
+	DocPatientInfoVO selectOnePatientInfoVO(int seqAnimal) throws SQLException;
 
 	// /patientInfoList 페이지에서 진료내역을 클릭하여 /patientInfo 페이지로 이동할 때 seqAnimal 값을 받아
 	// 환자의 이전 진료내역을 조회하는 매퍼 메소드

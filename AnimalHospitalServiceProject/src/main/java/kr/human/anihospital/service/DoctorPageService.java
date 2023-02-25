@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import kr.human.anihospital.mapper.DoctorPageMapper;
 import kr.human.anihospital.vo.DoctorInfoVO;
-import kr.human.anihospital.vo.PatientInfoVO;
-import kr.human.anihospital.vo.PatientInfoVO.PatientDiaRecord;
+import kr.human.anihospital.vo.DocPatientInfoVO;
+import kr.human.anihospital.vo.DocPatientInfoVO.PatientDiaRecord;
 import lombok.extern.slf4j.Slf4j;
 
 //####################################################################
@@ -41,8 +41,8 @@ public class DoctorPageService {
 		}
 	}
 
-	public List<PatientInfoVO> selectAllPatientInfoVO(int seqDoctor) {
-		List<PatientInfoVO> patientInfoVOs = new ArrayList<>();
+	public List<DocPatientInfoVO> selectAllPatientInfoVO(int seqDoctor) {
+		List<DocPatientInfoVO> patientInfoVOs = new ArrayList<>();
 		try {
 			patientInfoVOs = doctorPageMapper.selectAllPatientInfoVO(seqDoctor);
 		} catch (Exception e) {
@@ -51,8 +51,8 @@ public class DoctorPageService {
 		return patientInfoVOs;
 	}
 
-	public PatientInfoVO selectOnePatientInfoVO(int seqAnimal) {
-		PatientInfoVO patientInfoVO = new PatientInfoVO();
+	public DocPatientInfoVO selectOnePatientInfoVO(int seqAnimal) {
+		DocPatientInfoVO patientInfoVO = new DocPatientInfoVO();
 		try {
 			patientInfoVO = doctorPageMapper.selectOnePatientInfoVO(seqAnimal);
 		} catch (Exception e) {
