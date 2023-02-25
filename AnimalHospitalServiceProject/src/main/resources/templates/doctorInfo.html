@@ -71,14 +71,15 @@ textarea {
 		</table>
 		<br /> <br />
 		<form action="doctorInfoEdit" method="post" id="doctorInfoEditSubmit">
-		<input type="hidden" name="seqDoctor" th:value="${map.seqDoctor}">
+		<input type="hidden" name="seqMember" th:value="${doctorInfo.seqMember}">
+		<input type="hidden" name="seqDoctor" th:value="${doctorInfo.seqDoctor}">
 			<div class="row">
 				<div class="col-md-4 form-group mt-3">
 					<div class="validate"></div>
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for=email>ID</label>
-					<input type="text" class="form-control" name="email" id="email" th:value="${map.doctorId}" data-rule="email" readonly="readonly" data-msg="이메일은 필수입력 항목입니다.">
+					<input type="text" class="form-control" name="memberEmailId" id="email" th:value="${doctorInfo.memberEmailId}" readonly="readonly">
 					<div class="validate" id="email_val"></div>
 				</div>
 			</div>
@@ -91,9 +92,9 @@ textarea {
 					<label for="age">성별</label>
 					<br />
 					<!-- 환자정보 추가했을 때 입력된 정보를 띄움 -->
-					<input type="radio" name="gender" id="Female" data-rule="gender" value="Female" onclick="return false;" th:checked="${map.doctorGender} ? 'true' : 'false'">
+					<input type="radio" name="memberGender" id="Female" value="Female" onclick="return false;" th:checked="${doctorInfo.memberGender} ? 'true' : 'false'">
 					<label for="Female"> 여자</label>
-					<input type="radio" name="gender" id="Male" data-rule="gender" value="Male" onclick="return false;" th:checked="${map.doctorGender} ? 'false' : 'true'">
+					<input type="radio" name="memberGender" id="Male" value="Male" onclick="return false;" th:checked="${doctorInfo.memberGender} ? 'false' : 'true'">
 					<label for="Male"> 남자</label>
 
 					<div class="validate"></div>
@@ -105,7 +106,7 @@ textarea {
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for="name">이름</label>
-					<input type="text" class="form-control" name="name" id="name" th:value="${map.doctorName}" data-rule="name" data-msg="필수입력 항목입니다." readonly="readonly">
+					<input type="text" class="form-control" name="memberName" id="name" th:value="${doctorInfo.memberName}" readonly="readonly">
 					<div class="validate"></div>
 				</div>
 			</div>
@@ -115,7 +116,7 @@ textarea {
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for="birth">생년월일</label>
-					<input type="date" class="form-control" name="birth" id="birth" th:value="${#calendars.format(map.doctorAge,'yyyy-MM-dd')}" readonly="readonly" />
+					<input type="date" class="form-control" name="memberBirthDay" id="birth" th:value="${#dates.format(doctorInfo.memberBirthDay,'yyyy-MM-dd')}" readonly="readonly" />
 					<div class="validate"></div>
 				</div>
 			</div>
@@ -125,7 +126,7 @@ textarea {
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for="license">면허취득일</label>
-					<input type="date" class="form-control" name="license" id="license" th:value="${#calendars.format(map.doctorWorkYear,'yyyy-MM-dd')}" readonly="readonly" />
+					<input type="date" class="form-control" name="doctorWorkYear" id="license" th:value="${#dates.format(doctorInfo.doctorWorkYear,'yyyy-MM-dd')}" readonly="readonly" />
 					<div class="validate"></div>
 				</div>
 			</div>
@@ -135,7 +136,7 @@ textarea {
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for="doctorNumber">의사 등록번호</label>
-					<input type="text" class="form-control" name="doctorNumber" id="doctorNumber" th:value="${map.doctorRegNo }" data-rule="doctorNumber" data-msg="필수입력 항목입니다." readonly="readonly">
+					<input type="text" class="form-control" name="doctorRegNo" id="doctorNumber" th:value="${doctorInfo.doctorRegNo }" readonly="readonly">
 					<div class="validate"></div>
 				</div>
 			</div>
@@ -145,7 +146,7 @@ textarea {
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for="phone">연락처</label>
-					<input type="text" class="form-control" name="phone" id="phone" th:value="${map.doctorPhoneNo }" data-rule="phone" data-msg="필수입력 항목입니다." readonly="readonly">
+					<input type="text" class="form-control" name="memberPhoneNo" id="phone" th:value="${doctorInfo.memberPhoneNo }" readonly="readonly">
 					<div class="validate"></div>
 				</div>
 			</div>
@@ -157,15 +158,15 @@ textarea {
 				<div class="col-md-4 form-group mt-3">
 					<label for="textBox1">학력</label>
 					<br />
-					<textarea rows="5" cols="55" placeholder="" name="educationRecord" id="educationRecord" style="border-color: #ced4da;" readonly="readonly">[[${map.doctorEducation }]]</textarea>
+					<textarea rows="5" cols="55" placeholder="" name="doctorEducation" id="educationRecord" style="border-color: #ced4da;" readonly="readonly">[[${doctorInfo.doctorEducation }]]</textarea>
 					<br />
 					<label for="textBox2">이력</label>
 					<br />
-					<textarea rows="5" cols="55" placeholder="" name="careerRecord" id="careerRecord" style="border-color: #ced4da;" readonly="readonly">[[${map.doctorWorkSpace }]]</textarea>
+					<textarea rows="5" cols="55" placeholder="" name="doctorWorkSpace" id="careerRecord" style="border-color: #ced4da;" readonly="readonly">[[${doctorInfo.doctorWorkSpace }]]</textarea>
 					<br />
 					<label for="textBox3">인사말</label>
 					<br />
-					<textarea rows="5" cols="55" placeholder="" name="greetings" id="greetings" style="border-color: #ced4da;" readonly="readonly">[[${map.doctorSay }]]</textarea>
+					<textarea rows="5" cols="55" placeholder="" name="doctorSay" id="greetings" style="border-color: #ced4da;" readonly="readonly">[[${doctorInfo.doctorSay }]]</textarea>
 					<br />
 					<div class="validate"></div>
 				</div>

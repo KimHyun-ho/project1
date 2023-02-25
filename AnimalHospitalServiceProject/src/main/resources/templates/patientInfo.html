@@ -12,7 +12,7 @@
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" >
+<link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
 
 <!-- Vendor CSS Files -->
@@ -23,35 +23,40 @@
 <!-- Template Main CSS File -->
 <link href="css/style.css" rel="stylesheet">
 <style type="text/css">
-	#gridContainer {
-		display: grid;
-		grid-auto-rows: minmax(100px, auto);
-		grid-template-columns: 2fr 1fr;
-	}
-	tr, td {
-		text-align: left;
-	}
-	h4 {
-		display: inline;
-		margin: auto;
-	}
-	textarea {
-		resize: none;
-		height: 150px;
-		text-align: left;
-	}
-	img {
-		width: 200px;
-		height: 200px; 
-		display : block;
-		border-radius:10%;
-		object-fit: cover;
-		border: 3px solid #F5F5F5;
-	}
+#gridContainer {
+	display: grid;
+	grid-auto-rows: minmax(100px, auto);
+	grid-template-columns: 2fr 1fr;
+}
+
+tr, td {
+	text-align: left;
+}
+
+h4 {
+	display: inline;
+	margin: auto;
+}
+
+textarea {
+	resize: none;
+	height: 150px;
+	text-align: left;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+	display: block;
+	border-radius: 10%;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+}
 </style>
 <!-- Template Main CSS File -->
 <link href="css/style.css" rel="stylesheet">
 <script type="text/javascript">
+	
 </script>
 </head>
 <body>
@@ -72,18 +77,17 @@
 				<div id="gridContainer">
 					<div id="mainContainer">
 						<h4>
-							<b>환자 정보</b> 
+							<b>환자 정보</b>
 							<!-- onclick="location='patientInfoEditDoctor'"  -->
-							<button type="button" class="btn btn-primary bt-sm" name="patientInfoEditDoctor" id="patientInfoEditDoctor"  style="border-radius:50px;">수정</button>
+							<button type="button" class="btn btn-primary bt-sm" name="patientInfoEditDoctor" id="patientInfoEditDoctor" style="border-radius: 50px;">수정</button>
 						</h4>
 						<br />
 						<br />
 						<img src="img/dog.jpg" alt="...">
 						<div class="row"></div>
-							<br />
+						<br />
 						<form action="patientInfoEditDoctor" method="post" id="patientInfoEditDoctorSubmit">
-						<input type="hidden" id="seqAnimal" name="seqAnimal"  th:value="${patientInfoVO.seqAnimal}">
-						<input type="hidden" id="seqProtector" name="seqProtector"  th:value="${patientInfoVO.seqProtector}">
+							<input type="hidden" id="seqAnimal" name="seqAnimal" th:value="${patientInfoVO.seqAnimal}">
 						</form>
 						<div class="row">
 							<div class="col-md-8 form-group">
@@ -92,13 +96,11 @@
 							<div class="col-md-8 form-group">
 								<label for="name">이름</label>
 								<!-- 환자정보 추가했을 때 입력된 정보를 띄움 -->
-								<div class="form-control" name="name" id="name" style="width: 700px;">
-									[[${patientInfoVO.animalName}]] 
-								</div>
+								<div class="form-control" name="name" id="name" style="width: 700px;" th:text="${patientInfoVO.animalName}"></div>
 								<div class="validate"></div>
 							</div>
 						</div>
-							<br />
+						<br />
 						<div class="row">
 							<div class="col-md-8 form-group">
 								<div class="validate"></div>
@@ -106,13 +108,11 @@
 							<div class="col-md-8 form-group">
 								<label for="species">종</label>
 								<!-- 환자정보 추가했을 때 입력된 정보를 띄움 -->
-								<div class="form-control" name="species" id="species" style="width: 700px;">
-									[[${patientInfoVO.animalType}]]
-								</div>
+								<div class="form-control" name="species" id="species" style="width: 700px;" th:text="${patientInfoVO.animalType}"></div>
 								<div class="validate"></div>
 							</div>
 						</div>
-							<br />
+						<br />
 						<div class="row">
 							<div class="col-md-8 form-group">
 								<div class="validate"></div>
@@ -120,63 +120,57 @@
 							<div class="col-md-8 form-group">
 								<label for="size">크기</label>
 								<!-- 환자정보 추가 및 수정했을 때 입력된 정보를 띄움 -->
-								<div class="form-control" name="size" id="size" style="width: 700px;">
-									[[${patientInfoVO.animalSize}]]형
-								</div>
+								<div class="form-control" name="size" id="size" style="width: 700px;" th:text="${patientInfoVO.animalSize}"></div>
 								<div class="validate"></div>
 							</div>
 						</div>
-							<br />
+						<br />
 						<div class="row">
 							<div class="col-md-8 form-group">
 								<div class="validate"></div>
 							</div>
 							<div class="col-md-8 form-group">
-								<label for="age">나이</label>
+								<label for="age">생년월일</label>
 								<!-- 환자정보 추가했을 때 입력된 정보를 띄움 -->
-								<div min="1" class="form-control" name="age" id="age" style="width: 700px;">
-									[[${patientInfoVO.animalAge}]]살
-								</div>
+								<div min="1" class="form-control" name="age" id="age" style="width: 700px;" th:text="${#dates.format(patientInfoVO.animalBirthDay,'yyyy년 MM월 dd일')}"></div>
 								<div class="validate"></div>
 							</div>
 						</div>
-							<br />
+						<br />
 						<div class="row">
 							<div class="col-md-8 form-group">
 								<div class="validate"></div>
 							</div>
 							<div class="col-md-8 form-group">
-								<label for="age">성별</label> <br />
-								<div min="1" class="form-control" name="gender" id="gender" style="width: 700px;">
-									[[${patientInfoVO.animalGender}]]
-								</div>
+								<label for="age">성별</label>
+								<br />
+								<div min="1" class="form-control" name="gender" id="gender" style="width: 700px;" th:text="${patientInfoVO.animalGender} ? '암컷' : '수컷'"></div>
 								<div class="validate"></div>
 							</div>
 						</div>
-							<br />
+						<br />
 						<div class="row">
 							<div class="col-md-8 form-group">
 								<div class="validate"></div>
 							</div>
 							<div class="col-md-8 form-group">
-								<label for="weight">몸무게</label>
+								<label for="weight">몸무게(kg)</label>
 								<!-- 환자정보 추가했을 때 입력된 정보를 띄움 -->
-								<div class="form-control" name="weight" id="weight" style="width: 700px;">
-									[[${patientInfoVO.animalWeight}]]
-								</div>
+								<div class="form-control" name="weight" id="weight" style="width: 700px;" th:text="${patientInfoVO.animalWeight}"></div>
 								<div class="validate"></div>
 							</div>
 						</div>
 						<br />
 					</div>
-					<div id="rightContainer">									<!-- onclick="location='diagnosisAdd'" -->
-					<button type="button" class="btn btn-primary bt-sm" name="diagnosisAdd" th:onclick="|location.href='@{/diagnosisAdd(seqAnimal=${patientInfoVO.seqAnimal})}'|"
-					style="border-radius:50px; float: right;">진료내용 작성</button>
-					<br /><br />
+					<div id="rightContainer">
+						<!-- onclick="location='diagnosisAdd'" -->
+						<button type="button" class="btn btn-primary bt-sm" name="diagnosisAdd" th:onclick="|location.href='@{/diagnosisAdd(seqAnimal=${patientInfoVO.seqAnimal})}'|"
+							style="border-radius: 50px; float: right;">진료내용 작성</button>
+						<br />
+						<br />
 						<div id="lastDiagnosis">
 							<div>
-								<div
-									style="padding: 10px; margin-bottom: 10px; border: 1px solid #DDDDDD; border-radius: 10px; width: 350px; margin-left: auto;">
+								<div style="padding: 10px; margin-bottom: 10px; border: 1px solid #DDDDDD; border-radius: 10px; width: 350px; margin-left: auto;">
 									<h5 style="margin-left: 10px; margin-bottom: 10px; margin-top: 10px;">
 										<b>이전 진료 내역</b>
 									</h5>
@@ -184,22 +178,22 @@
 										<div class="full graph_head"></div>
 										<div class="table_section padding_infor_info">
 											<div class="table-responsive-sm">
-												<table class="table" style="text-align: center;" >
+												<table class="table" style="text-align: center;">
 													<thead>
 														<tr style="text-align: center">
-															<th style="width: 20%">진료병원</th>
-															<th style="width: 16%">증상</th>
+															<th style="width: 18%">진료병원</th>
+															<th style="width: 18%">증상</th>
 															<th style="width: 13%">진료일</th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="pidliat : ${pidliat}" style="font-size: 10pt; text-align: center; vertical-align: middle;">
-															<td th:text="${pidliat.animalHospitalName}"  style="text-align: center;"></td>
-															<td th:text="${pidliat.diagnosisSymptom}"  style="text-align: center;"></td>
-															<td th:text="${pidliat.diagnosisDate}" style="text-align: center;"></td>
+														<tr th:each="diaRecords : ${diaRecords}" style="font-size: 10pt; text-align: center; vertical-align: middle;">
+															<td th:text="${diaRecords.animalHospitalName}" style="text-align: center;"></td>
+															<td th:text="${diaRecords.diagnosisSymptom}" style="text-align: center;"></td>
+															<td th:text="${#dates.format(diaRecords.diagnosisDate,'yyyy-MM-dd')}" style="text-align: center;"></td>
 														</tr>
 													</tbody>
-												</table>						
+												</table>
 											</div>
 										</div>
 									</div>
@@ -214,13 +208,13 @@
 	<!-- End #main -->
 	<!-- Template Main JS File -->
 	<div th:replace="~{fragment/footer :: #footer}"></div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(function(){
-	$('#patientInfoEditDoctor').on('click', function() {
-		$('#patientInfoEditDoctorSubmit').submit();
-	});
-});
-</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('#patientInfoEditDoctor').on('click', function() {
+				$('#patientInfoEditDoctorSubmit').submit();
+			});
+		});
+	</script>
 </body>
 </html>
