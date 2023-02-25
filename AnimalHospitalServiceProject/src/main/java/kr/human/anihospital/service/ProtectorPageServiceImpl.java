@@ -67,12 +67,25 @@ public class ProtectorPageServiceImpl implements ProtectorPageService{
 		}
 		
 	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자가 환자를 추가하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void insertProPatient(Map<String, Object> insertPatientMap){
+		try {
+			protectorPageMapper.insertProPatient(insertPatientMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	//----------------------------------------------------------------------------------------------------
 	// 보호자가 환자 정보를 수정하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
-	public void updateProPatient(Map<String, Object> updatePatientMap) {
+	public void updateProPatient(Map<String, Object> updatePatientMap){
 		try {
 			protectorPageMapper.updateProPatient(updatePatientMap);
 		} catch (Exception e) {

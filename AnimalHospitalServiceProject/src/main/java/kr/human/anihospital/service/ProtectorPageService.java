@@ -24,6 +24,11 @@ public interface ProtectorPageService {
 	void updateProMypage(Map<String, Object> updateMap) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
+	// 보호자가 환자를 추가하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	void insertProPatient(Map<String, Object> insertPatientMap) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
 	// 보호자가 환자 정보를 수정하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	void updateProPatient(Map<String, Object> updatePatientMap) throws Exception;

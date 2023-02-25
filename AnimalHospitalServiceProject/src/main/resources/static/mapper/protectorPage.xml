@@ -46,6 +46,42 @@
 		ORDER BY
 	    	d.diagnosis_date desc
 	</select>
+	
+	<!-- 환자 등록 -->
+	<insert id="insertProPatient" parameterType="map">
+		insert into animal 
+			(seq_member,
+			 animal_name,
+			 animal_type,
+			 animal_size,
+			 animal_weight,
+			 animal_age,
+			 animal_gender,
+			 animal_join_date,
+			 animal_update_date,
+			 animal_important_symptom,
+			 animal_picture,
+			 animal_video,
+			 animal_picture_path,
+			 animal_video_path
+			 )
+		 values
+			 (#{seqMember},
+			  #{animalName},
+			  #{animalType},
+			  #{animalSize},
+			  #{animalWeight},
+			  #{animalAge},
+			  #{animalGender},
+			  now(),
+			  now(),
+			  #{animalImportantSymptom},
+			  #{animalPicture},
+			  #{animalVideo},
+			  #{animalPicturePath},
+			  #{animalVideoPath} 
+			  )
+	</insert>
 
 	<!-- 보호자 정보 수정 -->
 	<update id="updateProMypage" parameterType="map">
@@ -153,5 +189,4 @@
 			  WHERE
 			   dia.seq_diagnosis = #{seqDiagnosis} AND a.seq_member = #{seqMember} AND a.seq_animal = #{seqAnimal}
 	</select>
-	<!--  -->
 </mapper>

@@ -92,8 +92,19 @@ public class ProtectorPageController {
 		return "redirect:proMypageDetail";
 	}
 	
-	
-	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자가 환자 정보를 수정하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@PostMapping("/proPatientAddOk")
+	public String proPatientAdd(@RequestParam Map<String, Object> insertPatientMap) throws Exception {
+		// 세션에서 보호자 seq를 가져와서 insertPatientMap에 넣기
+		insertPatientMap.put("seqMember", 4);
+		// proPatientAdd 페이지에서 받아온 값 확인
+		log.info("proPatientAdd에서 넘어온 환자 insert 정보 : {}", insertPatientMap);
+		// proPatientAdd 페이지에서 받아온 환자 추가 정보를 넣어서 insert하기
+		protectorPageService.insertProPatient(insertPatientMap);
+		return "redirect:proMypageDetail";
+	}
 	
 	//----------------------------------------------------------------------------------------------------
 	// 한 명의 보호자에 따른 환자의 진료내역 리스트를 화면에 표시해줄 메서드
