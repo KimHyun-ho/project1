@@ -6,18 +6,9 @@
 /* 유효성 검사 및 보호자 정보 수정 ajax */
 $(function(){
 	$('#updateMyInfo').on('click', function() {
-		var address1 = $('#address1').val();
-		var address2 = $('#address2').val();
-		var pw = $('#pw').val();
-		//var pwRegEx = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/;
 		var phoneNum = $('#phoneNum').val();
 		var cNum = $('#cNum').val();
-		if(pw==null||pw.trim().length==0){
-			$('#pw').attr('style','border-color: #dc3545;');
-			$('#pw').val('');
-			$('#passMessage').html('<div id="warning1"><b style="color: red;">수정할 비밀번호를 입력해주세요.</b></div>');
-			$('#pw').focus();
-		}else if(phoneNum==null||phoneNum.trim().length==0){
+		if(phoneNum==null||phoneNum.trim().length==0){
 			$('#phoneNum').attr('style','border-color: #dc3545;');
 			$('#phoneNum').val('');
 			$('#phoneMessage').html('<div id="warning2"><b style="color: red;">수정할 전화번호를 입력해주세요.</b></div>');
@@ -31,22 +22,21 @@ $(function(){
 			var result = window.confirm('작성한 내용을 수정하시겠습니까?');
 			if(result) {
 		     	alert('정상적으로 수정되었습니다.');
-		     	var seqProtector = $("input[name='seqProtector']").val();
-		     	var protectorPassword = $("input[name='password']").val();
-				var protectorPhoneNo = $("input[name='phone']").val();
+				var seqMember = $("input[name='seqMember']").val();
+				var memberPhoneNo = $("input[name='memberPhoneNo']").val();
 				$.ajax({
-					url: "/editMyPageProtectorOk",
-					dataType: "text",
+					url: "/proMypageEditOk",
+					//dataType: "text",
 					type: "post",
+					//contentType : 'application/json; charset=utf-8',
 					data: {
-						seqProtector : seqProtector,
-						protectorPassword : protectorPassword,
-						protectorPhoneNo : protectorPhoneNo,
+						seqMember : seqMember,
+						memberPhoneNo : memberPhoneNo,
 					},
-					success: function(data) {
-						location.href='/myPageProtector';
+					success: function() {
+						location.href='/proMypageDetail';
 					},
-					error: function(data) {
+					error: function() {
 						alert("Error");
 					}
 				});
@@ -55,12 +45,6 @@ $(function(){
 	});
 });
 $(function(){
-	$('#pw').on('input',function(){
-		if($('#pw').val() !=''){
-			$('#pw').attr('style','border-color : #ced4da;');
-			$('#warning1').remove();
-		}
-	});
 	$('#phoneNum').on('input',function(){
 		if($('#phoneNum').val() !=''){
 			$('#phoneNum').attr('style','border-color : #ced4da;');

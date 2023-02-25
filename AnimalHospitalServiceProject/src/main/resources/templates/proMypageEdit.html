@@ -19,7 +19,7 @@
 <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
 <link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script src="js/jsp/editMyPageProtector.js"></script>
+<script src="js/jsp/proMypageEdit.js"></script>
 
 <!-- Tables - SB Admin -->
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
@@ -52,7 +52,7 @@
 			</div>
 		</section>
 		<!-- End Breadcrumbs Section -->
-		<input type="hidden" name="seqProtector" th:value="${protectInfo.seqProtector}">
+		<input type="hidden" name="seqMember" th:value="${proMyPagemap.seqMember}">
 		<section class="inner-page">
 			<div class="container">
 				<div class="row">
@@ -61,7 +61,7 @@
 					</div>
 					<div class="col-md-4 form-group mt-3">
 						<label for="name">이름</label>
-						<input type="text" class="form-control" name="name" id="name" disabled="disabled" th:value="${protectInfo.protectorName}"> 
+						<input type="text" class="form-control" name="memberName" id="name" disabled="disabled" th:value="${proMyPagemap.memberName}"> 
 						<div id="uneditableName" style="font-size: 9pt; color: red;"></div>
 						<div class="validate"></div>
 					</div>
@@ -72,7 +72,7 @@
 					</div>
 					<div class="col-md-4 form-group mt-3">
 						<label for="id">ID</label>
-						<input type="text" class="form-control" name="id" id="id" disabled="disabled" th:value="${protectInfo.protectorId}">
+						<input type="text" class="form-control" name="memberEmailId" id="id" disabled="disabled" th:value="${proMyPagemap.memberEmailId}">
 						<div id="uneditableId" style="font-size: 9pt; color: red;"></div>
 						<div class="validate"></div>
 					</div>
@@ -82,25 +82,26 @@
 						<div class="validate"></div>
 					</div>
 					<div class="col-md-4 form-group mt-3">
-						<label for="password">비밀번호</label>
-						<div class="wrap">
-							<input type="password" class="form-control" name="password" id="pw" placeholder="8자-20자 숫자/영문대소문자/특수문자 포함">
-							<input type="hidden">
-							<div id="uneditablePassword" style="font-size: 9pt; color: red;"></div>
-						</div>
-						<div class="validate" id="passMessage"></div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4 form-group mt-3">
-						<div class="validate"></div>
-					</div>
-					<div class="col-md-4 form-group mt-3">
 						<label for="birth">생년월일</label>
-						<input type="text" class="form-control" name="birthday" id="birthday" disabled="disabled" th:value="${#calendars.format(protectInfo.protectorAge,'yyyy-MM-dd')}">
+						<input type="text" class="form-control" name="memberBirthdate" id="birthday" disabled="disabled" th:value="${proMyPagemap.memberBirthdate}">
 						<div id="uneditableBirthday" style="font-size: 9pt; color: red;"></div>
 					</div>
 					<div class="validate"></div>
+				</div>
+				<div class="row">
+				<div class="col-md-4 form-group mt-3">
+					<div class="validate"></div>
+				</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="age">성별</label>
+						<br />
+						<input type="radio" name="gender" id="Female" value="Female" readonly="readonly" onclick="return false;" th:checked="${proMyPagemap.memberGender}=='Female' ? 'true':'false'">
+						<label for="Female"> 여자</label>
+						<input type="radio" name="gender" id="Male" value="Male" readonly="readonly" onclick="return false;" th:checked="${proMyPagemap.memberGender}=='Female' ? 'false':'true'">
+						<label for="Male"> 남자</label>
+	
+						<div class="validate" id="gender_val"></div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-4 form-group mt-3">
@@ -109,7 +110,8 @@
 					<div class="col-md-4 form-group mt-3">
 						<label for="phone">전화번호</label>
 						<div class="wrap">
-							<input type="text" class="form-control" name="phone" id="phoneNum" placeholder="수정할 전화번호를 입력해주세요." maxlength="13"
+							<!-- th:value=${proMyPagemap.memberPhoneNo} -->
+							<input type="text" class="form-control" name="memberPhoneNo" id="phoneNum" placeholder="수정할 전화번호를 입력해주세요." maxlength="13"
 								data-rule="age" data-msg="필수입력 항목입니다.">
 							&nbsp;
 							<input type="button" value="인증번호" class="btn btn-primary"
@@ -135,7 +137,7 @@
 					<p>
 					<div class="col-md-4 form-group" style="margin: auto;">
 						<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지"
-							onclick="location='/myPageProtector'"
+							onclick="location='/proMypageDetail'"
 							style="border-radius: 50px; width: 110px; margin: auto; text-align: center; color: white;">
 						<input type="submit" class="btn btn-primary" name="updateMyInfo" id="updateMyInfo" value="수정하기"
 							style="border-radius: 50px; width: 110px; margin: auto; text-align: center; float: right; color: white;">
