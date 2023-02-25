@@ -123,15 +123,15 @@ public class MainController {
 	}
 
 	// 나의 예약 정보
-	@GetMapping("/scheduleProtector")
-	public String scheduleProtector() {
-		return "scheduleProtector";
+	@GetMapping("/proSchedule")
+	public String proSchedule() {
+		return "proSchedule";
 	}
 
 	// 환자 추가
-	@GetMapping("/patientAdd")
-	public String patientAdd() {
-		return "patientAdd";
+	@GetMapping("/proPatientAdd")
+	public String proPatientAdd() {
+		return "proPatientAdd";
 	}
 
 	@GetMapping("/hospitalMap")
