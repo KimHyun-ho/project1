@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.NaverMapMapper">
+	<select id="selectHospitalMap" resultType="animalHospitalVO">
+		select 
+			seq_animal_hospital seqAnimalHospital,
+			animal_hospital_name animalHospitalName,
+			animal_hospital_address animalHospitalAddress,
+			animal_hospital_phoneNo animalHospitalPhoneNo,
+			hospital_location_latitude hospitalLocationLatitude,
+			hospital_location_longitude hospitalLocationLongitude
+		from animalhospital
+	</select>
+	<select id="selectPharmacyMap" resultType="PharmacyLocationVO">
+		select 
+			seq_pharmacy_location seqPharmacyLocation,
+			animal_pharmacy_name animalPharmacyName,
+			animal_pharmacy_address animalPharmacyAddress,
+			animal_pharmacy_phoneNo animalPharmacyPhoneNo,
+			pharmacy_location_latitude pharmacyLocationLatitude,
+			pharmacy_location_longitude pharmacyLocationLongitude
+		from 
+			pharmacylocation
+		order by
+			seq_pharmacy_location
+	</select>
+</mapper>
