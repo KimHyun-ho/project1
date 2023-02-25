@@ -72,7 +72,7 @@ table {
 											<td th:if="${#lists.isEmpty(proAllAnimalList)}" colspan="5" style="text-align: center;">등록된 진료내역이 없습니다.</td>
 										</tr>
 										<tr th:each="proAllAnimalList : ${proAllAnimalList}" th:if="${!#lists.isEmpty(proAllAnimalList)}"
-											th:onclick="|location.href='@{/diagnosis(seqMember=${proAllAnimalList.seqMember}, seqAnimal=${proAllAnimalList.seqAnimal},seqDiagnosis=${proAllAnimalList.seqDiagnosis})}'|">
+											th:onclick="|location.href='@{/proDiagnosis(seqMember=${proAllAnimalList.seqMember}, seqAnimal=${proAllAnimalList.seqAnimal},seqDiagnosis=${proAllAnimalList.seqDiagnosis})}'|">
 											<td th:text="${proAllAnimalList.seqDiagnosis}"></td>
 											<td th:text="${proAllAnimalList.animalName}"></td>
 											<td th:text="${proAllAnimalList.diagnosisSymptom}"></td>

@@ -81,9 +81,9 @@ table {
 			<div class="contact-form pt-20"></div>
 			<br />
 			
-			<form action="patientInfoEditProtectorOk" method="post" id="patientInfoEditProtectorOk">
-			<input type="hidden" name="seqAnimal" th:value="${animalVO.seqAnimal}">
-			<input type="hidden" name="seqProtector" th:value="${animalVO.seqProtector}">
+			<form action="proPatientInfoEditOk" method="post" id="proPatientInfoEditOk">
+			<input type="hidden" name="seqAnimal" th:value="${proPatientmap.seqAnimal}">
+<!-- 			<input type="hidden" name="seqMember" th:value="${proPatientmap.seqMember}"> -->
 			<table>
 				<tr>
 					<td><img src="img/dog.jpg" /></td>
@@ -96,8 +96,8 @@ table {
 					<td style="text-align: center;"><label class="btn btn-primary" for="file2" style="border-radius: 50px; width: 90px">수정</label></td>
 				</tr>
 				<tr>
-					<td><input type="file" class="form-control" name="animalPicture" id="file1" style="display: none;" accept="image/*" th:value="${animalVO.animalPicture}"></td>
-					<td><input type="file" class="form-control" name="animalVideo" id="file2" style="display: none;" accept="video/*" th:value="${animalVO.animalVideo}"></td>
+					<td><input type="file" class="form-control" name="animalPicture" id="file1" style="display: none;" accept="image/*" ></td>
+					<td><input type="file" class="form-control" name="animalVideo" id="file2" style="display: none;" accept="video/*" ></td>
 				</tr>
 			</table>
 			<br> <br>
@@ -107,7 +107,7 @@ table {
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for="name">이름</label>
-					<input type="text" class="form-control" name="animalName" id="name" th:value="${animalVO.animalName}" data-rule="name" data-msg="필수입력 항목입니다.">
+					<input type="text" class="form-control" name="animalName" id="name" th:value="${proPatientmap.animalName}">
 					<div class="validate" id="name_val"></div>
 				</div>
 			</div>
@@ -117,7 +117,7 @@ table {
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for="species">종</label>
-					<input type="text" class="form-control" name="animalType" id="species" th:value="${animalVO.animalType}" data-rule="species" data-msg="필수입력 항목입니다.">
+					<input type="text" class="form-control" name="animalType" id="species" th:value="${proPatientmap.animalType}">
 					<div class="validate" id="species_val"></div>
 				</div>
 			</div>
@@ -128,7 +128,7 @@ table {
 				<div class="col-md-4 form-group mt-3">
 					<label for="size">크기</label>
 					<select class="form-control" id="size" name="animalSize" >
-						<option th:value="${animalVO.animalSize}" hidden="">[[${animalVO.animalSize}]]</option>
+						<option th:value="${proPatientmap.animalSize}" hidden="">[[${proPatientmap.animalSize}]]</option>
 						<option id="size" value="소형">소형</option>
 						<option id="size" value="중형">중형</option>
 						<option id="size" value="대형">대형</option>
@@ -143,7 +143,7 @@ table {
 				<div class="col-md-4 form-group mt-3">
 					<label for="age">나이</label>
 					<!-- 수정할때 입력하는 나이는 날짜로 입력해야 DB에 넣을 수 있음 -->
-					<input type="date" class="form-control" name="animalAge" th:value="${#calendars.format(animalVO.animalAge,'yyyy-MM-dd')}" id="age" data-rule="age" data-msg="필수입력 항목입니다.">
+					<input type="date" class="form-control" name="animalAge" th:value="${proPatientmap.animalAge}" id="age">
 					<div class="validate" id="animalAge_val"></div>
 				</div>
 			</div>
@@ -155,9 +155,9 @@ table {
 				<!-- 성별은 수정할 수 없으므로 환자 정보 조회 쿼리에서 가져와야함 -->
 					<label for="age">성별</label>
 					<br />
-					<input type="radio" name="gender" id="gender" data-rule="gender" value="Female" onclick="return(false);" th:checked="${animalVO.animalGender} ? 'true' : 'false'">
+					<input type="radio" name="gender" id="gender" data-rule="gender" value="Female" onclick="return(false);" th:checked="${proPatientmap.animalGender} ? 'true' : 'false'">
 					<label for="Female"> 여자</label>
-					<input type="radio" name="gender" id="gender" data-rule="gender" value="Male" onclick="return(false);" th:checked="${animalVO.animalGender} ? 'false' : 'true'">
+					<input type="radio" name="gender" id="gender" data-rule="gender" value="Male" onclick="return(false);" th:checked="${proPatientmap.animalGender} ? 'false' : 'true'">
 					<label for="Male"> 남자</label>
 					<div class="validate" id="gender_val"></div>
 				</div>
@@ -168,22 +168,10 @@ table {
 				</div>
 				<div class="col-md-4 form-group mt-3">
 					<label for="weight">몸무게</label>
-					<input type="number" min="1" class="form-control" name="animalWeight" step="0.1" id="weight" th:value="${animalVO.animalWeight}" data-rule="weight" data-msg="필수입력 항목입니다.">
+					<input type="number" min="1" class="form-control" name="animalWeight" step="0.1" id="weight" th:value="${proPatientmap.animalWeight}" data-rule="weight" data-msg="필수입력 항목입니다.">
 					<div class="validate" id="weight_val"></div>
 				</div>
 			</div>
-			<!-- animal 테이블에 특이사항 컬럼 없어서 일단 빼놨음
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="etc">특이사항</label>
-					<input type="text" class="form-control" name="etc" id="etc" placeholder="특이사항을 입력해주세요.">
-					<div class="validate"></div>
-				</div>
-			</div> 
-			-->
 			<div class="row">
 				<p></p>
 				<p></p>
@@ -191,7 +179,7 @@ table {
 				<div class="col-md-4 form-group" style="margin: auto;">
 					<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/myPageProtector'"
 						style="border-radius: 50px; width: 110px; text-align: center; color: white;">
-					<input type="button" class="btn btn-primary" name="patient_edit_ok" id=patient_edit_ok value="확인" 
+					<input type="submit" class="btn btn-primary" name="patient_edit_ok" id=patient_edit_ok value="확인" 
 						style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">
 				</div>
 			</div>
@@ -246,7 +234,7 @@ function changeFn(){
 				var result = window.confirm('작성한 내용을 수정하시겠습니까?');
 				if (result) {
 					alert('정상적으로 처리되었습니다.');
-					$('#patientInfoEditProtectorOk').submit();
+					location.href = '/proMypageDetail';
 				}
 			}
 		});

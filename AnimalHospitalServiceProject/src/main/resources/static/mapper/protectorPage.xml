@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.ProtectorPageMapper">
+	<!-- ProMypageDetail 페이지에서 조회할 보호자,환자정보 -->
+	<select id="selectAllProMypageVOList" resultType="proMyPageDetailVO" parameterType="int">
+		select
+			ac.seq_member seqMember,
+			ac.member_email_id memberEmailId,
+			ac.member_name memberName,
+			ac.member_phoneNo memberPhoneNo,
+			ac.member_gender  memberGender,
+			DATE_FORMAT(ac.member_birthdate, '%Y-%m-%d') AS memberBirthdate,
+			a.seq_animal seqAnimal,
+			a.animal_name animalName,
+			DATE_FORMAT(a.animal_age, '%Y-%m-%d') AS animalAge,
+			a.animal_type animalType,
+			a.animal_size animalSize,
+			a.animal_gender animalGender,
+			a.animal_weight animalWeight
+		from 
+			account ac, animal a 
+		where 
+			ac.seq_member = a.seq_member and 
+			ac.seq_member = #{seqMember}
+	</select>
+	
+	<!-- ProMypageDetail 페이지에서 조회할 진료목록,후기 -->
+	<select id="selectAllProDiagnosisList" resultType="proMyPageDetailVO" parameterType="int">
+		select 
+			ac.seq_member seqMember,
+			a.seq_animal seqAnimal,
+			a.animal_name animalName,
+			d.seq_diagnosis seqDiagnosis,
+			d.seq_animal_hospital seqAnimalHospital,
+			ah.animal_hospital_name animalHospitalName,
+			DATE_FORMAT(d.diagnosis_date, '%Y-%m-%d') diagnosisDate,
+			d.diagnosis_symptom diagnosisSymptom
+		from 
+			account ac, animal a, diagnosis d, animalhospital ah
+		where 
+			ac.seq_member = a.seq_member and 
+			d.seq_animal = a.seq_animal and
+			d.seq_animal_hospital  = ah.seq_animal_hospital and
+			ac.seq_member = #{seqMember}
+		ORDER BY
+	    	d.diagnosis_date desc
+	</select>
+
+	<!-- 보호자 정보 수정 -->
+	<update id="updateProMypage" parameterType="map">
+		UPDATE 
+			Account 
+		SET 
+			member_phoneNo = #{memberPhoneNo}
+		WHERE 
+			seq_member = #{seqMember}
+	</update>
+	
+	<!-- 보호지의 환자 정보 수정 -->
+	<update id="updateProPatient" parameterType="map">
+		UPDATE 
+	        animal
+		SET 
+	        animal_name = #{animalName},
+	        animal_type = #{animalType},
+	        animal_size = #{animalSize}, 
+	        animal_age =  #{animalAge},
+	        animal_weight = #{animalWeight},
+	        animal_update_date = NOW()
+	        <!-- animal_picture = #{animalPicture},
+	        animal_video =  #{animalVideo},
+	        animal_picture_path = #{animalPicturePath},
+	        animal_video_path = #{animalVideoPath} -->
+		WHERE 
+	        seq_animal = #{seqAnimal}
+	</update>
+
+	<!-- 보호자의 환자 진료내역 조회  -->
+	<select id="selectAllProAnimalListVO" resultType="proAnimalListVO" parameterType="int">
+		SELECT 
+		    a.seq_member AS seqMember,
+		    a.seq_animal AS seqAnimal,
+		    d.seq_diagnosis AS seqDiagnosis,
+		    ah.seq_animal_hospital AS seqAnimalHospital,
+		    a.animal_name AS animalName,
+		    d.diagnosis_symptom AS diagnosisSymptom, 
+		    ah.animal_hospital_name AS animalHospitalName,
+		    DATE_FORMAT(d.diagnosis_date, '%Y-%m-%d') AS diagnosisDate
+	   FROM
+	    	diagnosis as d 
+	      	JOIN animal as a ON d.seq_animal = a.seq_animal
+	      	JOIN animalhospital as ah ON ah.seq_animal_hospital = d.seq_animal_hospital
+	      	join account as ac on ac.seq_member = a.seq_member 
+	   WHERE
+	    	a.seq_member = #{seqMember}
+	   ORDER BY
+	    	d.diagnosis_date desc
+	</select> 
+	<!-- 보호자가 한명의 환자의 상세 진료내역 1개를 조회 -->
+	<select id="selectOneProDiagnosisVOList" resultType="ProDiagnosisVO" parameterType="map">
+		SELECT 
+			 dia.seq_diagnosis AS seqDiagnosis,
+			 a.seq_member AS seqMember,
+			 a.seq_animal AS seqAnimal,
+			 date_format(dia.diagnosis_date, '%Y-%m-%d') AS diagnosisDate,
+			 ah.animal_hospital_name AS animalHospitalName,
+			 dia.seq_doctor AS seqDoctor,
+			 d.member_name AS memberName,
+			 a.animal_name AS animalName,
+			 (DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(a.animal_age, '%Y')) as animalAge,
+			 a.animal_type as animalType,
+			 a.animal_size as animalSize, 
+			 a.animal_weight as animalWeight,
+			 dia.diagnosis_symptom AS diagnosisSymptom,
+			 m.medicine_manufacture_company AS medicineManufactureCompany,
+			 m.medicine_name AS medicineName,
+			 m.medicine_medication_guide AS medicineMedicationGuide,
+			 m.medicine_side_effect AS medicineSideEffect
+			FROM
+			 diagnosis AS dia JOIN (SELECT 
+								   me.seq_medicine AS seq_medicine,
+								   dm.seq_diagnosis AS seq_diagnosis,
+								   me.medicine_manufacture_company AS medicine_manufacture_company,
+								   me.medicine_name AS medicine_name,
+								   me.medicine_medication_guide AS medicine_medication_guide,
+								   me.medicine_symptom AS medicine_symptom,
+								   me.medicine_side_effect AS medicine_side_effect
+			        FROM medicine AS me JOIN (
+			                                   SELECT 
+			                                      seq_diag_medicine,
+			                                      seq_medicine,
+			                                      seq_diagnosis
+			                                   FROM diagnosis_medicine
+			                                   ) AS dm ON me.seq_medicine = dm.seq_medicine
+			         ) AS m ON dia.seq_diagnosis = m.seq_diagnosis
+			  JOIN (SELECT 
+			           doc.seq_doctor AS seq_doctor,
+			           ac.member_name AS member_name
+			        FROM account AS ac JOIN doctor AS doc ON ac.seq_member = doc.seq_member
+			        ) AS d ON dia.seq_doctor = d.seq_doctor
+			  JOIN (SELECT
+			           ac.seq_member AS seq_member,
+			           ani.seq_animal AS seq_animal,
+			           ani.animal_name AS animal_name,
+			           ani.animal_age as animal_age,
+					   ani.animal_type as animal_type,
+					   ani.animal_size as animal_size, 
+					   ani.animal_weight as animal_weight	
+			        FROM account AS ac JOIN animal AS ani ON ac.seq_member = ani.seq_member
+			        ) AS a ON dia.seq_animal = a.seq_animal
+			  JOIN animalhospital AS ah ON dia.seq_animal_hospital = ah.seq_animal_hospital
+			  WHERE
+			   dia.seq_diagnosis = #{seqDiagnosis} AND a.seq_member = #{seqMember} AND a.seq_animal = #{seqAnimal}
+	</select>
+	<!--  -->
+</mapper>
