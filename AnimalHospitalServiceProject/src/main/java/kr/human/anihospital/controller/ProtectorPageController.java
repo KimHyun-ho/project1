@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.human.anihospital.service.ProtectorPageService;
 import kr.human.anihospital.vo.ProAnimalListVO;
+import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
 import kr.human.anihospital.vo.ProMyPageDetailVO;
 import lombok.extern.slf4j.Slf4j;
@@ -131,14 +132,25 @@ public class ProtectorPageController {
 	@GetMapping("/proDiagnosis")
 	public String selectOneProDiagnosisVO(@RequestParam Map<String, Object> diagnosisMap, Model model) throws Exception{
 		log.info("proAllAnimalList에서 넘어온 seq들 : {}", diagnosisMap);
-		// 화면에 넘길 데이터를 담을 그릇 준비
-		List<ProDiagnosisVO> proDiagnosisVOList = null;
+		// ----------------------------------------------------------------------------
+		// 처방 목록을 제외한 진료내역 화면에 넘겨주기
+		// ----------------------------------------------------------------------------
+		ProDiagnosisVO proDiagnosisVO = new ProDiagnosisVO();
 		// 데이터 그릇에 담기
-		proDiagnosisVOList = protectorPageService.selectOneProDiagnosisVOList(diagnosisMap);
+		proDiagnosisVO = protectorPageService.selectOneProDiagnosisVO(diagnosisMap);
 		// 받아온 데이터 화면에 넘겨주기
-		model.addAttribute("proDiagnosisVOList", proDiagnosisVOList);
+		model.addAttribute("proDiagnosisVO", proDiagnosisVO);
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
-		log.info("selectOneProDiagnosisVO 서비스에서 넘어온 값(컨트롤러) : {}", proDiagnosisVOList);
+		log.info("selectOneProDiagnosisVO 서비스에서 넘어온 값(컨트롤러) : {}", proDiagnosisVO);
+		// ----------------------------------------------------------------------------
+		// 처방 목록을 화면에 넘겨주기
+		// ----------------------------------------------------------------------------
+		List<ProDiaMedicineVO> proDiaMedicineVOList = null;
+		// 데이터 그릇에 담기
+		proDiaMedicineVOList = protectorPageService.selectListProDiaMedicineVO(diagnosisMap);
+		model.addAttribute("proDiaMedicineVOList", proDiaMedicineVOList);
+		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
+		log.info("selectListProDiaMedicineVO 서비스에서 넘어온 값(컨트롤러) : {}", proDiaMedicineVOList);
 		
 		return "proDiagnosis";
 	}

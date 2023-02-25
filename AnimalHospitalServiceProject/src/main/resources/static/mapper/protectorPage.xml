@@ -133,60 +133,46 @@
 	   ORDER BY
 	    	d.diagnosis_date desc
 	</select> 
-	<!-- 보호자가 한명의 환자의 상세 진료내역 1개를 조회 -->
-	<select id="selectOneProDiagnosisVOList" resultType="ProDiagnosisVO" parameterType="map">
-		SELECT 
-			 dia.seq_diagnosis AS seqDiagnosis,
-			 a.seq_member AS seqMember,
-			 a.seq_animal AS seqAnimal,
-			 date_format(dia.diagnosis_date, '%Y-%m-%d') AS diagnosisDate,
-			 ah.animal_hospital_name AS animalHospitalName,
-			 dia.seq_doctor AS seqDoctor,
-			 d.member_name AS memberName,
-			 a.animal_name AS animalName,
-			 (DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(a.animal_age, '%Y')) as animalAge,
-			 a.animal_type as animalType,
-			 a.animal_size as animalSize, 
-			 a.animal_weight as animalWeight,
-			 dia.diagnosis_symptom AS diagnosisSymptom,
-			 m.medicine_manufacture_company AS medicineManufactureCompany,
-			 m.medicine_name AS medicineName,
-			 m.medicine_medication_guide AS medicineMedicationGuide,
-			 m.medicine_side_effect AS medicineSideEffect
-			FROM
-			 diagnosis AS dia JOIN (SELECT 
-								   me.seq_medicine AS seq_medicine,
-								   dm.seq_diagnosis AS seq_diagnosis,
-								   me.medicine_manufacture_company AS medicine_manufacture_company,
-								   me.medicine_name AS medicine_name,
-								   me.medicine_medication_guide AS medicine_medication_guide,
-								   me.medicine_symptom AS medicine_symptom,
-								   me.medicine_side_effect AS medicine_side_effect
-			        FROM medicine AS me JOIN (
-			                                   SELECT 
-			                                      seq_diag_medicine,
-			                                      seq_medicine,
-			                                      seq_diagnosis
-			                                   FROM diagnosis_medicine
-			                                   ) AS dm ON me.seq_medicine = dm.seq_medicine
-			         ) AS m ON dia.seq_diagnosis = m.seq_diagnosis
-			  JOIN (SELECT 
-			           doc.seq_doctor AS seq_doctor,
-			           ac.member_name AS member_name
-			        FROM account AS ac JOIN doctor AS doc ON ac.seq_member = doc.seq_member
-			        ) AS d ON dia.seq_doctor = d.seq_doctor
-			  JOIN (SELECT
-			           ac.seq_member AS seq_member,
-			           ani.seq_animal AS seq_animal,
-			           ani.animal_name AS animal_name,
-			           ani.animal_age as animal_age,
-					   ani.animal_type as animal_type,
-					   ani.animal_size as animal_size, 
-					   ani.animal_weight as animal_weight	
-			        FROM account AS ac JOIN animal AS ani ON ac.seq_member = ani.seq_member
-			        ) AS a ON dia.seq_animal = a.seq_animal
-			  JOIN animalhospital AS ah ON dia.seq_animal_hospital = ah.seq_animal_hospital
-			  WHERE
-			   dia.seq_diagnosis = #{seqDiagnosis} AND a.seq_member = #{seqMember} AND a.seq_animal = #{seqAnimal}
+	<!-- 보호자가 한명의 환자의 상세 진료내역 1개를 조회(처방목록 제외) -->
+	<select id="selectOneProDiagnosisVO" resultType="ProDiagnosisVO" parameterType="map">
+		select 
+			dia.seq_diagnosis seqDiagnosis,
+			DATE_FORMAT(dia.diagnosis_date, '%Y-%m-%d') diagnosisDate,
+			ah.animal_hospital_name animalHospitalName,
+			ac.member_name memberName,
+			a.animal_name animalName,
+			dia.diagnosis_symptom diagnosisSymptom,
+			dia.diagnosis_medication_way diagnosisMedicationWay,
+			a.seq_animal seqAnimal,
+			DATE_FORMAT(NOW(), '%y') - DATE_FORMAT(a.animal_age, '%y') AS animalAge,
+			a.animal_type animalType,
+			a.animal_size animalSize,
+			a.animal_weight animalWeight
+		from 
+			diagnosis dia, doctor d, animalhospital ah , animal a , account ac
+		where 
+			dia.seq_doctor = d.seq_doctor and
+			dia.seq_animal_hospital = ah.seq_animal_hospital and
+			dia.seq_animal = a.seq_animal and
+			d.seq_member = ac.seq_member and 
+			dia.seq_diagnosis = #{seqDiagnosis} AND a.seq_member = #{seqMember} AND a.seq_animal = #{seqAnimal}
 	</select>
+	
+	<!-- 보호자가 한명의 환자의 상세 진료내역 1개를 조회(처방목록) -->
+	<select id="selectListProDiaMedicineVO" resultType="proDiaMedicineVO" parameterType="map">
+		select 
+			d.seq_diagnosis seqDiagnosis, 
+			dm.seq_medicine seqMedicine,
+			m.medicine_manufacture_company medicineManufactureCompany, 
+			m.medicine_name medicineName,
+			m.medicine_medication_guide medicineMedicationGuide,
+			m.medicine_side_effect medicineSideEffect
+		from 
+			diagnosis d , diagnosis_medicine dm , medicine m 
+		where 
+			d.seq_diagnosis = dm.seq_diagnosis and
+			dm.seq_medicine  = m.seq_medicine and
+			d.seq_diagnosis = #{seqDiagnosis}
+	</select>
+	
 </mapper>

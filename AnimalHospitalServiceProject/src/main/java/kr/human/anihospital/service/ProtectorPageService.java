@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.human.anihospital.vo.ProAnimalListVO;
+import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
 import kr.human.anihospital.vo.ProMyPageDetailVO;
 
@@ -41,6 +42,10 @@ public interface ProtectorPageService {
 	//----------------------------------------------------------------------------------------------------
 	// 한 명의 보호자에 따른 환자의 진료내역 리스트를 화면에 표시해줄 메서드
 	//----------------------------------------------------------------------------------------------------	
-	List<ProDiagnosisVO> selectOneProDiagnosisVOList(Map<String, Object> diagnosisMap) throws Exception;
+	ProDiagnosisVO selectOneProDiagnosisVO(Map<String, Object> diagnosisMap) throws Exception;
 
+	//----------------------------------------------------------------------------------------------------
+	// 한 명의 보호자에 따른 환자의 상세진료 내역의 처방목록을 화면에 표시해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	List<ProDiaMedicineVO> selectListProDiaMedicineVO(Map<String, Object> diagnosisMap) throws Exception;
 }
