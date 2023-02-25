@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.human.anihospital.vo.ProAnimalListVO;
+import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
 import kr.human.anihospital.vo.ProMyPageDetailVO;
 
@@ -44,6 +45,11 @@ public interface ProtectorPageMapper {
 	//----------------------------------------------------------------------------------------------------
 	// 한 명의 보호자에 따른 환자의 1개의 상세진료 내역을 화면에 표시해줄 메서드
 	//----------------------------------------------------------------------------------------------------
-	List<ProDiagnosisVO> selectOneProDiagnosisVOList(Map<String, Object> diagnosisMap) throws Exception;
+	ProDiagnosisVO selectOneProDiagnosisVO(Map<String, Object> diagnosisMap) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 한 명의 보호자에 따른 환자의 상세진료 내역의 처방목록을 화면에 표시해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	List<ProDiaMedicineVO> selectListProDiaMedicineVO(Map<String, Object> diagnosisMap) throws Exception;
 
 }

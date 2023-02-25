@@ -26,12 +26,7 @@ public class ProDiagnosisVO {
 	private String animalSize;
 	private String animalWeight;
 	private String diagnosisSymptom;
-	
-	// 처방약은 여러개 이므로 List로 받아야 한다.
-	private String medicineManufactureCompany;
-	private String medicineName;
-	private String medicineMedicationGuide;
-	private String medicineSideEffect;
+	private String diagnosisMedicationWay;
 	
 	private int seqPostscript;
 	private Date postscriptUpdateDate;

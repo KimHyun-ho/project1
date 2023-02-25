@@ -167,32 +167,36 @@ input[name="DownloadPDF"] {
 							<h4 style="margin: 10px; margin-top: 10px; font-weight: bold">상세 진료내역</h4>
 							<p />
 							<div class="diagnosis">
-								<h6>진료번호 : [[${proDiagnosisVOList[0].seqDiagnosis}]]</h6>
-								<h6>진료일 : [[${proDiagnosisVOList[0].diagnosisDate}]]</h6>
-								<h6>진료병원 : [[${proDiagnosisVOList[0].animalHospitalName}]]</h6>
-								<h6>의사명 : [[${proDiagnosisVOList[0].memberName}]]</h6>
-								<h6>환자명 : [[${proDiagnosisVOList[0].animalName}]]</h6>
+								<h6>진료번호 : [[${proDiagnosisVO.seqDiagnosis}]]</h6>
+								<h6>진료일 : [[${proDiagnosisVO.diagnosisDate}]]</h6>
+								<h6>진료병원 : [[${proDiagnosisVO.animalHospitalName}]]</h6>
+								<h6>의사명 : [[${proDiagnosisVO.memberName}]]</h6>
+								<h6>환자명 : [[${proDiagnosisVO.animalName}]]</h6>
+								<h6>복약방법 : [[${proDiagnosisVO.diagnosisMedicationWay}]]</h6>
 								<hr />
 								<h5>진료내용</h5>
-								&nbsp;&nbsp;[[${proDiagnosisVOList[0].diagnosisSymptom}]]
+								&nbsp;&nbsp;[[${proDiagnosisVO.diagnosisSymptom}]]
 								<!-- ${diagnosis.diagnosisSymptom } -->
 							</div>
 							<hr />
 							<div id="MedicineList" style="margin-top: 10px;">처방목록</div>
 							<input type="button" name="DownloadPDF" value="PDF다운" class="btn btn-primary bt-sm"
 								style="border-radius: 50px; margin-right: 10px; color: white; margin-top: -8px;" />
-							<div th:each="proDiagnosisVOList : ${proDiagnosisVOList}">
-								<h6 style="margin-left: 10px; font-size: 16px;">[[${proDiagnosisVOList.medicineName}]]</h6>
-								<!-- th:each="proDiagnosisVOList : ${proDiagnosisVOList}" -->
-								<ul id="MedicineListUl">
-									<!-- <dd id="Medicine_detail"></dd> -->
-									<li id="Medicine_detail">제조회사: [[${proDiagnosisVOList.medicineManufactureCompany}]]</li>
-									<li id="Medicine_detail">약품상세명: [[${proDiagnosisVOList.medicineName}]]</li>
-									<li id="Medicine_detail">복약안내: [[${proDiagnosisVOList.medicineMedicationGuide}]]</li>
-									<li id="Medicine_detail">부작용: [[${proDiagnosisVOList.medicineSideEffect}]]</li>
-								</ul>
+							<div id="medicineListNull" th:if="${#lists.isEmpty(proDiaMedicineVOList)}">
+								<br /><h6 style="margin-left: 10px; font-size: 16px;">&nbsp;처방내역이 없습니다.</h6>
 							</div>
-
+							<div id="medicineList" th:if="${proDiaMedicineVOList != null}">	
+								<div th:each="proDiaMedicineVOList : ${proDiaMedicineVOList}">
+									<h6 style="margin-left: 10px; font-size: 16px;">[[${proDiaMedicineVOList.medicineName}]]</h6>
+									<!-- th:each="proDiagnosisVOList : ${proDiagnosisVOList}" -->
+									<ul id="MedicineListUl">
+										<!-- <dd id="Medicine_detail"></dd> -->
+										<li id="Medicine_detail">제조회사: [[${proDiaMedicineVOList.medicineManufactureCompany}]] </li>
+										<li id="Medicine_detail">복약안내: [[${proDiaMedicineVOList.medicineMedicationGuide}]]</li>
+										<li id="Medicine_detail">부작용: [[${proDiaMedicineVOList.medicineSideEffect}]]</li>
+									</ul>
+								</div>
+							</div>
 							<!-- div로 hidden 줘서 수정하지 않았을 경우 뜨지 않게 한다. 암튼 hidden 이용해야함 -->
 						</div>
 						<br />
@@ -222,10 +226,10 @@ input[name="DownloadPDF"] {
 								<hr />
 								<table>
 									<tr>
-										<td>작성일 : [[${proDiagnosisVOList[0].postscriptUpdateDate}]]</td>
+										<td>작성일 : [[${proDiagnosisVO.postscriptUpdateDate}]]</td>
 									</tr>
 									<tr>
-										<td>진료병원 : [[${proDiagnosisVOList[0].animalHospitalName}]]</td>
+										<td>진료병원 : [[${proDiagnosisVO.animalHospitalName}]]</td>
 									</tr>
 									<tr>
 										<td id="PostscriptBold">별점 : <span th:switch="${postOneDiagnosisVO.postscriptSatisfaction}"> <span
@@ -236,8 +240,8 @@ input[name="DownloadPDF"] {
 									</tr>
 									<tr>
 										<td>
-											<div id="PostscriptBold">내용</div> <!-- 											내용 길 경우 자바스크립트 이용해서 자동줄바꿈 -->
-											<div id="PostscriptContent">[[${proDiagnosisVOList[0].postscriptContent}]]</div>
+											<div id="PostscriptBold">내용</div> <!-- 내용 길 경우 자바스크립트 이용해서 자동줄바꿈 -->
+											<div id="PostscriptContent">[[${proDiagnosisVO.postscriptContent}]]</div>
 										</td>
 									</tr>
 								</table>
@@ -260,11 +264,11 @@ input[name="DownloadPDF"] {
 								</div>
 								<div class="col-md-8">
 									<div class="card-body">
-										<h5 class="animalName" style="text-align: center;">[[${proDiagnosisVOList[0].animalName}]]</h5>
+										<h5 class="animalName" style="text-align: center;">[[${proDiagnosisVO.animalName}]]</h5>
 										<hr />
 										<p class="card-text">
-											나이 : [[${proDiagnosisVOList[0].animalAge}]] 살 <br /> 종 : [[${proDiagnosisVOList[0].animalType}]] <br /> 사이즈
-											: [[${proDiagnosisVOList[0].animalSize}]] <br /> 몸무게 : [[${proDiagnosisVOList[0].animalWeight}]] kg <br />
+											나이 : [[${proDiagnosisVO.animalAge}]] 살 <br /> 종 : [[${proDiagnosisVO.animalType}]] <br /> 사이즈
+											: [[${proDiagnosisVO.animalSize}]] <br /> 몸무게 : [[${proDiagnosisVO.animalWeight}]] kg <br />
 										</p>
 									</div>
 								</div>
