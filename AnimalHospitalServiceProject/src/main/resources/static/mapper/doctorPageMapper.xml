@@ -60,7 +60,7 @@
 
 	<!--  -->
 	<select id="selectAllPatientInfoVO" parameterType="int"
-		resultType="kr.human.anihospital.vo.PatientInfoVO">
+		resultType="kr.human.anihospital.vo.DocPatientInfoVO">
 		select
 			ac.seq_member as seqMember,
 			ac.member_name as memberName,
@@ -94,7 +94,7 @@
 	
 		<!--  -->
 	<select id="selectOnePatientInfoVO" parameterType="int"
-		resultType="kr.human.anihospital.vo.PatientInfoVO">
+		resultType="kr.human.anihospital.vo.DocPatientInfoVO">
 		select
 			ac.seq_member as seqMember,
 			ac.member_name as memberName,
@@ -113,7 +113,7 @@
 			and a.seq_member = ac.seq_member
 	</select>
 	<select id="selectAllPatientDiaRecord" parameterType="int"
-		resultType="kr.human.anihospital.vo.PatientInfoVO$PatientDiaRecord">
+		resultType="kr.human.anihospital.vo.DocPatientInfoVO$PatientDiaRecord">
 		select
 			a.animal_hospital_name as animalHospitalName,
 			d.diagnosis_symptom as diagnosisSymptom,
