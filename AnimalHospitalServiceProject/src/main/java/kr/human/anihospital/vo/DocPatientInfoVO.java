@@ -21,17 +21,14 @@ public class DocPatientInfoVO {
 	private String animalSize;
 	private boolean animalGender; // 0 : false, 수컷 / 1 : true, 암컷
 	private String animalWeight;
+	private Date animalJoinDate;
+	private Date animalUpdateDate;
+	private String animalImportantSymptom;
+	private String animalPicture;
+	private String animalVideo;
+	private String animalPicturePath;
+	private String animalVideoPath;
+
 	private int seqDiagnosis;
 	private Date diagnosisDate;
-	private List<PatientDiaRecord> patientDiaRecords;
-
-	// /pageInfoList에서 환자를 클릭시 나오는 정보 중 이전진료 내역을 가져오는 내부 Class
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class PatientDiaRecord {
-		private String animalHospitalName;
-		private String diagnosisSymptom;
-		private Date diagnosisDate;
-	}
 }

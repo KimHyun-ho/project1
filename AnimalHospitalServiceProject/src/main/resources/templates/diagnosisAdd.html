@@ -16,9 +16,7 @@
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com">
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
 
 <!-- Vendor CSS Files -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -86,261 +84,203 @@ img {
 <body>
 	<div th:replace="~{fragment/header :: #header}"></div>
 	<main id="main">
-	<form method="post" action="diagnosisAddOk" id="diagnosisAddSubmit">
-		<!-- ======= Breadcrumbs Section ======= -->
-		<section class="breadcrumbs">
-			<div class="container">
-				<br />
-				<div class="section-title">
-					<h2 style="font-weight: bold; font-size: 30px;">진료내용 작성</h2>
-				</div>
-			</div>
-		</section>
-		<!-- End Breadcrumbs Section -->
-		<section class="inner-page">
-		<input type="hidden" id="seqAnimal" value="${patientInfoVO.seqAnimal}">
-		<input type="hidden" id="seqProtector" value="${patientInfoVO.seqProtector}">
-			<div class="container" style="position: static;">
-				<div id="gridContainer">
-					<div id="mainContainer">
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-						</div>
-						<br />
-						<br />
-						<h4>
-							<b>환자 정보</b>
-						</h4>
-						<br /> <br /> <img src="img/dog.jpg" alt="...">
-						<div class="row"></div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="name">이름</label>
-								<div class="form-control" name="name" id="name" style="width: 700px;">
-									[[${patientInfoVO.animalName}]]
-								</div>
-								<div class="validate" id="warningMessage1"></div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="species">종</label>
-								<div class="form-control" name="species" id="species" style="width: 700px;">
-									[[${patientInfoVO.animalType}]]
-								</div>
-								<div class="validate" id="warningMessage2"></div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="size">크기</label>
-								<div class="form-control" name="size" id="size" style="width: 700px;">
-									[[${patientInfoVO.animalSize}]]형
-								</div>
-								<div class="validate" id="warningMessage3"></div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="age">나이</label> 
-								<div min="1" class="form-control" name="age" id="age" style="width: 700px;">
-									[[${patientInfoVO.animalAge}]]살
-								</div>
-								<div class="validate" id="warningMessage4"></div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="gender">성별</label> 
-								<div min="1" class="form-control" name="gender" id="gender" style="width: 700px;">
-									[[${patientInfoVO.animalGender}]]
-								</div>
-								<div class="validate" id="warningMessage4"></div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="weight">몸무게</label> 
-								<div class="form-control" name="weight" id="weight" style="width: 700px;">
-									[[${patientInfoVO.animalWeight}]]kg
-								</div>
-								<div class="validate" id="warningMessage5"></div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="diagnosisDate">내원일</label>
-								<!--현재날짜를 띄움-->
-								<input type="date" class="form-control" id="diagnosisDate" />
-								<div class="diagnosisDate" id="warningMessage6"></div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="diagnosisSymptom">증상</label>
-								<!-- 의사가 진단한 내용 띄움 -->
-								<input type="text" class="form-control" name="diagnosisSymptom"
-									id="diagnosisSymptom" placeholder="증상을 입력해주세요.">
-								<div class="validate" id="warningMessage7"></div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="medicine">처방</label>
-								<!-- 의사가 처방한 내용 띄움 -->
-								<div class="form-control">
-									<div class="col-md-12 ">
-									<input type="hidden" id="seqMedicine" name="seqMedicine" value="1"> 
-										<label for="medicine_name">약품명</label> 
-										<input type="text"
-											class="form-control" id="medicineName" name="medicineName" list="medicine_name_option"
-											placeholder="약품명을 입력하세요." data-rule="text"
-											required="required" th:value="${medicine.medicineName}">
-										<datalist id="medicine_name_option">
-											<option class="form-control" value="세라치오펩티다제">
-											<option class="form-control" value="올로원스점안액">
-											<option class="form-control" value="파로나인정">
-											<option class="form-control" value="옵틱플루점안액">
-											<option class="form-control" value="미프론정">
-										</datalist>
-										<div class="validate"></div>
-										<label for="medicine_detail">약품상세명</label> <input type="text"
-											class="form-control" list="medicine_detail_option"
-											data-rule="text" required="required" id="medicineDetailName" name="medicineDetailName" th:value="${medicine.medicineDetailName}">
-										<datalist id="medicine_detail_option">
-											<option class="form-control" value="소염효소제">
-											<option class="form-control" value="항히스타민&항알러지약">
-											<option class="form-control"
-												value="Eye steriods&antiallergics">
-											<option class="form-control" value="부신피질호르몬">
-											<option class="form-control" value="위장운동조절 및 진경제">
-										</datalist>
-										<div class="validate"></div>
-										<label for="medication_guide">복약안내</label> <input type="text"
-											class="form-control" id="medicinemedicationGuide" name="medicinemedicationGuide" list="medication_guide_option"
-											data-rule="text" required="required" th:value="${medicine.medicinemedicationGuide}">
-										<datalist id="medication_guide_option">
-											<option class="form-control" value="하루 3회 / 식후 30분">
-											<option class="form-control" value="하루 3회 / 식전 30분">
-											<option class="form-control" value="하루 2회 / 기상 후, 취침 전">
-											<option class="form-control" value="하루 1회 / 취침 전">
-											<option class="form-control" value="증상 발생 시 수시">
-										</datalist>
-										<input type="button" class="btn btn-primary" id="medicineAdd" name="medicineAdd" value="추가" style="width: 90px; text-align: center; color: white;"/>
-										<div class="validate"></div>
-										<br />
-										<br/>
-									</div>
-									<table style="text-align: left; font-size: 10pt;"
-										class="form-control">
-										<thead>
-											<tr>
-												<th style="width: 30%">약품명</th>
-												<th style="width: 30%">약품상세명</th>
-												<th style="width: 40%">복약안내</th>
-												<th></th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td style="vertical-align: middle;" th:text="${medicine.medicineName}">세라치오펩티다제</td>
-												<td style="vertical-align: middle;" th:text="${medicine.medicineDetailName}">소염효소제</td>
-												<td style="text-align: left;" th:text="${medicine.medicinemedicationGuide}">하루 3회 / 식후 30분</td>
-												<td><i class="bi bi-x-square"></i></td>
-											</tr>
-											<tr>
-												<td style="vertical-align: middle;">올로원스점안액</td>
-												<td style="vertical-align: middle;">Eye steriods&antiallergics</td>
-												<td style="text-align: left;">증상 발생 시 수시</td>
-												<td><i class="bi bi-x-square"></i></td>
-											</tr>
-											<tr>
-												<td style="vertical-align: middle;">옵틱플루점안액</td>
-												<td style="vertical-align: middle;">Eye steriods&antiallergics</td>
-												<td style="text-align: left;">증상 발생 시 수시</td>
-												<td><i class="bi bi-x-square"></i></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-md-10 form-group">
-								<div class="validate"></div>
-							</div>
-							<div class="col-md-10 form-group">
-								<label for="recoFeed">추천사료 및 영양제</label>
-								<!-- 의사가 추가한 엑셀파일 목록을 띄움 -->
-								<div class="form-control" style="margin-bottom: 4px;">
-									<ul id="recoFeed_list">
-										<li>신장질환 추천 사료(소형견).xlsx</li>
-										<li>소형견 추천 영양제.xlsx</li>
-									</ul>
-								</div>
-								<input type="button" class="btn btn-primary"
-									name="recoFeed_excel_download" id="recoFeed_excel_download"
-									value="양식 다운받기" onclick="" /> <label for="recoFeedAdd"
-									class="btn btn-primary" id="recoFeedAdd_input"
-									style="border-radius: 50px;">추가(Excel)</label> <input
-									type="file" name="recoFeedAdd" id="recoFeedAdd"
-									accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-									style="display: none;" />
-								<div class="validate"></div>
-							</div>
-						</div>
+		<form method="post" action="diagnosisAddOk" id="diagnosisAddSubmit">
+			<!-- ======= Breadcrumbs Section ======= -->
+			<section class="breadcrumbs">
+				<div class="container">
+					<br />
+					<div class="section-title">
+						<h2 style="font-weight: bold; font-size: 30px;">진료내용 작성</h2>
 					</div>
-					
-		
 				</div>
+			</section>
+			<!-- End Breadcrumbs Section -->
+			<section class="inner-page">
+				<input type="hidden" id="seqAnimal" value="${patientInfoVO.seqAnimal}">
+				<input type="hidden" id="seqProtector" value="${patientInfoVO.seqProtector}">
+				<div class="container" style="position: static;">
+					<div id="gridContainer">
+						<div id="mainContainer">
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+							</div>
+							<br />
+							<br />
+							<h4>
+								<b>환자 정보</b>
+							</h4>
+							<br />
+							<br />
+							<img src="img/dog.jpg" alt="...">
+							<div class="row"></div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="name">이름</label>
+									<div class="form-control" name="name" id="name" style="width: 700px;">[[${patientInfoVO.animalName}]]</div>
+									<div class="validate" id="warningMessage1"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="species">종</label>
+									<div class="form-control" name="species" id="species" style="width: 700px;">[[${patientInfoVO.animalType}]]</div>
+									<div class="validate" id="warningMessage2"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="size">크기</label>
+									<div class="form-control" name="size" id="size" style="width: 700px;">[[${patientInfoVO.animalSize}]]형</div>
+									<div class="validate" id="warningMessage3"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="age">생년월일</label>
+									<div min="1" class="form-control" name="age" id="age" style="width: 700px;">[[${#dates.format(patientInfoVO.animalBirthDay,'yyyy년 MM월 dd일')}]]</div>
+									<div class="validate" id="warningMessage4"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="gender">성별</label>
+									<div min="1" class="form-control" name="gender" id="gender" style="width: 700px;">[[${patientInfoVO.animalGender ? '암컷' : '수컷'}]]</div>
+									<div class="validate" id="warningMessage4"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="weight">몸무게</label>
+									<div class="form-control" name="weight" id="weight" style="width: 700px;">[[${patientInfoVO.animalWeight}]]kg</div>
+									<div class="validate" id="warningMessage5"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="diagnosisDate">내원일</label>
+									<!--현재날짜를 띄움-->
+									<input type="date" class="form-control" id="diagnosisDate" value="" />
+									<div class="diagnosisDate" id="warningMessage6"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="diagnosisSymptom">증상</label>
+									<!-- 의사가 진단한 내용 띄움 -->
+									<input type="text" class="form-control" name="diagnosisSymptom" id="diagnosisSymptom" placeholder="증상을 입력해주세요.">
+									<div class="validate" id="warningMessage7"></div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="medicine">처방</label>
+									<!-- 의사가 처방한 내용 띄움 -->
+									<div class="form-control">
+										<div class="col-md-12 ">
+											<input type="hidden" id="seqMedicine" name="seqMedicine" value="1">
+											<label for="medicine_name">약품명</label>
+											<input type="text" class="form-control" id="medicineName" name="medicineName" list="medicine_name_option" placeholder="약품명을 선택해주세요." data-rule="text" required="required">
+											<datalist id="medicine_name_option">
+												<option class="form-control" th:each="medicineInfoVO : ${medicineInfoVOs}" th:value="${medicineInfoVO.medicineName}">
+											</datalist>
+											<div class="validate" id="medicineNameAlert"></div>
+											<label for="medication_guide">복약안내</label>
+											<input type="text" class="form-control" id="medicationGuide" name="medicationGuide" list="medication_guide_option" data-rule="text" required="required">
+											<datalist id="medication_guide_option">
+												<option class="form-control" value="하루 3회 / 식후 30분">
+												<option class="form-control" value="하루 3회 / 식전 30분">
+												<option class="form-control" value="하루 2회 / 기상 후, 취침 전">
+												<option class="form-control" value="하루 1회 / 취침 전">
+												<option class="form-control" value="증상 발생 시 수시">
+											</datalist>
+											<input type="button" class="btn btn-primary" id="medicineAdd" name="medicineAdd" value="추가" style="width: 90px; text-align: center; color: white;" />
+											<div class="validate" id="medicationGuideAlert"></div>
+											<br />
+											<br />
+										</div>
+										<table style="text-align: left; font-size: 10pt;" class="form-control">
+											<thead>
+												<tr>
+													<th style="width: 50%">약품명</th>
+													<th style="width: 50%">복약안내</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody id="tbody">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="recoFeed">추천사료 및 영양제</label>
+									의사가 추가한 엑셀파일 목록을 띄움
+									<div class="form-control" style="margin-bottom: 4px;">
+										<ul id="recoFeed_list">
+											<li>신장질환 추천 사료(소형견).xlsx</li>
+											<li>소형견 추천 영양제.xlsx</li>
+										</ul>
+									</div>
+									<input type="button" class="btn btn-primary" name="recoFeed_excel_download" id="recoFeed_excel_download" value="양식 다운받기" onclick="" />
+									<label for="recoFeedAdd" class="btn btn-primary" id="recoFeedAdd_input" style="border-radius: 50px;">추가(Excel)</label>
+									<input type="file" name="recoFeedAdd" id="recoFeedAdd" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display: none;" />
+									<div class="validate"></div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</section>
+			<br />
+			<div style="text-align: center;">
+				<input type="button" class="btn btn-primary" name="diagnosis_add" id="diagnosis_add" value="작성 완료" style="border-radius: 50px; width: 110px; text-align: center; color: white;">
 			</div>
-		</section>
-		<br />
-		<div style="text-align: center;">
-			<input type="button" class="btn btn-primary" name="diagnosis_add"
-				id="diagnosis_add" value="작성 완료"
-				style="border-radius: 50px; width: 110px; text-align: center; color: white;">
-		</div>
-		<br />
+			<br />
 		</form>
 	</main>
 	<!-- End #main -->
@@ -349,13 +289,34 @@ img {
 </body>
 <script>
 	// 내원일 에 오늘 날짜 넣기
-const TIME_ZONE = 3240 * 10000;
+	const TIME_ZONE = 3240 * 10000;
 	document.getElementById('diagnosisDate').value = new Date(+new Date() + TIME_ZONE).toISOString().substring(0, 10);
-	
-	$(function () {
-		$('#diagnosis_add').on('click', function () {
+	$(function() {
+		$('#medicineAdd').on('click', function() {
+			var medicineName = $('#medicineName').val();
+			var medicationGuide = $('#medicationGuide').val();
+			if (medicineName == null || medicineName.trim().length == 0) {
+				$('#medicineName').attr('style', 'border-color: #dc3545;');
+				$('#medicineName').val('');
+				$('#medicineNameAlert').html('<div id="medicineNameAlert01"><b style="color: red;">환자의 증상을 입력해주세요</b></div>');
+				$('#medicineName').focus();
+			} else if (medicationGuide == null || medicationGuide.trim().length == 0) {
+				$('#medicationGuide').attr('style', 'border-color: #dc3545;');
+				$('#medicationGuide').val('');
+				$('#medicationGuideAlert').html('<div id="medicationGuideAlert01"><b style="color: red;">환자의 증상을 입력해주세요</b></div>');
+				$('#medicationGuide').focus();
+			} else {
+				$('#tbody').append('<tr id="tableRow"></tr>');
+				$('#tableRow').append('<td style="vertical-align: middle;">' + medicineName + '</td>');
+				$('#tableRow').append('<td style="text-align: left;">' + medicationGuide + '</td>');
+				$('#tableRow').append('<td><i class="bi bi-x-square"></i></td>');
+			}
+		});
+	});
+	$(function() {
+		$('#diagnosis_add').on('click', function() {
 			var diagnosisSymptom = $('#diagnosisSymptom').val();
-			if(diagnosisSymptom == null || diagnosisSymptom.trim().length == 0) {
+			if (diagnosisSymptom == null || diagnosisSymptom.trim().length == 0) {
 				$('#diagnosisSymptom').attr('style', 'border-color: #dc3545;');
 				$('#diagnosisSymptom').val('');
 				$('#warningMessage7').html('<div id="warning7"><b style="color: red;">환자의 증상을 입력해주세요</b></div>');
@@ -376,6 +337,18 @@ const TIME_ZONE = 3240 * 10000;
 		if ($('#diagnosisSymptom').val() != '') {
 			$('#diagnosisSymptom').attr('style', 'border-color : #ced4da;');
 			$('#warning7').remove();
+		}
+	});
+	$('#medicineName').on('input', function() {
+		if ($('#medicineName').val() != '') {
+			$('#medicineName').attr('style', 'border-color : #ced4da;');
+			$('#medicineNameAlert01').remove();
+		}
+	});
+	$('#medicationGuide').on('input', function() {
+		if ($('#medicationGuide').val() != '') {
+			$('#medicationGuide').attr('style', 'border-color : #ced4da;');
+			$('#medicationGuideAlert01').remove();
 		}
 	});
 </script>
