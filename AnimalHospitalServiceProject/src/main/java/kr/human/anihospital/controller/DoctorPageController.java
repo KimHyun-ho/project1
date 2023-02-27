@@ -1,6 +1,7 @@
 package kr.human.anihospital.controller;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.human.anihospital.service.DoctorPageService;
 import kr.human.anihospital.vo.DoctorInfoVO;
+import kr.human.anihospital.vo.MedicineInfoVO;
+import kr.human.anihospital.vo.DiagnosisInfoVO;
 import kr.human.anihospital.vo.DocPatientInfoVO;
-import kr.human.anihospital.vo.DocPatientInfoVO.PatientDiaRecord;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -79,11 +81,44 @@ public class DoctorPageController {
 	@GetMapping("/patientInfo")
 	public String patientInfo(@RequestParam int seqAnimal, Model model) {
 		DocPatientInfoVO patientInfoVO = doctorPageService.selectOnePatientInfoVO(seqAnimal);
-		List<PatientDiaRecord> patientDiaRecords = doctorPageService.selectAllPatientDiaRecord(seqAnimal);
+		List<DiagnosisInfoVO> diagnosisInfoVOs = doctorPageService.selectAllPatientDiaRecord(seqAnimal);
 		model.addAttribute("patientInfoVO", patientInfoVO);
-		model.addAttribute("diaRecords", patientDiaRecords);
+		model.addAttribute("diaRecords", diagnosisInfoVOs);
 		log.info("환자정보 : {}", patientInfoVO);
-		log.info("환자 이전 진료 내역 정보 : {}", patientDiaRecords);
+		log.info("환자 이전 진료 내역 정보 : {}", diagnosisInfoVOs);
 		return "patientInfo";
+	}
+
+	// ################################################################################
+	// #### 수의사 전용 페이지 -> 진료내역 조회 -> 환자 정보 조회 -> 환자정보 수정 ####
+	// ################################################################################
+	@PostMapping("/patientInfoEditDoctor")
+	public String patientInfoEditDoctor(@RequestParam int seqAnimal, Model model) {
+		log.info("환자정보에서 받은 seqAnimal 값 : {}", seqAnimal);
+		DocPatientInfoVO docPatientInfoVO = doctorPageService.selectOnePatientInfoVO(seqAnimal);
+		log.info("수정 화면에 보내줄 환자 개인정보 : {}", docPatientInfoVO);
+		model.addAttribute("seqAnimal", seqAnimal);
+		model.addAttribute("patientInfo", docPatientInfoVO);
+		return "patientInfoEditDoctor";
+	}
+
+	// ########################################################################################
+	// #### 수의사 전용 페이지 -> 진료내역 조회 -> 환자 정보 조회 -> 환자정보 수정 -> 확인 ####
+	// ########################################################################################
+	@PostMapping("/patientInfoEditDoctorOk")
+	public String patientInfoEditDoctorOk(@ModelAttribute DocPatientInfoVO docPatientInfoVO) {
+		log.info("받은 수정값 : {}", docPatientInfoVO);
+		doctorPageService.updateOnePatientInfo(docPatientInfoVO);
+		return "redirect:patientInfo?seqAnimal=" + docPatientInfoVO.getSeqAnimal();
+	}
+
+	@GetMapping("/diagnosisAdd")
+	public String diagnosisAdd(@RequestParam int seqAnimal, Model model) {
+		log.info("받은 seqAnimal 값 : {}", seqAnimal);
+		DocPatientInfoVO docPatientInfoVO = doctorPageService.selectOnePatientInfoVO(seqAnimal);
+		List<MedicineInfoVO> medicineInfoVOs = doctorPageService.selectAllMedicineInfo();
+		model.addAttribute("patientInfoVO", docPatientInfoVO);
+		model.addAttribute("medicineInfoVOs", medicineInfoVOs);
+		return "diagnosisAdd";
 	}
 }

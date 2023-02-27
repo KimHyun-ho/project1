@@ -61,7 +61,7 @@
 	<!--  -->
 	<select id="selectAllPatientInfoVO" parameterType="int"
 		resultType="kr.human.anihospital.vo.DocPatientInfoVO">
-		select
+		SELECT
 			ac.seq_member as seqMember,
 			ac.member_name as memberName,
 			a.seq_animal as seqAnimal,
@@ -73,29 +73,29 @@
 			a.animal_weight as animalWeight,
 			d.seq_diagnosis as seqDiagnosis,
 			d.diagnosis_date as diagnosisDate
-		from
+		FROM
 			animal a,
 			diagnosis d,
 			account ac
-		where
+		WHERE
 			a.seq_animal in
 			(
-			select
+			SELECT
 				seq_animal
-			from
+			FROM
 				diagnosis dia
-			where
+			WHERE
 				dia.seq_doctor = #{seqDoctor} )
-			and a.seq_animal = d.seq_animal
-			and a.seq_member = ac.seq_member
-		order by
+			AND a.seq_animal = d.seq_animal
+			AND a.seq_member = ac.seq_member
+		ORDER BY
 			d.diagnosis_date desc
 	</select>
 	
 		<!--  -->
 	<select id="selectOnePatientInfoVO" parameterType="int"
 		resultType="kr.human.anihospital.vo.DocPatientInfoVO">
-		select
+		SELECT
 			ac.seq_member as seqMember,
 			ac.member_name as memberName,
 			a.seq_animal as seqAnimal,
@@ -104,27 +104,58 @@
 			a.animal_type as animalType,
 			a.animal_size as animalSize,
 			a.animal_gender as animalGender,
-			a.animal_weight as animalWeight
-		from
+			a.animal_weight as animalWeight,
+			a.animal_join_date as animalJoinDate,
+			a.animal_update_date as animalUpdateDate,
+			a.animal_important_symptom as animalImportantSymptom,
+			a.animal_picture as animalPicture,
+			a.animal_video as animalVideo,
+			a.animal_picture_path as animalPicturePath,
+			a.animal_video_path as animalVideoPath
+		FROM
 			animal a,
 			account ac
-		where
+		WHERE
 			a.seq_animal = #{seqAnimal}
 			and a.seq_member = ac.seq_member
 	</select>
 	<select id="selectAllPatientDiaRecord" parameterType="int"
-		resultType="kr.human.anihospital.vo.DocPatientInfoVO$PatientDiaRecord">
-		select
+		resultType="DiagnosisInfoVO">
+		SELECT
 			a.animal_hospital_name as animalHospitalName,
 			d.diagnosis_symptom as diagnosisSymptom,
 			d.diagnosis_date as diagnosisDate  
-		from 
+		FROM
 			diagnosis d, 
 			animalhospital a 
-		where
+		WHERE
 			d.seq_animal = #{seqAnimal} 
 			and d.seq_animal_hospital = a.seq_animal_hospital  
-		order by 
+		ORDER BY 
 			d.diagnosis_date desc
+	</select>
+	
+	<update id="updateOnePatientInfo" parameterType="DocPatientInfoVO">
+		UPDATE
+			animal a
+		SET
+			a.animal_type = #{animalType},
+			a.animal_size = #{animalSize},
+			a.animal_weight = #{animalWeight},
+			a.animal_update_date = now()
+		WHERE
+			a.seq_animal = #{seqAnimal}
+	</update>
+	
+	<select id="selectAllMedicineInfo" resultType="MedicineInfoVO">
+		SELECT
+			seq_medicine as seqMedicine,
+			medicine_manufacture_company as medicineCompany,
+			medicine_name as medicineName,
+			medicine_medication_guide as medicationGuide,
+			medicine_symptom as medicineSymptom,
+			medicine_side_effect as medicineSideEffect
+		FROM
+			medicine 
 	</select>
 </mapper>
