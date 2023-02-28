@@ -2,6 +2,7 @@ package kr.human.anihospital.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,18 +110,30 @@ public class DoctorPageService {
 		return medicineInfoVO;
 	}
 
-	public void insertOneDiagnosisInfo(Map<String, Object> map) {
+	public void insertOneDiagnosisInfoAndDiagnosisMedicine(Map<String, Object> map, List<Integer> seqMedicineList,
+			List<String> medicineNameList, List<String> medicationGuideList) {
+		HashMap<String, Integer> hashMap = new HashMap<>();
 		DiagnosisInfoVO diagnosisInfoVO = new DiagnosisInfoVO();
 		diagnosisInfoVO.setSeqDoctor(Integer.parseInt(String.valueOf(map.get("seqDoctor"))));
 		diagnosisInfoVO.setSeqAnimal(Integer.parseInt(String.valueOf(map.get("seqAnimal"))));
 		diagnosisInfoVO.setSeqAnimalHospital(Integer.parseInt(String.valueOf(map.get("seqAnimalHospital"))));
 		diagnosisInfoVO.setDiagnosisSymptom(String.valueOf(map.get("diagnosisSymptom")));
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
+		String diagnosisMedicationWay = "";
+		for (int i = 0; i < seqMedicineList.size(); i++) {
+			diagnosisMedicationWay += medicineNameList.get(i) + " : " + medicationGuideList.get(i);
+			diagnosisMedicationWay += "\n";
+		}
+		diagnosisInfoVO.setDiagnosisMedicationWay(diagnosisMedicationWay);
 		try {
 			diagnosisInfoVO.setDiagnosisDate(dateFormat.parse(String.valueOf(map.get("diagnosisDate"))));
 			doctorPageMapper.insertOneDiagnosisInfo(diagnosisInfoVO);
 			int seqDiagnosis = doctorPageMapper.selectLastInsertIndex();
+			for (int i = 0; i < seqMedicineList.size(); i++) {
+				hashMap.put("seqMedicine", seqMedicineList.get(i));
+				hashMap.put("seqDiagnosis", seqDiagnosis);
+				doctorPageMapper.insertOneDiagnosisMedicine(hashMap);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

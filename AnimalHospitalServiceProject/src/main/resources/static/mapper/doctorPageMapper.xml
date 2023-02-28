@@ -177,11 +177,18 @@
 		INSERT INTO
 			diagnosis
 		VALUES
-			(#{seqDoctor},#{seqAnimal},#{seqAnimalHospital},#{diagnosisDate},#{diagnosisSymptom},#{diagnosisMedicationWay})
+			(null,#{seqDoctor},#{seqAnimal},#{seqAnimalHospital},#{diagnosisDate},#{diagnosisSymptom},#{diagnosisMedicationWay})
 	</insert>
 	
 	<select id="selectLastInsertIndex" resultType="int">
 		SELECT
 			LAST_INSERT_ID()
 	</select>
+	
+	<insert id="insertOneDiagnosisMedicine" parameterType="hashmap">
+		INSERT INTO
+			diagnosis_medicine
+		VALUES
+			(null,#{seqDiagnosis},#{seqMedicine})
+	</insert>
 </mapper>

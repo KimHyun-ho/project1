@@ -1,7 +1,7 @@
 package kr.human.anihospital.mapper;
 
 import java.sql.SQLException;
-
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -47,4 +47,7 @@ public interface DoctorPageMapper {
 
 	// 가장 최근에 저장된 auto_increment 값을 불러오는 매퍼 메소드
 	int selectLastInsertIndex() throws SQLException;
+
+	// 진료기록의 처방되는 약 정보를 insert하는 매퍼 메소드
+	void insertOneDiagnosisMedicine(HashMap<String, Integer> hashMap) throws SQLException;
 }

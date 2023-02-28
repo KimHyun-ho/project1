@@ -144,7 +144,7 @@ img {
 								</div>
 								<div class="col-md-10 form-group">
 									<label for="size">크기</label>
-									<div class="form-control" name="size" id="size" style="width: 700px;">[[${patientInfoVO.animalSize}]]형</div>
+									<div class="form-control" name="size" id="size" style="width: 700px;">[[${patientInfoVO.animalSize}]]</div>
 									<div class="validate" id="warningMessage3"></div>
 								</div>
 							</div>
@@ -319,9 +319,9 @@ img {
 					},
 					success : function(data) {
 						$('#tbody').append('<tr id="tableRow' + i + '"></tr>');
-						$('#tableRow' + i).append('<input type="hidden" name="seqMedicine" value="'+data.seqMedicine+'">');
-						$('#tableRow' + i).append('<input type="hidden" name="medicineName" value="'+data.medicineName+'">');
-						$('#tableRow' + i).append('<input type="hidden" name="medicationGuide" value="'+medicationGuide+'">');
+						$('#tableRow' + i).append('<input type="hidden" name="seqMedicineList" value="'+data.seqMedicine+'">');
+						$('#tableRow' + i).append('<input type="hidden" name="medicineNameList" value="'+data.medicineName+'">');
+						$('#tableRow' + i).append('<input type="hidden" name="medicationGuideList" value="'+medicationGuide+'">');
 						$('#tableRow' + i).append('<td style="vertical-align: middle;">' + data.medicineName + '</td>');
 						$('#tableRow' + i).append('<td style="text-align: left;vertical-align: middle;">' + data.medicationGuide + '</td>');
 						$('#tableRow' + i).append('<td style="vertical-align: middle;">' + data.medicineSideEffect + '</td>');
