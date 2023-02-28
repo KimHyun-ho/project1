@@ -132,8 +132,8 @@ public class DoctorPageController {
 	}
 
 	@PostMapping("/diagnosisAddOk")
-	public String diagnosisAddOk(@RequestParam Map<String, Object> map, @RequestParam List<Integer> seqMedicine,
-			@RequestParam List<String> medicineName, @RequestParam List<String> medicationGuide) {
+	public String diagnosisAddOk(@RequestParam Map<String, Object> map, @RequestParam List<Integer> seqMedicineList,
+			@RequestParam List<String> medicineNameList, @RequestParam List<String> medicationGuideList) {
 		// #########################################################
 		// ## seqDoctor는 로그인 정보 Session에서 받아와야 합니다.##
 		// #########################################################
@@ -141,10 +141,8 @@ public class DoctorPageController {
 		int seqAnimalHospital = doctorPageService.selectOneDoctorInfoVO(seqDoctor).getSeqAnimalHospital();
 		map.put("seqDoctor", seqDoctor);
 		map.put("seqAnimalHospital", seqAnimalHospital);
-		map.put("seqMedicineList", seqMedicine);
-		map.put("medicineNameList", medicineName);
-		map.put("medicationGuideList", medicationGuide);
 		log.info("받은 진료내용 값 : {}", map);
+		doctorPageService.insertOneDiagnosisInfoAndDiagnosisMedicine(map, seqMedicineList, medicineNameList, medicationGuideList);
 		return "redirect:patientInfo?seqAnimal=" + map.get("seqAnimal");
 	}
 }
