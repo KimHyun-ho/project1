@@ -1,7 +1,5 @@
 package kr.human.anihospital.vo;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +27,7 @@ public class ProDiagnosisVO {
 	private String diagnosisMedicationWay;
 	
 	private int seqPostscript;
-	private Date postscriptUpdateDate;
+	private String postscriptUpdateDate;
 	private String postscriptSatisfaction;
 	private String postscriptContent;
 }

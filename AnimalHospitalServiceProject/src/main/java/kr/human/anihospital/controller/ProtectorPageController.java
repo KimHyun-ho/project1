@@ -53,6 +53,17 @@ public class ProtectorPageController {
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
 		log.info("selectAllProDiagnosisList 서비스에서 넘어온 값(컨트롤러) : {}", proMyPageDianosisList);
 		
+		// ----------------------------------------------------------------------------
+		// 후기리스트를 화면에 넘겨주기 시작
+		// ----------------------------------------------------------------------------
+		Map<String, Object> postscriptMap = null;
+		// 데이터 그릇에 담기
+		postscriptMap = protectorPageService.selectAllPostscript(seqMember);
+		// 받아온 데이터 화면에 넘겨주기
+		model.addAttribute("postscriptMap", postscriptMap);
+		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
+		log.info("selectAllPostscript 서비스에서 넘어온 값(컨트롤러) : {}", postscriptMap);
+		
 		return "proMypageDetail";
 	}
 	
@@ -151,7 +162,40 @@ public class ProtectorPageController {
 		model.addAttribute("proDiaMedicineVOList", proDiaMedicineVOList);
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
 		log.info("selectListProDiaMedicineVO 서비스에서 넘어온 값(컨트롤러) : {}", proDiaMedicineVOList);
+		// ----------------------------------------------------------------------------
+		// 후기를 화면에 넘겨주기
+		// ----------------------------------------------------------------------------
+		ProDiagnosisVO proDiagnosisVOPostscript = new ProDiagnosisVO();
+		proDiagnosisVOPostscript = protectorPageService.selectOnePostScript(diagnosisMap);
+		model.addAttribute("proDiagnosisVOPostscript",proDiagnosisVOPostscript);
+		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
+		log.info("selectOnePostScript 서비스에서 넘어온 값(컨트롤러) : {}", proDiagnosisVOPostscript);
 		
 		return "proDiagnosis";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 후기 작성 페이지 보여주는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@GetMapping("/proPostscriptAdd")
+	public String proPostscriptAdd(@RequestParam int seqDiagnosis,@RequestParam int seqMember,
+								   @RequestParam int seqAnimal, Model model) {
+		model.addAttribute("seqDiagnosis", seqDiagnosis);
+		model.addAttribute("seqMember", seqMember);
+		model.addAttribute("seqAnimal", seqAnimal);
+		return "proPostscriptAdd";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 후기 수정 페이지 보여주는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@GetMapping("/proPostscriptEdit")
+	public String proPostscriptAdd(@RequestParam int seqPostscript,@RequestParam int seqDiagnosis,
+									@RequestParam int seqMember,@RequestParam int seqAnimal,Model model) {
+		model.addAttribute("seqPostscript", seqPostscript);
+		model.addAttribute("seqDiagnosis", seqDiagnosis);
+		model.addAttribute("seqMember", seqMember);
+		model.addAttribute("seqAnimal", seqAnimal);
+		return "proPostscriptEdit";
 	}
 }

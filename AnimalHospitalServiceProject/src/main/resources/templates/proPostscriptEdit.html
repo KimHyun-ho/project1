@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>후기 등록</title>
+<title>후기 수정</title>
 <meta content="" name="description">
 <meta content="" name="keywords">
 <!-- Favicons -->
@@ -108,7 +108,7 @@ tr {
 <script type="text/javascript">
 $(function() {
 	// 폼 전송시 폼내용 검증
-	$("#postscriptSave").on('click',function() {
+	$("#postscriptUpdate").on('click',function() {
 		var value = $("#postscriptContent").val();
 		if (value == null || value.trim().length == 0) {
 			$("#postscriptContent").focus();
@@ -120,26 +120,28 @@ $(function() {
 			$("#postscriptSatisfaction").focus();
 			$('#postscriptSatisfaction').attr('style','border-color: #dc3545;');
 			$("#postscriptSatisfaction").val("");
-			$('#content_val').html('<div id="warning"><b stylse="color: red;">내용 및 별점을 확인해주세요.</b></div>');
+			$('#content_val').html('<div id="warning"><b style="color: red;">내용 및 별점을 확인해주세요.</b></div>');
 			return false;
 		}else{
-			var result = window.confirm('작성한 내용으로 등록하시겠습니까?');
+			var result = window.confirm('작성한 내용으로 수정하시겠습니까?');
 			if (result) {
 				alert('정상적으로 처리되었습니다.');
-				var postscriptContent1 = $("#postscriptContent").val();
-				var postscriptSatisfaction1 = $("input:radio[name='postscriptSatisfactionrating']:checked").val();
-				//alert(postscriptSatisfaction1);
+				var seqPostscript = $("#seqPostscript").val();
+				var seqDiagnosis = $("#seqDiagnosis").val();
+				var seqMember = $("#seqMember").val();
+				var seqAnimal = $("#seqAnimal").val();
+				var postscriptContent = $("#postscriptContent").val();
+				var postscriptSatisfaction = $("input:radio[name='postscriptSatisfactionrating']:checked").val();
 				$.ajax({
-					url : "/ProPostscriptAdd",
+					url : "/proPostscriptEditOk",
 					type : "post",
-					dataType : "text",
-					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 					data : {
-						postscriptContent : postscriptContent1,
-						postscriptSatisfaction : postscriptSatisfaction1
+						seqPostscript : seqPostscript,
+						postscriptContent : postscriptContent,
+						postscriptSatisfaction : postscriptSatisfaction
 					},
 					success : function(data){
-						window.location.replace("/diagnosis");
+						window.location.replace("/proDiagnosis?seqMember=" + seqMember + "&seqAnimal=" +seqAnimal+ "&seqDiagnosis=" +seqDiagnosis);
 					},
 					error : function(){
 						alert("Error");
@@ -173,7 +175,7 @@ $('#postscriptSatisfaction').on('input',function(){
 		<br/>
 		<br/>
 		<div class="section-title">
-			<h2 style="font-weight: bold; font-size: 30px;">후기 등록</h2>
+			<h2 style="font-weight: bold; font-size: 30px;">후기 수정</h2>
 		</div>
 	</section>
 	<!-- End Hero -->
@@ -182,8 +184,12 @@ $('#postscriptSatisfaction').on('input',function(){
 		<section class="inner-page" >
 			<div class="container" style="width: 850px;">
 				<div class="mb-3">
+				<input type="hidden" id="seqPostscript" name="seqPostscript" th:value=${seqPostscript}>
+				<input type="hidden" id="seqDiagnosis" name="seqDiagnosis" th:value=${seqDiagnosis}>
+				<input type="hidden" id="seqMember" name="seqMember" th:value=${seqMember}>
+				<input type="hidden" id="seqAnimal" name="seqAnimal" th:value=${seqAnimal}>
 					<table style="background-color: white;">
-						<tr>
+						<tr >
 							<td style="font-size: 18pt;font-weight: bold;">별점 : </td>
 							<td class="star-rating space-x-4 mx-auto" id="postscriptSatisfaction">
 								<input type="radio" id="5-stars" name="postscriptSatisfactionrating" value="5" /> 
@@ -227,7 +233,7 @@ $('#postscriptSatisfaction').on('input',function(){
 								<input type="button" onclick="history.go(-1)" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" style="border-radius: 50px;"  value="이전페이지" />
 							</td>
 							<td align="right" colspan="4">
-								<input type="button" class="btn btn-primary" name="postscriptSave" id="postscriptSave" style="border-radius: 50px;" value="등록하기" />
+								<input type="button" class="btn btn-primary" name="postscriptUpdate" id="postscriptUpdate" style="border-radius: 50px;" value="수정하기" />
 							</td>
 						</tr>
 					</table>
