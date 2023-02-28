@@ -96,7 +96,7 @@ img {
 			</section>
 			<!-- End Breadcrumbs Section -->
 			<section class="inner-page">
-				<input type="hidden" id="seqAnimal" value="${patientInfoVO.seqAnimal}">
+				<input type="hidden" id="seqAnimal" name="seqAnimal" th:value="${patientInfoVO.seqAnimal}">
 				<input type="hidden" id="seqProtector" value="${patientInfoVO.seqProtector}">
 				<div class="container" style="position: static;">
 					<div id="gridContainer">
@@ -189,7 +189,7 @@ img {
 								<div class="col-md-10 form-group">
 									<label for="diagnosisDate">내원일</label>
 									<!--현재날짜를 띄움-->
-									<input type="date" class="form-control" id="diagnosisDate" value="" />
+									<input type="date" class="form-control" id="diagnosisDate" name="diagnosisDate" value="" />
 									<div class="diagnosisDate" id="warningMessage6"></div>
 								</div>
 							</div>
@@ -215,15 +215,14 @@ img {
 									<!-- 의사가 처방한 내용 띄움 -->
 									<div class="form-control">
 										<div class="col-md-12 ">
-											<input type="hidden" id="seqMedicine" name="seqMedicine" value="1">
 											<label for="medicine_name">약품명</label>
-											<input type="text" class="form-control" id="medicineName" name="medicineName" list="medicine_name_option" placeholder="약품명을 선택해주세요." data-rule="text" required="required">
+											<input type="text" class="form-control" id="medicineName" list="medicine_name_option" placeholder="약품명을 선택해주세요." data-rule="text" required="required">
 											<datalist id="medicine_name_option">
 												<option class="form-control" th:each="medicineInfoVO : ${medicineInfoVOs}" th:value="${medicineInfoVO.medicineName}">
 											</datalist>
 											<div class="validate" id="medicineNameAlert"></div>
 											<label for="medication_guide">복약안내</label>
-											<input type="text" class="form-control" id="medicationGuide" name="medicationGuide" list="medication_guide_option" data-rule="text" required="required">
+											<input type="text" class="form-control" id="medicationGuide" list="medication_guide_option" data-rule="text" required="required">
 											<datalist id="medication_guide_option">
 												<option class="form-control" value="하루 3회 / 식후 30분">
 												<option class="form-control" value="하루 3회 / 식전 30분">
@@ -239,8 +238,10 @@ img {
 										<table style="text-align: left; font-size: 10pt;" class="form-control">
 											<thead>
 												<tr>
-													<th style="width: 50%">약품명</th>
-													<th style="width: 50%">복약안내</th>
+													<th style="width: 20%">약품명</th>
+													<th style="width: 25%">병변증상</th>
+													<th style="width: 30%">부작용</th>
+													<th style="width: 25%">복약방법</th>
 													<th></th>
 												</tr>
 											</thead>
@@ -292,9 +293,11 @@ img {
 	const TIME_ZONE = 3240 * 10000;
 	document.getElementById('diagnosisDate').value = new Date(+new Date() + TIME_ZONE).toISOString().substring(0, 10);
 	$(function() {
+		var i = 1;
 		$('#medicineAdd').on('click', function() {
 			var medicineName = $('#medicineName').val();
 			var medicationGuide = $('#medicationGuide').val();
+			var xboxs = [];
 			if (medicineName == null || medicineName.trim().length == 0) {
 				$('#medicineName').attr('style', 'border-color: #dc3545;');
 				$('#medicineName').val('');
@@ -306,10 +309,33 @@ img {
 				$('#medicationGuideAlert').html('<div id="medicationGuideAlert01"><b style="color: red;">환자의 증상을 입력해주세요</b></div>');
 				$('#medicationGuide').focus();
 			} else {
-				$('#tbody').append('<tr id="tableRow"></tr>');
-				$('#tableRow').append('<td style="vertical-align: middle;">' + medicineName + '</td>');
-				$('#tableRow').append('<td style="text-align: left;">' + medicationGuide + '</td>');
-				$('#tableRow').append('<td><i class="bi bi-x-square"></i></td>');
+				$.ajax({
+					url : "/mediInfo",
+					//dataType: "text",
+					type : "post",
+					//contentType : 'application/json; charset=utf-8',
+					data : {
+						medicineName : medicineName,
+					},
+					success : function(data) {
+						$('#tbody').append('<tr id="tableRow' + i + '"></tr>');
+						$('#tableRow' + i).append('<input type="hidden" name="seqMedicine" value="'+data.seqMedicine+'">');
+						$('#tableRow' + i).append('<input type="hidden" name="medicineName" value="'+data.medicineName+'">');
+						$('#tableRow' + i).append('<input type="hidden" name="medicationGuide" value="'+medicationGuide+'">');
+						$('#tableRow' + i).append('<td style="vertical-align: middle;">' + data.medicineName + '</td>');
+						$('#tableRow' + i).append('<td style="text-align: left;vertical-align: middle;">' + data.medicationGuide + '</td>');
+						$('#tableRow' + i).append('<td style="vertical-align: middle;">' + data.medicineSideEffect + '</td>');
+						$('#tableRow' + i).append('<td style="vertical-align: middle;">' + medicationGuide + '</td>');
+						$('#tableRow' + i).append('<td><i class="bi bi-x-square" id="xbox' + i + '" onclick="xbox(' + i + ')"></i></td>');
+						i++;
+						$('#medicineName').val('');
+						$('#medicationGuide').val('');
+					},
+					error : function() {
+						alert("Error");
+					}
+				});
+
 			}
 		});
 	});
@@ -332,7 +358,9 @@ img {
 			}
 		});
 	});
-
+	function xbox(i) {
+		document.getElementById('tableRow' + i).remove();
+	}
 	$('#diagnosisSymptom').on('input', function() {
 		if ($('#diagnosisSymptom').val() != '') {
 			$('#diagnosisSymptom').attr('style', 'border-color : #ced4da;');

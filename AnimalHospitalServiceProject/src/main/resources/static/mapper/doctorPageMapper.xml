@@ -23,6 +23,7 @@
 			ah.animal_hospital_name as
 			animalHospitalName,
 			d.seq_doctor as seqDoctor,
+			d.seq_animal_hospital as seqAnimalHospital,
 			d.doctor_work_year as doctorWorkYear,
 			d.doctor_registration_number as doctorRegNo,
 			d.doctor_update_date as doctorUpdateDate,
@@ -157,5 +158,30 @@
 			medicine_side_effect as medicineSideEffect
 		FROM
 			medicine 
+	</select>
+	<select id="selectOneMedicineInfo" parameterType="string" resultType="MedicineInfoVO">
+		SELECT
+			seq_medicine as seqMedicine,
+			medicine_manufacture_company as medicineCompany,
+			medicine_name as medicineName,
+			medicine_medication_guide as medicationGuide,
+			medicine_symptom as medicineSymptom,
+			medicine_side_effect as medicineSideEffect
+		FROM
+			medicine
+		WHERE 
+			medicine_name = #{medicineName}
+	</select>
+	
+	<insert id="insertOneDiagnosisInfo" parameterType="DiagnosisInfoVO">
+		INSERT INTO
+			diagnosis
+		VALUES
+			(#{seqDoctor},#{seqAnimal},#{seqAnimalHospital},#{diagnosisDate},#{diagnosisSymptom},#{diagnosisMedicationWay})
+	</insert>
+	
+	<select id="selectLastInsertIndex" resultType="int">
+		SELECT
+			LAST_INSERT_ID()
 	</select>
 </mapper>

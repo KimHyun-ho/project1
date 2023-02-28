@@ -23,6 +23,7 @@ public class DoctorInfoVO {
 	private boolean memberLeaveFlag; // 회원 탈퇴 여부 => 0 : false, 탈퇴 X / 1 : true, 탈퇴 O
 	private String animalHospitalName;
 	private int seqDoctor;
+	private int seqAnimalHospital;
 	private Date doctorWorkYear; // 수의사 면허 취득일
 	private String doctorRegNo; // 수의사 면허 번호
 	private Date doctorUpdateDate;

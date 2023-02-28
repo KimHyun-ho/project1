@@ -1,8 +1,9 @@
 package kr.human.anihospital.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,9 +87,9 @@ public class DoctorPageService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// /diagnosisAdd 페이지에 의약품 정보를 출력하기 위한 서비스 메소드
-	public List<MedicineInfoVO> selectAllMedicineInfo(){
+	public List<MedicineInfoVO> selectAllMedicineInfo() {
 		List<MedicineInfoVO> medicineInfoVOs = new ArrayList<>();
 		try {
 			medicineInfoVOs = doctorPageMapper.selectAllMedicineInfo();
@@ -96,5 +97,32 @@ public class DoctorPageService {
 			e.printStackTrace();
 		}
 		return medicineInfoVOs;
+	}
+
+	public MedicineInfoVO selectOneMedicineInfo(String medicineName) {
+		MedicineInfoVO medicineInfoVO = new MedicineInfoVO();
+		try {
+			medicineInfoVO = doctorPageMapper.selectOneMedicineInfo(medicineName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return medicineInfoVO;
+	}
+
+	public void insertOneDiagnosisInfo(Map<String, Object> map) {
+		DiagnosisInfoVO diagnosisInfoVO = new DiagnosisInfoVO();
+		diagnosisInfoVO.setSeqDoctor(Integer.parseInt(String.valueOf(map.get("seqDoctor"))));
+		diagnosisInfoVO.setSeqAnimal(Integer.parseInt(String.valueOf(map.get("seqAnimal"))));
+		diagnosisInfoVO.setSeqAnimalHospital(Integer.parseInt(String.valueOf(map.get("seqAnimalHospital"))));
+		diagnosisInfoVO.setDiagnosisSymptom(String.valueOf(map.get("diagnosisSymptom")));
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try {
+			diagnosisInfoVO.setDiagnosisDate(dateFormat.parse(String.valueOf(map.get("diagnosisDate"))));
+			doctorPageMapper.insertOneDiagnosisInfo(diagnosisInfoVO);
+			int seqDiagnosis = doctorPageMapper.selectLastInsertIndex();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
