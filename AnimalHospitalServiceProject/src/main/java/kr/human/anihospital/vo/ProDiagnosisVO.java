@@ -23,6 +23,8 @@ public class ProDiagnosisVO {
 	private String animalType;
 	private String animalSize;
 	private String animalWeight;
+	private String animalPicture;
+	private String animalPicturePath;
 	private String diagnosisSymptom;
 	private String diagnosisMedicationWay;
 	

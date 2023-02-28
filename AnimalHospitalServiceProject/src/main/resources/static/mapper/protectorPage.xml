@@ -174,7 +174,9 @@
 			DATE_FORMAT(NOW(), '%y') - DATE_FORMAT(a.animal_age, '%y') AS animalAge,
 			a.animal_type animalType,
 			a.animal_size animalSize,
-			a.animal_weight animalWeight
+			a.animal_weight animalWeight,
+			a.animal_picture animalPicture,
+			a.animal_picture_path animalPicturePath
 		from 
 			diagnosis dia, doctor d, animalhospital ah , animal a , account ac
 		where 

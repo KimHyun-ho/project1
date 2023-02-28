@@ -53,7 +53,9 @@
 			d.doctor_work_space = #{doctorWorkSpace} ,
 			d.doctor_say = #{doctorSay},
 			d.doctor_update_date = now(),
-			a.member_update_date = now()
+			a.member_update_date = now(),
+			d.doctor_picture = #{doctorPicture},
+			d.doctor_picture_path = #{doctorPicturePath}
 		WHERE
 			a.seq_member = #{seqMember} 
 			AND d.seq_doctor = #{seqDoctor}

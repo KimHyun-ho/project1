@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.human.anihospital.service.DoctorPageService;
 import kr.human.anihospital.vo.DoctorInfoVO;
@@ -56,9 +57,9 @@ public class DoctorPageController {
 	// ### 수의사 전용 페이지 -> 나의 정보 조회 -> 수정하기 -> 수정하기 ####
 	// #####################################################################
 	@PostMapping("/doctorInfoEditOk")
-	public String doctorInfoEditOk(@ModelAttribute DoctorInfoVO doctorInfoVO) {
-		log.info("doctorInfoVO 받은 값 : {}", doctorInfoVO);
-		doctorPageService.updateOneDoctorInfoVO(doctorInfoVO);
+	public String doctorInfoEditOk(@ModelAttribute DoctorInfoVO doctorInfoVO, MultipartFile file) {
+		log.info("doctorInfoVO 받은 값 : {} {}", doctorInfoVO, file);
+		doctorPageService.updateOneDoctorInfoVO(doctorInfoVO, file);
 		return "redirect:doctorInfo";
 	}
 

@@ -1,12 +1,16 @@
 package kr.human.anihospital.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.human.anihospital.mapper.DoctorPageMapper;
 import kr.human.anihospital.vo.DoctorInfoVO;
@@ -35,7 +39,28 @@ public class DoctorPageService {
 	}
 
 	// /doctorInfoEdit 페이지에서 수정한 값으로 DB를 업데이트 하는 서비스 메소드
-	public void updateOneDoctorInfoVO(DoctorInfoVO doctorInfoVO) {
+	public void updateOneDoctorInfoVO(DoctorInfoVO doctorInfoVO, MultipartFile file) {
+		// 저장할 경로를 지정
+		  String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+	        // UUID(식별자)를 사용해 사용해 랜덤으로 이름 만들어줌
+	        UUID uuid = UUID.randomUUID();
+
+	        // 랜덤식별자_원래 파일 이름 = 저장될 파일이름 지정
+	        String fileName = uuid + "_" + file.getOriginalFilename();
+
+	        // File이 생성되며, 이름은 "name", projectPath 라는 경로에 담긴다
+	        File saveFile = new File(projectPath, fileName);
+	        	try {
+					file.transferTo(saveFile);
+				} catch (IllegalStateException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+	        //DB에 파일 넣기
+	        doctorInfoVO.setDoctorPicture(fileName);
+	        //저장되는 경로 설정 
+	        doctorInfoVO.setDoctorPicturePath("/files/" + fileName);
 		try {
 			doctorPageMapper.updateOneDoctorInfoVO(doctorInfoVO);
 		} catch (Exception e) {
