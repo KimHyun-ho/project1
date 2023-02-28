@@ -275,8 +275,12 @@ input[name="DownloadPDF"] {
 						<!-- 환자 정보 -->
 						<div class="card mb-3" style="width: 350px;">
 							<div class="row g-0">
-								<div class="col-md-4">
-									<img src="img/dog-unsolicited.jpg" class="img-fluid rounded-start" id="animalPicture" alt="..."
+								<div class="col-md-4" th:if = "${proDiagnosisVO.animalPicturePath != null}">
+									<img th:src="${proDiagnosisVO.animalPicturePath}" class="img-fluid rounded-start" id="animalPicture"
+										style="width: 100%; height: 100%;">
+								</div>
+								<div class="col-md-4" th:if = "${proDiagnosisVO.animalPicturePath == null}">
+									<img src="img/fabric.jpg" class="img-fluid rounded-start" id="animalPicture" alt="..."
 										style="width: 100%; height: 100%;">
 								</div>
 								<div class="col-md-8">

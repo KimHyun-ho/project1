@@ -40,6 +40,18 @@ img {
 	border-radius: 10%;
 	object-fit: cover;
 	border: 3px solid #F5F5F5;
+	text-align: center;
+	font-size: 9pt;
+}
+
+.no_content_img {
+	width: 300px;
+	height: 200px;
+	margin: auto;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+	text-align: center;
+	font-size: 9pt;
 }
 
 table {
@@ -57,160 +69,161 @@ textarea {
 <body>
 	<div th:replace="~{fragment/header :: #header}"></div>
 	<main id="main">
-		<!-- ======= Breadcrumbs Section ======= -->
-		<section class="breadcrumbs">
-			<div class="container">
-				<br />
-				<div class="section-title">
-					<h2 style="font-weight: bold; font-size: 30px;">내 정보</h2>
-					<br />
-					<p style="font-size: 11pt;">회원정보를 수정할 수 있습니다.</p>
-					<p style="font-size: 11pt; color: red; display: inline;">ID, 성별, 이름, 생년월일</p>
-					<p style="font-size: 11pt; display: inline;">은 수정할 수 없습니다.</p>
-				</div>
-			</div>
-		</section>
-		<!-- End Breadcrumbs Section -->
-		<div class="contact-form pt-20"></div>
-		<br />
-		<table>
-			<tr>
-				<td>
-					<img src="img/doctors/doctors-1.jpg" />
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align: center;">
-					<label class="btn btn-primary" for="file1" style="border-radius: 50px; width: 90px">수정</label>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="file" class="form-control" name="file" id="file1" style="display: none;" accept="image/*">
-				</td>
-			</tr>
-		</table>
-		<br />
-		<br />
-		<form action="doctorInfoEditOk" method="post" id="submit">
-			<input type="hidden" name="seqMember" th:value="${map.seqMember}">
-			<input type="hidden" name="seqDoctor" th:value="${map.seqDoctor}">
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for=email>ID</label>
-					<input type="text" class="form-control" name="memberEmailId" id="email" th:value="${map.memberEmailId}" disabled="disabled">
-					<div class="validate" id="email_val"></div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="age">성별</label>
-					<br />
-					<input type="radio" name="doctorGender" id="Female" value="Female" readonly="readonly" onclick="return false;" th:checked="${map.memberGender}=='Female' ? 'true':'false'">
-					<label for="Female"> 여자</label>
-					<input type="radio" name="doctorGender" id="Male" data-rule="gender" value="Male" readonly="readonly" onclick="return false;" th:checked="${map.memberGender}=='Female' ? 'false':'true'">
-					<label for="Male"> 남자</label>
-
-					<div class="validate" id="gender_val"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="name">이름</label>
-					<input type="text" class="form-control" name="memberName" id="name" th:value="${map.memberName}" disabled="disabled">
-					<div class="validate" id="name_val"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="birth">생년월일</label>
-					<input type="date" class="form-control" name="memberBirthDay" id="birth" th:value="${map.memberBirthDay}" disabled="disabled" />
-					<div class="validate" id="birth_val"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="license">면허취득일</label>
-					<input type="date" class="form-control" name="doctorWorkYear" id="license" th:value="${map.doctorWorkYear}" disabled="disabled" />
-					<div class="validate" id="license_val"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="doctorNumber">의사 등록번호</label>
-					<input type="text" class="form-control" name="doctorRegNo" id="doctorNumber" th:value="${map.doctorRegNo}" disabled="disabled">
-					<div class="validate" id="doctorNumber_val"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="phone">연락처</label>
-					<input type="text" class="form-control" name="memberPhoneNo" id="phone" th:value="${map.memberPhoneNo}" data-rule="phone" placeholder="'-'을 넣어서 입력해주세요">
-					<div class="validate" id="phone_val"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="education">학력</label>
-					<br />
-					<textarea rows="5" cols="55" placeholder="" name="doctorEducation" id="educationRecord" style="border-color: #ced4da;">[[${map.doctorEducation}]]</textarea>
-					<br />
-					<label for="record">이력</label>
-					<br />
-					<textarea rows="5" cols="55" placeholder="" name="doctorWorkSpace" id="careerRecord" style="border-color: #ced4da;">[[${map.doctorWorkSpace}]]</textarea>
-					<br />
-					<label for="greetings">인사말</label>
-					<br />
-					<textarea rows="5" cols="55" placeholder="" name="doctorSay" id="greetings" style="border-color: #ced4da;">[[${map.doctorSay}]]</textarea>
-					<br />
-					<div class="validate"></div>
-				</div>
-			</div>
-			<div class="row">
-				<p></p>
-				<p>
-					<br />
-				<div class="col-md-4 form-group" style="margin: auto;">
-					<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/doctorInfo'"
-						style="border-radius: 50px; width: 110px; text-align: center; color: white;">
-					<input type="button" class="btn btn-primary" name="doctorEditOk" id="doctorEditOk" value="수정하기" style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">
-				</div>
-			</div>
-			<section class="inner-page">
+		<form action="doctorInfoEditOk" method="post" id="submit" enctype="multipart/form-data">
+			<!-- ======= Breadcrumbs Section ======= -->
+			<section class="breadcrumbs">
 				<div class="container">
-					<p></p>
+					<br />
+					<div class="section-title">
+						<h2 style="font-weight: bold; font-size: 30px;">내 정보</h2>
+						<br />
+						<p style="font-size: 11pt;">회원정보를 수정할 수 있습니다.</p>
+						<p style="font-size: 11pt; color: red; display: inline;">ID, 성별, 이름, 생년월일</p>
+						<p style="font-size: 11pt; display: inline;">은 수정할 수 없습니다.</p>
+					</div>
 				</div>
 			</section>
+			<!-- End Breadcrumbs Section -->
+			<div class="contact-form pt-20"></div>
+			<br />
+			<table>
+				<tr>
+					<td class="no_content_img" id="no_content_img" th:if = "${map.doctorPicturePath == null}">
+						<img id="img" src="img/fabric.jpg" />
+					</td>
+					<td id="imgTd" th:if = "${map.doctorPicturePath != null}">
+						<img id="img" th:src="${map.doctorPicturePath}" />
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;"><br />
+					<label class="btn btn-primary" for="imgFile" style="border-radius: 50px; width: 98px">사진등록</label></td>
+				</tr>
+				<tr>
+					<td><input type="file" class="form-control" name="file" id="imgFile" style="display: none;"
+							accept="image/*"></td>
+				</tr>
+			</table>
+			<br />
+			<br />
+				<input type="hidden" name="seqMember" th:value="${map.seqMember}">
+				<input type="hidden" name="seqDoctor" th:value="${map.seqDoctor}">
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for=email>ID</label>
+						<input type="text" class="form-control" name="memberEmailId" id="email" th:value="${map.memberEmailId}" disabled="disabled">
+						<div class="validate" id="email_val"></div>
+					</div>
+				</div>
+	
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="age">성별</label>
+						<br />
+						<input type="radio" name="doctorGender" id="Female" value="Female" readonly="readonly" onclick="return false;" th:checked="${map.memberGender}=='Female' ? 'true':'false'">
+						<label for="Female"> 여자</label>
+						<input type="radio" name="doctorGender" id="Male" data-rule="gender" value="Male" readonly="readonly" onclick="return false;" th:checked="${map.memberGender}=='Female' ? 'false':'true'">
+						<label for="Male"> 남자</label>
+	
+						<div class="validate" id="gender_val"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="name">이름</label>
+						<input type="text" class="form-control" name="memberName" id="name" th:value="${map.memberName}" disabled="disabled">
+						<div class="validate" id="name_val"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="birth">생년월일</label>
+						<input type="date" class="form-control" name="memberBirthDay" id="birth" th:value="${map.memberBirthDay}" disabled="disabled" />
+						<div class="validate" id="birth_val"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="license">면허취득일</label>
+						<input type="date" class="form-control" name="doctorWorkYear" id="license" th:value="${map.doctorWorkYear}" disabled="disabled" />
+						<div class="validate" id="license_val"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="doctorNumber">의사 등록번호</label>
+						<input type="text" class="form-control" name="doctorRegNo" id="doctorNumber" th:value="${map.doctorRegNo}" disabled="disabled">
+						<div class="validate" id="doctorNumber_val"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="phone">연락처</label>
+						<input type="text" class="form-control" name="memberPhoneNo" id="phone" th:value="${map.memberPhoneNo}" data-rule="phone" placeholder="'-'을 넣어서 입력해주세요">
+						<div class="validate" id="phone_val"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="education">학력</label>
+						<br />
+						<textarea rows="5" cols="55" placeholder="" name="doctorEducation" id="educationRecord" style="border-color: #ced4da;">[[${map.doctorEducation}]]</textarea>
+						<br />
+						<label for="record">이력</label>
+						<br />
+						<textarea rows="5" cols="55" placeholder="" name="doctorWorkSpace" id="careerRecord" style="border-color: #ced4da;">[[${map.doctorWorkSpace}]]</textarea>
+						<br />
+						<label for="greetings">인사말</label>
+						<br />
+						<textarea rows="5" cols="55" placeholder="" name="doctorSay" id="greetings" style="border-color: #ced4da;">[[${map.doctorSay}]]</textarea>
+						<br />
+						<div class="validate"></div>
+					</div>
+				</div>
+				<div class="row">
+					<p></p>
+					<p>
+						<br />
+					<div class="col-md-4 form-group" style="margin: auto;">
+						<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/doctorInfo'"
+							style="border-radius: 50px; width: 110px; text-align: center; color: white;">
+						<input type="button" class="btn btn-primary" name="doctorEditOk" id="doctorEditOk" value="수정하기" style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">
+					</div>
+				</div>
+				<section class="inner-page">
+					<div class="container">
+						<p></p>
+					</div>
+				</section>
 		</form>
 	</main>
 	<!-- End #main -->
@@ -220,6 +233,17 @@ textarea {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
+		//사진 미리보기
+		$("#imgFile").on("change", function(event) {
+			$("#imgTd").show();
+			var imgfile = event.target.files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#no_content_img").hide();
+				$("#img").attr("src", e.target.result);
+			}
+			reader.readAsDataURL(imgfile);
+		});
 		$('#doctorEditOk').on('click', function() {
 			var license = $('#license').val();
 			var doctorNumber = $('#doctorNumber').val();
