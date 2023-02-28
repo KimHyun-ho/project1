@@ -25,7 +25,7 @@
 			ac.seq_member = #{seqMember}
 	</select>
 	
-	<!-- ProMypageDetail 페이지에서 조회할 진료목록,후기 -->
+	<!-- ProMypageDetail 페이지에서 조회할 진료목록 -->
 	<select id="selectAllProDiagnosisList" resultType="proMyPageDetailVO" parameterType="int">
 		select 
 			ac.seq_member seqMember,
@@ -45,6 +45,27 @@
 			ac.seq_member = #{seqMember}
 		ORDER BY
 	    	d.diagnosis_date desc
+	</select>
+	
+	<!-- ProMypageDetail 페이지에서 조회할 후기 -->
+	<select id="selectAllPostscript" resultType="map" parameterType="int">
+		select 
+			p.seq_postscript seqPostscript, 
+			p.seq_diagnosis seqDiagnosis,
+			a.animal_name animalame,
+			p.postscript_satisfaction postscriptSatisfaction,
+			ah.animal_hospital_name animalHospitalName,
+			p.postscript_update_date postscriptUpdateDate,
+			p.postscript_content postscriptContent
+		from 
+			postscript p, diagnosis d , animalhospital ah  , animal a
+		where 
+			p.seq_diagnosis = d.seq_diagnosis and 
+			d.seq_animal_hospital = ah.seq_animal_hospital and
+			d.seq_animal = a.seq_animal and
+			a.seq_member = #{seqMember}
+		ORDER BY
+	    	p.postscript_update_date desc
 	</select>
 	
 	<!-- 환자 등록 -->
@@ -133,13 +154,15 @@
 	   ORDER BY
 	    	d.diagnosis_date desc
 	</select> 
-	<!-- 보호자가 한명의 환자의 상세 진료내역 1개를 조회(처방목록 제외) -->
+	<!-- 보호자가 한명의 환자의 상세 진료내역 1개를 조회(진료내역,환자정보) -->
 	<select id="selectOneProDiagnosisVO" resultType="ProDiagnosisVO" parameterType="map">
 		select 
 			dia.seq_diagnosis seqDiagnosis,
 			DATE_FORMAT(dia.diagnosis_date, '%Y-%m-%d') diagnosisDate,
 			ah.animal_hospital_name animalHospitalName,
 			ac.member_name memberName,
+			a.seq_member seqMember,
+			a.seq_animal seqAnimal,
 			a.animal_name animalName,
 			dia.diagnosis_symptom diagnosisSymptom,
 			dia.diagnosis_medication_way diagnosisMedicationWay,
@@ -156,6 +179,23 @@
 			dia.seq_animal = a.seq_animal and
 			d.seq_member = ac.seq_member and 
 			dia.seq_diagnosis = #{seqDiagnosis} AND a.seq_member = #{seqMember} AND a.seq_animal = #{seqAnimal}
+	</select>
+	
+	<!-- 보호자가 진료내역 페이지에서 후기를 조회 -->
+	<select id="selectOnePostScript" resultType="ProDiagnosisVO" parameterType="map">
+		select 
+			p.seq_postscript seqPostscript, 
+			p.seq_diagnosis seqDiagnosis, 
+			p.postscript_update_date postscriptUpdateDate, 
+			p.postscript_content postscriptContent, 
+			p.postscript_satisfaction postscriptSatisfaction,
+			a.animal_hospital_name animalHospitalName
+		from 
+			postscript p, diagnosis d , animalhospital a  
+		where 
+			p.seq_diagnosis = d.seq_diagnosis and 
+			d.seq_animal_hospital = a.seq_animal_hospital and 
+			p.seq_diagnosis = #{seqDiagnosis}
 	</select>
 	
 	<!-- 보호자가 한명의 환자의 상세 진료내역 1개를 조회(처방목록) -->
@@ -175,4 +215,39 @@
 			d.seq_diagnosis = #{seqDiagnosis}
 	</select>
 	
+	<!-- 보호자가 진료내역 페이지에서 후기를 작성 -->
+	<insert id="insertProPostScript" parameterType="map">
+		insert into postscript
+				(seq_diagnosis,
+				postscript_reporting_date,
+				postscript_content,
+				postscript_satisfaction,
+				postscript_update_date
+				)
+		values
+				(#{seqDiagnosis},
+				now(),
+				#{postscriptContent},
+				#{postscriptSatisfaction},
+				now()
+				)
+	</insert>
+	
+	<!-- 보호자가 진료내역 페이지에서 후기 수정 -->
+	<update id="updatePostscript" parameterType="map">
+		update 
+			postscript 
+		set
+			postscript_content = #{postscriptContent},
+			postscript_satisfaction = #{postscriptSatisfaction},
+			postscript_update_date = now()
+		where 
+			seq_postscript = #{seqPostscript}
+	</update>
+	
+	<!-- 보호자가 진료내역 페이지에서 후기 삭제 -->
+	<delete id="deletePostscript" parameterType="int">
+		delete from postscript 
+		where seq_postscript = #{seqPostscript}
+	</delete>
 </mapper>

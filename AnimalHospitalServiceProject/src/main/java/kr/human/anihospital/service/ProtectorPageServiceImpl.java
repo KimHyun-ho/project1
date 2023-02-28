@@ -57,6 +57,25 @@ public class ProtectorPageServiceImpl implements ProtectorPageService{
 	}
 	
 	//----------------------------------------------------------------------------------------------------
+	// 보호자 정보 페이지에서 후기를 화면에 표시해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public Map<String, Object> selectAllPostscript(int seqMember) {
+		// 보호자 정보 페이지의 후기 리스트를 Mapper에 넘겨주기
+		Map<String, Object> postscriptMap = null;
+		try {
+			postscriptMap = protectorPageMapper.selectAllPostscript(seqMember);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// Mapper가 실행되고 나서 가져온 데이터 확인하기
+		log.info("selectAllPostscript Mapper에서 넘어온 값(서비스) : {}", postscriptMap);
+		return postscriptMap;
+	}
+
+	
+	
+	//----------------------------------------------------------------------------------------------------
 	// 보호자 정보를 수정하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
@@ -129,7 +148,22 @@ public class ProtectorPageServiceImpl implements ProtectorPageService{
 		log.info("selectOneProDiagnosisVO Mapper에서 넘어온 값(서비스) : {}", proDiagnosisVO);
 		return proDiagnosisVO;
 	}
-
+	
+	//----------------------------------------------------------------------------------------------------
+	// 한 명의 보호자에 따른 환자의 1개의 상세진료 내역에서 후기를 화면에 표시해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public ProDiagnosisVO selectOnePostScript(Map<String, Object> diagnosisMap) {
+		ProDiagnosisVO proDiagnosisVOPostscript = new ProDiagnosisVO();
+		try {
+			proDiagnosisVOPostscript = protectorPageMapper.selectOnePostScript(diagnosisMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return proDiagnosisVOPostscript;
+	}
+	
+	
 	//----------------------------------------------------------------------------------------------------
 	// 한 명의 보호자에 따른 환자의 상세진료 내역의 처방목록을 화면에 표시해줄 메서드
 	//----------------------------------------------------------------------------------------------------
@@ -147,5 +181,47 @@ public class ProtectorPageServiceImpl implements ProtectorPageService{
 		log.info("selectListProDiaMedicineVO Mapper에서 넘어온 값(서비스) : {}", proDiaMedicineVOList);
 		return proDiaMedicineVOList;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	// 진료내역페이지에서 후기작성하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void insertProPostScript(Map<String, Object> postScriptMap) {
+		try {
+			protectorPageMapper.insertProPostScript(postScriptMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// Mapper가 실행되고 나서 가져온 데이터 확인하기
+		log.info("insertProPostScript에 넘어온 값(서비스) : {}", postScriptMap);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	// 진료내역페이지에서 후기 수정하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void updatePostscript(Map<String, Object> updatePostScriptMap) {
+		try {
+			protectorPageMapper.updatePostscript(updatePostScriptMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// Mapper가 실행되고 나서 가져온 데이터 확인하기
+		log.info("updatePostscript에 넘어온 값(서비스) : {}", updatePostScriptMap);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	// 진료내역페이지에서 후기 삭제하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void deletePostscript(int seqPostscript) {
+		log.info("deletePostscript에 넘어온 seqPostscript : {}",seqPostscript);
+		try {
+			protectorPageMapper.deletePostscript(seqPostscript);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
 

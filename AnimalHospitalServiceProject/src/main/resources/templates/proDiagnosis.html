@@ -112,35 +112,53 @@ input[name="DownloadPDF"] {
 }
 </style>
 <script type="text/javascript">
+ $(function () {
+	$('#saveBtn').on('click',function() {
+		var seqDiagnosis = $("#seqDiagnosis").val();
+		var seqMember = $("#seqMember").val();
+		var seqAnimal = $("#seqAnimal").val();
+		location.href = '/proPostscriptAdd?seqDiagnosis=' +seqDiagnosis+'&seqMember='+seqMember+'&seqAnimal='+seqAnimal;
+	});
+});
+</script>
+<script type="text/javascript">
 	$(function() {
-		$('#deleteBtn')
-				.on(
-						'click',
-						function() {
-							var result = window.confirm('정말로 삭제하시겠습니까?');
-							if (result) {
-								alert('정상적으로 삭제되었습니다.');
-								var seqPostscript1 = $("#seqPostscript").val();
-								$
-										.ajax({
-											url : "/deletePostscript",
-											type : "post",
-											dataType : "text",
-											contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-											data : {
-												seqPostscript : seqPostscript1
-											},
-											success : function(data) {
-												location.href = '/diagnosis';
-											},
-											error : function(data) {
-												alert("Error");
-											}
-										});
-							} else if (!result) {
-								alert('취소 되었습니다.');
+		$('#deleteBtn').on('click',function() {
+				var result = window.confirm('정말로 삭제하시겠습니까?');
+				if (result) {
+					alert('정상적으로 삭제되었습니다.');
+					var seqPostscript = $("#seqPostscript").val();
+					var seqDiagnosis = $("#seqDiagnosis").val();
+					var seqMember = $("#seqMember").val();
+					var seqAnimal = $("#seqAnimal").val();
+					$.ajax({
+							url : "/deletePostscript",
+							type : "post",
+							data : {
+								seqPostscript : seqPostscript
+							},
+							success : function(data) {
+								window.location.replace("/proDiagnosis?seqMember=" + seqMember + "&seqAnimal=" +seqAnimal+ "&seqDiagnosis=" +seqDiagnosis);
+							},
+							error : function(data) {
+								alert("Error");
 							}
-						});
+					});
+				} else if (!result) {
+					alert('취소 되었습니다.');
+				}
+			});
+	});
+</script>
+<script type="text/javascript">
+	$(function() {
+		$('#updateBtn').on('click',function() {
+			var seqPostscript = $("#seqPostscript").val();
+			var seqDiagnosis = $("#seqDiagnosis").val();
+			var seqMember = $("#seqMember").val();
+			var seqAnimal = $("#seqAnimal").val();
+			location.href = '/proPostscriptEdit?seqDiagnosis=' +seqDiagnosis+'&seqMember='+seqMember+'&seqAnimal='+seqAnimal+'&seqPostscript=' +seqPostscript;
+		});
 	});
 </script>
 </head>
@@ -166,6 +184,9 @@ input[name="DownloadPDF"] {
 						<div style="padding: 10px; margin-bottom: 10px; border: 1px solid #DDDDDD; border-radius: 10px; width: 95%;">
 							<h4 style="margin: 10px; margin-top: 10px; font-weight: bold">상세 진료내역</h4>
 							<p />
+							<input type="hidden" name="seqMember" id="seqMember" th:value="${proDiagnosisVO.seqMember}">
+							<input type="hidden" name="seqAnimal" id="seqAnimal" th:value="${proDiagnosisVO.seqAnimal}">
+							<input type="hidden" name="seqDiagnosis" id="seqDiagnosis" th:value="${proDiagnosisVO.seqDiagnosis}">
 							<div class="diagnosis">
 								<h6>진료번호 : [[${proDiagnosisVO.seqDiagnosis}]]</h6>
 								<h6>진료일 : [[${proDiagnosisVO.diagnosisDate}]]</h6>
@@ -203,7 +224,7 @@ input[name="DownloadPDF"] {
 					</div>
 					<div id="rightContent">
 						<!-- 후기 -->
-						<div id="postscriptSave" th:if="${postOneDiagnosisVO == null}">
+						<div id="postscriptSave" th:if="${proDiagnosisVOPostscript == null}">
 							<div id="Postscript">
 								<h5 style="margin-top: 10px;">후기</h5>
 								<hr />
@@ -214,25 +235,23 @@ input[name="DownloadPDF"] {
 								</table>
 							</div>
 							<div align="right">
-								<input type="button" class="btn btn-primary btn" id="saveBtn"
-									th:onclick="/location.href='@{/proPostscriptAdd(seqPostscript=${proDiagnosisVOList.seqPostscript})}'/"
-									value="작성하기" style="border-radius: 50px; margin-right: 10px; color: white;" />
+								<input type="button" class="btn btn-primary btn"  id="saveBtn" value="작성하기" style="border-radius: 50px; margin-right: 10px; color: white;" />
 							</div>
 						</div>
-						<div id="postscriptUpdateAndDelete" th:if="${postOneDiagnosisVO != null}">
+						<div id="postscriptUpdateAndDelete" th:if="${proDiagnosisVOPostscript != null}">
 							<div id="Postscript">
 								<h5 style="margin-top: 10px;">후기</h5>
-								<input type="hidden" id="seqPostscript" name="seqPostscript" th:value="${postOneDiagnosisVO.seqPostscript}" />
+								<input type="hidden" id="seqPostscript" name="seqPostscript" th:value="${proDiagnosisVOPostscript.seqPostscript}" />
 								<hr />
 								<table>
 									<tr>
-										<td>작성일 : [[${proDiagnosisVO.postscriptUpdateDate}]]</td>
+										<td>작성일 : [[${proDiagnosisVOPostscript.postscriptUpdateDate}]]</td>
 									</tr>
 									<tr>
-										<td>진료병원 : [[${proDiagnosisVO.animalHospitalName}]]</td>
+										<td>진료병원 : [[${proDiagnosisVOPostscript.animalHospitalName}]]</td>
 									</tr>
 									<tr>
-										<td id="PostscriptBold">별점 : <span th:switch="${postOneDiagnosisVO.postscriptSatisfaction}"> <span
+										<td id="PostscriptBold">별점 : <span th:switch="${proDiagnosisVOPostscript.postscriptSatisfaction}"> <span
 												th:case="'1'">★</span> <span th:case="'2'">★★</span> <span th:case="'3'">★★★</span> <span th:case="'4'">★★★★</span>
 												<span th:case="'5'">★★★★★</span>
 										</span>
@@ -241,15 +260,13 @@ input[name="DownloadPDF"] {
 									<tr>
 										<td>
 											<div id="PostscriptBold">내용</div> <!-- 내용 길 경우 자바스크립트 이용해서 자동줄바꿈 -->
-											<div id="PostscriptContent">[[${proDiagnosisVO.postscriptContent}]]</div>
+											<div id="PostscriptContent">[[${proDiagnosisVOPostscript.postscriptContent}]]</div>
 										</td>
 									</tr>
 								</table>
 							</div>
 							<div align="right">
-								<input type="button" class="btn btn-primary btn" id="updateBtn"
-									th:onclick="|location.href='@{/postscriptUpdate(seqPostscript=${postOneDiagnosisVO.seqPostscript})}'|"
-									value="수정하기" style="border-radius: 50px; margin-right: 10px; color: white;" />
+								<input type="button" class="btn btn-primary btn" id="updateBtn" value="수정하기" style="border-radius: 50px; margin-right: 10px; color: white;" />
 								<input type="submit" class="btn btn-danger btn" name="deleteBtn" id="deleteBtn" value="삭제하기"
 									style="border-radius: 50px; margin-right: 10px; color: white;" />
 							</div>
