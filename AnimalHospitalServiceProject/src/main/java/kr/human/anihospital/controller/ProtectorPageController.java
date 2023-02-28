@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.human.anihospital.service.ProtectorPageService;
 import kr.human.anihospital.vo.ProAnimalListVO;
@@ -86,24 +87,24 @@ public class ProtectorPageController {
 	// 보호자가 환자 정보를 수정하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	@PostMapping("/proPatientInfoEditOk")
-	public String proPatientInfoEditOk(@RequestParam Map<String, Object> updatePatientMap) throws Exception {
+	public String proPatientInfoEditOk(@RequestParam Map<String, Object> updatePatientMap, MultipartFile file,  MultipartFile vidfile) throws Exception {
 		// 보호자 정보 화면에서 수정 화면으로 값이 넘어왔는지 로그로 확인 
-		log.info("proPatientInfoEdit에서 넘어온 수정된 환자 정보 : {}", updatePatientMap);
-		protectorPageService.updateProPatient(updatePatientMap);
+		log.info("proPatientInfoEdit에서 넘어온 수정된 환자 정보 : {}", updatePatientMap, file, vidfile);
+		protectorPageService.updateProPatient(updatePatientMap, file, vidfile);
 		return "redirect:proMypageDetail";
 	}
 	
 	//----------------------------------------------------------------------------------------------------
-	// 보호자가 환자 정보를 수정하는 메서드
+	// 보호자가 환자 정보를 추가하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	@PostMapping("/proPatientAddOk")
-	public String proPatientAdd(@RequestParam Map<String, Object> insertPatientMap) throws Exception {
+	public String proPatientAdd(@RequestParam Map<String, Object> insertPatientMap, MultipartFile file,  MultipartFile vidfile) throws Exception {
 		// 세션에서 보호자 seq를 가져와서 insertPatientMap에 넣기
 		insertPatientMap.put("seqMember", 4);
 		// proPatientAdd 페이지에서 받아온 값 확인
-		log.info("proPatientAdd에서 넘어온 환자 insert 정보 : {}", insertPatientMap);
+		log.info("proPatientAdd에서 넘어온 환자 insert 정보 : {} {} {}", insertPatientMap, file, vidfile);
 		// proPatientAdd 페이지에서 받아온 환자 추가 정보를 넣어서 insert하기
-		protectorPageService.insertProPatient(insertPatientMap);
+		protectorPageService.insertProPatient(insertPatientMap, file, vidfile);
 		return "redirect:proMypageDetail";
 	}
 	

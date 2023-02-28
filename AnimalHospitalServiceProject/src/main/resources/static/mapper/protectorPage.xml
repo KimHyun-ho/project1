@@ -17,7 +17,11 @@
 			a.animal_type animalType,
 			a.animal_size animalSize,
 			a.animal_gender animalGender,
-			a.animal_weight animalWeight
+			a.animal_weight animalWeight,
+			a.animal_picture animalPicture,
+			a.animal_video animalVideo,
+			a.animal_picture_path animalPicturePath,
+			a.animal_video_path animalVideoPath
 		from 
 			account ac, animal a 
 		where 
@@ -103,11 +107,11 @@
 	        animal_size = #{animalSize}, 
 	        animal_age =  #{animalAge},
 	        animal_weight = #{animalWeight},
-	        animal_update_date = NOW()
-	        <!-- animal_picture = #{animalPicture},
+	        animal_update_date = NOW(),
+	        animal_picture = #{animalPicture},
 	        animal_video =  #{animalVideo},
 	        animal_picture_path = #{animalPicturePath},
-	        animal_video_path = #{animalVideoPath} -->
+	        animal_video_path = #{animalVideoPath}
 		WHERE 
 	        seq_animal = #{seqAnimal}
 	</update>

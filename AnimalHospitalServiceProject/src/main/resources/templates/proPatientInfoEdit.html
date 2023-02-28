@@ -35,6 +35,8 @@ img {
 	border-radius: 10%;
 	object-fit: cover;
 	border: 3px solid #F5F5F5;
+	text-align: center;
+	font-size: 9pt;
 }
 
 video {
@@ -46,7 +48,17 @@ video {
 	border: 3px solid #F5F5F5;
 }
 
-.no_content {
+.no_content_img {
+	width: 300px;
+	height: 200px;
+	margin: auto;
+	object-fit: cover;
+	border: 3px solid #F5F5F5;
+	text-align: center;
+	font-size: 9pt;
+}
+
+.no_content_video {
 	width: 300px;
 	height: 200px;
 	margin: auto;
@@ -60,6 +72,9 @@ table {
 	margin: auto;
 }
 </style>
+<script type="text/javascript">
+
+</script>
 </head>
 <body>
 	<div th:replace="~{fragment/header :: #header}"></div>
@@ -81,109 +96,121 @@ table {
 			<div class="contact-form pt-20"></div>
 			<br />
 			
-			<form action="proPatientInfoEditOk" method="post" id="proPatientInfoEditOk">
-			<input type="hidden" name="seqAnimal" th:value="${proPatientmap.seqAnimal}">
-<!-- 			<input type="hidden" name="seqMember" th:value="${proPatientmap.seqMember}"> -->
-			<table>
-				<tr>
-					<td><img src="img/dog.jpg" /></td>
-					<td><video controls="controls">
-							<source src="videos/dog.mp4" type="video/mp4">
-						</video></td>
-				</tr>
-				<tr>
-					<td style="text-align: center;"><label class="btn btn-primary" for="file1" style="border-radius: 50px; width: 90px">수정</label></td>
-					<td style="text-align: center;"><label class="btn btn-primary" for="file2" style="border-radius: 50px; width: 90px">수정</label></td>
-				</tr>
-				<tr>
-					<td><input type="file" class="form-control" name="animalPicture" id="file1" style="display: none;" accept="image/*" ></td>
-					<td><input type="file" class="form-control" name="animalVideo" id="file2" style="display: none;" accept="video/*" ></td>
-				</tr>
-			</table>
-			<br> <br>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
+			<form action="proPatientInfoEditOk" method="post" id="proPatientInfoEditOk" enctype="multipart/form-data">
+				<input type="hidden" name="seqAnimal" th:value="${proPatientmap.seqAnimal}">
+				<table>
+					<tr>
+						<td class="no_content_img" id="no_content_img" th:if = "${proPatientmap.animalPicturePath == null}">
+							<i class="bi bi-x-circle"></i> 등록된 파일이 없습니다.
+						</td>
+						<td id="imgTd" th:if = "${proPatientmap.animalPicturePath != null}">
+							<img id="img" th:src="${proPatientmap.animalPicturePath}" alt="dfdfdf" />
+						</td>
+						<td class="no_content_video" id="no_content_video"  th:if = "${proPatientmap.animalVideoPath == null}">
+							<i class="bi bi-x-circle"></i> 등록된 파일이 없습니다.
+						</td>
+						<td id="videoTd" th:if = "${proPatientmap.animalVideoPath != null}">
+							<video id="video" th:src="${proPatientmap.animalVideoPath}" controls="controls">
+							</video>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;"><br />
+						<label class="btn btn-primary" for="imgFile" style="border-radius: 50px; width: 98px">사진등록</label></td>
+						<td style="text-align: center;"><br />
+						<label class="btn btn-primary" for="videoFile" style="border-radius: 50px; width: 110px">동영상등록</label></td>
+					</tr>
+					<tr>
+						<td><input type="file" class="form-control" name="file" id="imgFile" style="display: none;"
+								accept="image/*"></td>
+						<td><input type="file" class="form-control" name="vidfile" id="videoFile" style="display: none;"
+								accept="video/*"></td>
+					</tr>
+				</table>
+				<br> <br>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="name">이름</label>
+						<input type="text" class="form-control" name="animalName" id="name" th:value="${proPatientmap.animalName}">
+						<div class="validate" id="name_val"></div>
+					</div>
 				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="name">이름</label>
-					<input type="text" class="form-control" name="animalName" id="name" th:value="${proPatientmap.animalName}">
-					<div class="validate" id="name_val"></div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="species">종</label>
+						<input type="text" class="form-control" name="animalType" id="species" th:value="${proPatientmap.animalType}">
+						<div class="validate" id="species_val"></div>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="size">크기</label>
+						<select class="form-control" id="size" name="animalSize" >
+							<option th:value="${proPatientmap.animalSize}" hidden="">[[${proPatientmap.animalSize}]]</option>
+							<option id="size" value="소형">소형</option>
+							<option id="size" value="중형">중형</option>
+							<option id="size" value="대형">대형</option>
+						</select>
+						<div class="validate" id="size_val"></div>
+					</div>
 				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="species">종</label>
-					<input type="text" class="form-control" name="animalType" id="species" th:value="${proPatientmap.animalType}">
-					<div class="validate" id="species_val"></div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="age">나이</label>
+						<!-- 수정할때 입력하는 나이는 날짜로 입력해야 DB에 넣을 수 있음 -->
+						<input type="date" class="form-control" name="animalAge" th:value="${proPatientmap.animalAge}" id="age">
+						<div class="validate" id="animalAge_val"></div>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+					<!-- 성별은 수정할 수 없으므로 환자 정보 조회 쿼리에서 가져와야함 -->
+						<label for="age">성별</label>
+						<br />
+						<input type="radio" name="gender" id="gender" value="1" th:checked="${proPatientmap.animalGender} ? 'true' : 'false'">
+						<label for="Female"> 여자</label>
+						<input type="radio" name="gender" id="gender" value="0" th:checked="${proPatientmap.animalGender} ? 'false' : 'true'">
+						<label for="Male"> 남자</label>
+						<div class="validate" id="gender_val"></div>
+					</div>
 				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="size">크기</label>
-					<select class="form-control" id="size" name="animalSize" >
-						<option th:value="${proPatientmap.animalSize}" hidden="">[[${proPatientmap.animalSize}]]</option>
-						<option id="size" value="소형">소형</option>
-						<option id="size" value="중형">중형</option>
-						<option id="size" value="대형">대형</option>
-					</select>
-					<div class="validate" id="size_val"></div>
+				<div class="row">
+					<div class="col-md-4 form-group mt-3">
+						<div class="validate"></div>
+					</div>
+					<div class="col-md-4 form-group mt-3">
+						<label for="weight">몸무게</label>
+						<input type="number" min="1" class="form-control" name="animalWeight" step="0.1" id="weight" th:value="${proPatientmap.animalWeight}" data-rule="weight" data-msg="필수입력 항목입니다.">
+						<div class="validate" id="weight_val"></div>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="age">나이</label>
-					<!-- 수정할때 입력하는 나이는 날짜로 입력해야 DB에 넣을 수 있음 -->
-					<input type="date" class="form-control" name="animalAge" th:value="${proPatientmap.animalAge}" id="age">
-					<div class="validate" id="animalAge_val"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-				<!-- 성별은 수정할 수 없으므로 환자 정보 조회 쿼리에서 가져와야함 -->
-					<label for="age">성별</label>
+				<div class="row">
+					<p></p>
+					<p></p>
 					<br />
-					<input type="radio" name="gender" id="gender" data-rule="gender" value="Female" onclick="return(false);" th:checked="${proPatientmap.animalGender} ? 'true' : 'false'">
-					<label for="Female"> 여자</label>
-					<input type="radio" name="gender" id="gender" data-rule="gender" value="Male" onclick="return(false);" th:checked="${proPatientmap.animalGender} ? 'false' : 'true'">
-					<label for="Male"> 남자</label>
-					<div class="validate" id="gender_val"></div>
+					<div class="col-md-4 form-group" style="margin: auto;">
+						<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/myPageProtector'"
+							style="border-radius: 50px; width: 110px; text-align: center; color: white;">
+						<input type="submit" class="btn btn-primary" name="patient_edit_ok" id=patient_edit_ok value="확인" 
+							style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 form-group mt-3">
-					<div class="validate"></div>
-				</div>
-				<div class="col-md-4 form-group mt-3">
-					<label for="weight">몸무게</label>
-					<input type="number" min="1" class="form-control" name="animalWeight" step="0.1" id="weight" th:value="${proPatientmap.animalWeight}" data-rule="weight" data-msg="필수입력 항목입니다.">
-					<div class="validate" id="weight_val"></div>
-				</div>
-			</div>
-			<div class="row">
-				<p></p>
-				<p></p>
-				<br />
-				<div class="col-md-4 form-group" style="margin: auto;">
-					<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/myPageProtector'"
-						style="border-radius: 50px; width: 110px; text-align: center; color: white;">
-					<input type="submit" class="btn btn-primary" name="patient_edit_ok" id=patient_edit_ok value="확인" 
-						style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">
-				</div>
-			</div>
-			<div class="container"></div>
+				<div class="container"></div>
 			</form>
 		</section>
 	</main>
@@ -202,6 +229,25 @@ function changeFn(){
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
+		//사진 미리보기
+		$("#imgFile").on("change", function(event) {
+			$("#imgTd").show();
+		    var imgfile = event.target.files[0];
+		    var reader = new FileReader(); 
+		    reader.onload = function(e) {
+				$("#no_content_img").hide();
+		        $("#img").attr("src", e.target.result);
+		    }
+		    reader.readAsDataURL(imgfile);
+		});
+		// 동영상 미리보기
+		$("#videoFile").on('change', function(){
+			// $("#no_content_video").hide();
+			$("#videoTd").show();
+			file = this.files[0];
+			$('#video').attr('src', URL.createObjectURL(file));
+			
+		});
 		$('#patient_edit_ok').on('click', function() {
 			var name = $('#name').val();
 			var species = $('#species').val();
@@ -231,10 +277,14 @@ function changeFn(){
 				$('#weight').val('');
 				$('#weight_val').html('<div id="weight_warning"><b style="color: red;">몸무게를 입력해주세요.</b></div>');
 			} else {
-				var result = window.confirm('작성한 내용을 수정하시겠습니까?');
+				var result = window.confirm('작성한 내용을 추가하시겠습니까?');
 				if (result) {
+					$("#proPatientInfoEditOk").submit();
+
 					alert('정상적으로 처리되었습니다.');
-					location.href = '/proMypageDetail';
+				} else if (!result) {
+					alert('취소되었습니다.');
+					return false;
 				}
 			}
 		});
