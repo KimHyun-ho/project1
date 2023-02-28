@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.human.anihospital.service.DoctorPageService;
 import kr.human.anihospital.vo.DoctorInfoVO;
@@ -119,6 +120,31 @@ public class DoctorPageController {
 		List<MedicineInfoVO> medicineInfoVOs = doctorPageService.selectAllMedicineInfo();
 		model.addAttribute("patientInfoVO", docPatientInfoVO);
 		model.addAttribute("medicineInfoVOs", medicineInfoVOs);
+		log.info("보내는 환자정보 값 : {}", docPatientInfoVO);
 		return "diagnosisAdd";
+	}
+
+	@ResponseBody
+	@PostMapping("/mediInfo")
+	public MedicineInfoVO mediInfo(String medicineName) {
+		MedicineInfoVO medicineInfoVO = doctorPageService.selectOneMedicineInfo(medicineName);
+		return medicineInfoVO;
+	}
+
+	@PostMapping("/diagnosisAddOk")
+	public String diagnosisAddOk(@RequestParam Map<String, Object> map, @RequestParam List<Integer> seqMedicine,
+			@RequestParam List<String> medicineName, @RequestParam List<String> medicationGuide) {
+		// #########################################################
+		// ## seqDoctor는 로그인 정보 Session에서 받아와야 합니다.##
+		// #########################################################
+		int seqDoctor = 1;
+		int seqAnimalHospital = doctorPageService.selectOneDoctorInfoVO(seqDoctor).getSeqAnimalHospital();
+		map.put("seqDoctor", seqDoctor);
+		map.put("seqAnimalHospital", seqAnimalHospital);
+		map.put("seqMedicineList", seqMedicine);
+		map.put("medicineNameList", medicineName);
+		map.put("medicationGuideList", medicationGuide);
+		log.info("받은 진료내용 값 : {}", map);
+		return "redirect:patientInfo?seqAnimal=" + map.get("seqAnimal");
 	}
 }

@@ -38,4 +38,13 @@ public interface DoctorPageMapper {
 
 	// diagnosisAdd 페이지에 의약품 정보를 출력하기 위한 매퍼 메소드
 	List<MedicineInfoVO> selectAllMedicineInfo() throws SQLException;
+
+	// diagnosisAdd 페이지에서 약을 처방할 때 약의 이름을 선택하면 그에 관한 정보를 출력하는 메소드
+	MedicineInfoVO selectOneMedicineInfo(String medicineName) throws SQLException;
+
+	// /diagnosisAdd 페이지에서 처방약정보를 제외한 진료정보를 insert하는 매퍼 메소드
+	void insertOneDiagnosisInfo(DiagnosisInfoVO diagnosisInfoVO) throws SQLException;
+
+	// 가장 최근에 저장된 auto_increment 값을 불러오는 매퍼 메소드
+	int selectLastInsertIndex() throws SQLException;
 }
