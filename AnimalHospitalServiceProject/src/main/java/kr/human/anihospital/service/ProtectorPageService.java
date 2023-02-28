@@ -3,6 +3,8 @@ package kr.human.anihospital.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import kr.human.anihospital.vo.ProAnimalListVO;
 import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
@@ -32,12 +34,12 @@ public interface ProtectorPageService {
 	//----------------------------------------------------------------------------------------------------
 	// 보호자가 환자를 추가하는 메서드
 	//----------------------------------------------------------------------------------------------------
-	void insertProPatient(Map<String, Object> insertPatientMap) throws Exception;
+	void insertProPatient(Map<String, Object> insertPatientMap, MultipartFile animalPicture, MultipartFile animalVideo) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
 	// 보호자가 환자 정보를 수정하는 메서드
 	//----------------------------------------------------------------------------------------------------
-	void updateProPatient(Map<String, Object> updatePatientMap) throws Exception;
+	void updateProPatient(Map<String, Object> updatePatientMap, MultipartFile animalPicture, MultipartFile animalVideo) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
 	// 한 명의 보호자에 따른 환자의 진료내역 리스트를 화면에 표시해줄 메서드

@@ -1,10 +1,14 @@
 package kr.human.anihospital.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.human.anihospital.mapper.ProtectorPageMapper;
 import kr.human.anihospital.vo.ProAnimalListVO;
@@ -92,7 +96,33 @@ public class ProtectorPageServiceImpl implements ProtectorPageService{
 	// 보호자가 환자를 추가하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
-	public void insertProPatient(Map<String, Object> insertPatientMap){
+	public void insertProPatient(Map<String, Object> insertPatientMap, MultipartFile animalPicture, MultipartFile animalVideo){
+		// 저장할 경로를 지정
+		  String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+	        // UUID(식별자)를 사용해 사용해 랜덤으로 이름 만들어줌
+	        UUID uuid = UUID.randomUUID();
+
+	        // 랜덤식별자_원래 파일 이름 = 저장될 파일이름 지정
+	        String fileName = uuid + "_" + animalPicture.getOriginalFilename();
+	        String vidfileName = uuid + "_" + animalVideo.getOriginalFilename();
+
+	        // File이 생성되며, 이름은 "name", projectPath 라는 경로에 담긴다
+	        File saveFile = new File(projectPath, fileName);
+	        File savevidFile = new File(projectPath, vidfileName);
+	        try {
+				animalPicture.transferTo(saveFile);
+				animalVideo.transferTo(savevidFile);
+			} catch (IllegalStateException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	        //DB에 파일 넣기
+	        insertPatientMap.put("animalPicture", fileName);
+	        insertPatientMap.put("animalVideo", vidfileName);
+	        //저장되는 경로 설정 
+	        insertPatientMap.put("animalPicturePath", "/files/" + fileName);
+	        insertPatientMap.put("animalVideoPath", "/files/" + vidfileName);
 		try {
 			protectorPageMapper.insertProPatient(insertPatientMap);
 		} catch (Exception e) {
@@ -105,7 +135,33 @@ public class ProtectorPageServiceImpl implements ProtectorPageService{
 	// 보호자가 환자 정보를 수정하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
-	public void updateProPatient(Map<String, Object> updatePatientMap){
+	public void updateProPatient(Map<String, Object> updatePatientMap, MultipartFile animalPicture, MultipartFile animalVideo){
+		// 저장할 경로를 지정
+		  String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+	        // UUID(식별자)를 사용해 사용해 랜덤으로 이름 만들어줌
+	        UUID uuid = UUID.randomUUID();
+
+	        // 랜덤식별자_원래 파일 이름 = 저장될 파일이름 지정
+	        String fileName = uuid + "_" + animalPicture.getOriginalFilename();
+	        String vidfileName = uuid + "_" + animalVideo.getOriginalFilename();
+
+	        // File이 생성되며, 이름은 "name", projectPath 라는 경로에 담긴다
+	        File saveFile = new File(projectPath, fileName);
+	        File savevidFile = new File(projectPath, vidfileName);
+	        try {
+	        	animalPicture.transferTo(saveFile);
+	        	animalVideo.transferTo(savevidFile);
+			} catch (IllegalStateException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	        //DB에 파일 넣기
+	        updatePatientMap.put("animalPicture", fileName);
+	        updatePatientMap.put("animalVideo", vidfileName);
+	        //저장되는 경로 설정 
+	        updatePatientMap.put("animalPicturePath", "/files/" + fileName);
+	        updatePatientMap.put("animalVideoPath", "/files/" + vidfileName);
 		try {
 			protectorPageMapper.updateProPatient(updatePatientMap);
 		} catch (Exception e) {

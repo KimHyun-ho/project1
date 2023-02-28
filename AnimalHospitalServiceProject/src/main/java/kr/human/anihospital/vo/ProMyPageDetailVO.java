@@ -29,5 +29,8 @@ public class ProMyPageDetailVO {
 	private String animalHospitalName;
 	private String diagnosisDate;
 	private String diagnosisSymptom;
-	
+	private String animalPicture;
+	private String animalVideo;
+	private String animalPicturePath;
+	private String animalVideoPath;
 }

@@ -107,8 +107,11 @@ h3 {
 						<p />
 						<div class="card mb-3" style="width: 88%;" th:each="proMyPageDetailVOList : ${proMyPageDetailVOList}">
 							<div class="row g-1">
-								<div class="col-md-4">
-									<img src="img/dog.jpg" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%;">
+								<div class="col-md-4" th:if = "${proMyPageDetailVOList.animalPicturePath != null}">
+									<img th:src="${proMyPageDetailVOList.animalPicturePath}" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%;">
+								</div>
+								<div class="col-md-4" th:if = "${proMyPageDetailVOList.animalPicturePath == null}">
+									<img src="img/fabric.jpg" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%;">
 								</div>
 								<div class="col-md-8">
 									<div class="card-body">
@@ -132,6 +135,10 @@ h3 {
 											<input type="hidden" name="animalSize" th:value="${proMyPageDetailVOList.animalSize}" />
 											<input type="hidden" name="animalGender" th:value="${proMyPageDetailVOList.animalGender}" />
 											<input type="hidden" name="animalWeight" th:value="${proMyPageDetailVOList.animalWeight}" />
+											<input type="hidden" name="animalPicture" th:value="${proMyPageDetailVOList.animalPicture}" />
+											<input type="hidden" name="animalVideo" th:value="${proMyPageDetailVOList.animalVideo}" />
+											<input type="hidden" name="animalPicturePath" th:value="${proMyPageDetailVOList.animalPicturePath}" />
+											<input type="hidden" name="animalVideoPath" th:value="${proMyPageDetailVOList.animalVideoPath}" />
 											<input type="submit" class="btn btn-primary" style="border-radius: 50px; width: 90px; margin: auto; text-align: center; color: white;" value="정보수정">
 										</form>
 										</div>
