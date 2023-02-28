@@ -64,17 +64,17 @@ public class ProtectorPageServiceImpl implements ProtectorPageService{
 	// 보호자 정보 페이지에서 후기를 화면에 표시해줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
-	public Map<String, Object> selectAllPostscript(int seqMember) {
+	public List<ProDiagnosisVO> selectAllPostscript(int seqMember) {
 		// 보호자 정보 페이지의 후기 리스트를 Mapper에 넘겨주기
-		Map<String, Object> postscriptMap = null;
+		List<ProDiagnosisVO> postscriptList = null;
 		try {
-			postscriptMap = protectorPageMapper.selectAllPostscript(seqMember);
+			postscriptList = protectorPageMapper.selectAllPostscript(seqMember);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		// Mapper가 실행되고 나서 가져온 데이터 확인하기
-		log.info("selectAllPostscript Mapper에서 넘어온 값(서비스) : {}", postscriptMap);
-		return postscriptMap;
+		log.info("selectAllPostscript Mapper에서 넘어온 값(서비스) : {}", postscriptList);
+		return postscriptList;
 	}
 
 	

@@ -57,13 +57,13 @@ public class ProtectorPageController {
 		// ----------------------------------------------------------------------------
 		// 후기리스트를 화면에 넘겨주기 시작
 		// ----------------------------------------------------------------------------
-		Map<String, Object> postscriptMap = null;
+		List<ProDiagnosisVO> postscriptList = null;
 		// 데이터 그릇에 담기
-		postscriptMap = protectorPageService.selectAllPostscript(seqMember);
+		postscriptList = protectorPageService.selectAllPostscript(seqMember);
 		// 받아온 데이터 화면에 넘겨주기
-		model.addAttribute("postscriptMap", postscriptMap);
+		model.addAttribute("postscriptList", postscriptList);
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
-		log.info("selectAllPostscript 서비스에서 넘어온 값(컨트롤러) : {}", postscriptMap);
+		log.info("selectAllPostscript 서비스에서 넘어온 값(컨트롤러) : {}", postscriptList);
 		
 		return "proMypageDetail";
 	}
