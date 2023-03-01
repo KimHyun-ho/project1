@@ -18,6 +18,9 @@
 <!-- Tables - SB Admin -->
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"></script>
+<link href="fullcalendar-5.11.4/lib/main.css" rel="stylesheet" />
+<script src="fullcalendar-5.11.4/lib/main.js"></script>
+<script src="js/jsp/scheduleDoctor.js"></script>
 <style type="text/css">
 #gridContainer {
 	display: grid;
@@ -79,6 +82,11 @@ input[name="toDoContent"] {
 	border-radius: 50px;
 	float: right;
 }
+
+#calendar{
+   width:90%;
+   margin:20px auto;
+}
 </style>
 <!-- Template Main CSS File -->
 <link href="css/style.css" rel="stylesheet">
@@ -103,8 +111,7 @@ input[name="toDoContent"] {
 						<h4 style="text-align: center;">
 							<b>나의 스케줄</b>
 						</h4>
-						<iframe src="https://calendar.google.com/calendar/embed?src=75e1efd2c444b0e1d243b7fe83e3e542f03f13b5b91f3b49d8aef1660d7b819d%40group.calendar.google.com&ctz=Asia%2FSeoul" style="border: 0"
-							width="95%" height="600" frameborder="0" scrolling="no"></iframe>
+						<div id="calendar"></div>
 					</div>
 					<div id="rightContainer">
 						<div id="toDoList">

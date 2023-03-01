@@ -52,13 +52,14 @@
 	</select>
 	
 	<!-- ProMypageDetail 페이지에서 조회할 후기 -->
-	<select id="selectAllPostscript" resultType="map" parameterType="int">
+	<select id="selectAllPostscript" resultType="proDiagnosisVO" parameterType="int">
 		select 
 			p.seq_postscript seqPostscript, 
 			p.seq_diagnosis seqDiagnosis,
-			a.animal_name animalame,
+			a.animal_name animalName,
 			p.postscript_satisfaction postscriptSatisfaction,
 			ah.animal_hospital_name animalHospitalName,
+			DATE_FORMAT(d.diagnosis_date, '%Y-%m-%d') AS diagnosisDate,
 			p.postscript_update_date postscriptUpdateDate,
 			p.postscript_content postscriptContent
 		from 
@@ -174,7 +175,9 @@
 			DATE_FORMAT(NOW(), '%y') - DATE_FORMAT(a.animal_age, '%y') AS animalAge,
 			a.animal_type animalType,
 			a.animal_size animalSize,
-			a.animal_weight animalWeight
+			a.animal_weight animalWeight,
+			a.animal_picture animalPicture,
+			a.animal_picture_path animalPicturePath
 		from 
 			diagnosis dia, doctor d, animalhospital ah , animal a , account ac
 		where 
