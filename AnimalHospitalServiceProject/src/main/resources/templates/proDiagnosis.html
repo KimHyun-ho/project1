@@ -112,52 +112,52 @@ input[name="DownloadPDF"] {
 }
 </style>
 <script type="text/javascript">
- $(function () {
-	$('#saveBtn').on('click',function() {
-		var seqDiagnosis = $("#seqDiagnosis").val();
-		var seqMember = $("#seqMember").val();
-		var seqAnimal = $("#seqAnimal").val();
-		location.href = '/proPostscriptAdd?seqDiagnosis=' +seqDiagnosis+'&seqMember='+seqMember+'&seqAnimal='+seqAnimal;
-	});
-});
-</script>
-<script type="text/javascript">
 	$(function() {
-		$('#deleteBtn').on('click',function() {
-				var result = window.confirm('정말로 삭제하시겠습니까?');
-				if (result) {
-					alert('정상적으로 삭제되었습니다.');
-					var seqPostscript = $("#seqPostscript").val();
-					var seqDiagnosis = $("#seqDiagnosis").val();
-					var seqMember = $("#seqMember").val();
-					var seqAnimal = $("#seqAnimal").val();
-					$.ajax({
-							url : "/deletePostscript",
-							type : "post",
-							data : {
-								seqPostscript : seqPostscript
-							},
-							success : function(data) {
-								window.location.replace("/proDiagnosis?seqMember=" + seqMember + "&seqAnimal=" +seqAnimal+ "&seqDiagnosis=" +seqDiagnosis);
-							},
-							error : function(data) {
-								alert("Error");
-							}
-					});
-				} else if (!result) {
-					alert('취소 되었습니다.');
-				}
-			});
+		$('#saveBtn').on('click', function() {
+			var seqDiagnosis = $("#seqDiagnosis").val();
+			var seqMember = $("#seqMember").val();
+			var seqAnimal = $("#seqAnimal").val();
+			location.href = '/proPostscriptAdd?seqDiagnosis=' + seqDiagnosis + '&seqMember=' + seqMember + '&seqAnimal=' + seqAnimal;
+		});
 	});
 </script>
 <script type="text/javascript">
 	$(function() {
-		$('#updateBtn').on('click',function() {
+		$('#deleteBtn').on('click', function() {
+			var result = window.confirm('정말로 삭제하시겠습니까?');
+			if (result) {
+				alert('정상적으로 삭제되었습니다.');
+				var seqPostscript = $("#seqPostscript").val();
+				var seqDiagnosis = $("#seqDiagnosis").val();
+				var seqMember = $("#seqMember").val();
+				var seqAnimal = $("#seqAnimal").val();
+				$.ajax({
+					url : "/deletePostscript",
+					type : "post",
+					data : {
+						seqPostscript : seqPostscript
+					},
+					success : function(data) {
+						window.location.replace("/proDiagnosis?seqMember=" + seqMember + "&seqAnimal=" + seqAnimal + "&seqDiagnosis=" + seqDiagnosis);
+					},
+					error : function(data) {
+						alert("Error");
+					}
+				});
+			} else if (!result) {
+				alert('취소 되었습니다.');
+			}
+		});
+	});
+</script>
+<script type="text/javascript">
+	$(function() {
+		$('#updateBtn').on('click', function() {
 			var seqPostscript = $("#seqPostscript").val();
 			var seqDiagnosis = $("#seqDiagnosis").val();
 			var seqMember = $("#seqMember").val();
 			var seqAnimal = $("#seqAnimal").val();
-			location.href = '/proPostscriptEdit?seqDiagnosis=' +seqDiagnosis+'&seqMember='+seqMember+'&seqAnimal='+seqAnimal+'&seqPostscript=' +seqPostscript;
+			location.href = '/proPostscriptEdit?seqDiagnosis=' + seqDiagnosis + '&seqMember=' + seqMember + '&seqAnimal=' + seqAnimal + '&seqPostscript=' + seqPostscript;
 		});
 	});
 </script>
@@ -170,7 +170,8 @@ input[name="DownloadPDF"] {
 			<br />
 			<div class="section-title">
 				<h2 style="font-weight: bold; font-size: 30px;">
-					<br />진료내역
+					<br />
+					진료내역
 				</h2>
 			</div>
 		</div>
@@ -201,20 +202,20 @@ input[name="DownloadPDF"] {
 							</div>
 							<hr />
 							<div id="MedicineList" style="margin-top: 10px;">처방목록</div>
-							<input type="button" name="DownloadPDF" value="PDF다운" class="btn btn-primary bt-sm"
-								style="border-radius: 50px; margin-right: 10px; color: white; margin-top: -8px;" />
+							<input type="button" name="DownloadPDF" value="PDF다운" class="btn btn-primary bt-sm" style="border-radius: 50px; margin-right: 10px; color: white; margin-top: -8px;" />
 							<div id="medicineListNull" th:if="${#lists.isEmpty(proDiaMedicineVOList)}">
-								<br /><h6 style="margin-left: 10px; font-size: 16px;">&nbsp;처방내역이 없습니다.</h6>
+								<br />
+								<h6 style="margin-left: 10px; font-size: 16px;">&nbsp;처방내역이 없습니다.</h6>
 							</div>
-							<div id="medicineList" th:if="${proDiaMedicineVOList != null}">	
+							<div id="medicineList" th:if="${proDiaMedicineVOList != null}">
 								<div th:each="proDiaMedicineVOList : ${proDiaMedicineVOList}">
-									<h6 style="margin-left: 10px; font-size: 16px;">[[${proDiaMedicineVOList.medicineName}]]</h6>
+									<h6 style="margin-left: 10px; font-size: 16px;" th:text="${proDiaMedicineVOList.medicineName}"></h6>
 									<!-- th:each="proDiagnosisVOList : ${proDiagnosisVOList}" -->
 									<ul id="MedicineListUl">
 										<!-- <dd id="Medicine_detail"></dd> -->
-										<li id="Medicine_detail">제조회사: [[${proDiaMedicineVOList.medicineManufactureCompany}]] </li>
-										<li id="Medicine_detail">복약안내: [[${proDiaMedicineVOList.medicineMedicationGuide}]]</li>
-										<li id="Medicine_detail">부작용: [[${proDiaMedicineVOList.medicineSideEffect}]]</li>
+										<li id="Medicine_detail" th:text="${'제조회사 : ' + proDiaMedicineVOList.medicineManufactureCompany}"></li>
+										<li id="Medicine_detail" th:text="${'복약안내 : ' + proDiaMedicineVOList.medicineMedicationGuide}"></li>
+										<li id="Medicine_detail" th:text="${'부작용 : ' + proDiaMedicineVOList.medicineSideEffect}"></li>
 									</ul>
 								</div>
 							</div>
@@ -235,7 +236,7 @@ input[name="DownloadPDF"] {
 								</table>
 							</div>
 							<div align="right">
-								<input type="button" class="btn btn-primary btn"  id="saveBtn" value="작성하기" style="border-radius: 50px; margin-right: 10px; color: white;" />
+								<input type="button" class="btn btn-primary btn" id="saveBtn" value="작성하기" style="border-radius: 50px; margin-right: 10px; color: white;" />
 							</div>
 						</div>
 						<div id="postscriptUpdateAndDelete" th:if="${proDiagnosisVOPostscript != null}">
@@ -251,15 +252,21 @@ input[name="DownloadPDF"] {
 										<td>진료병원 : [[${proDiagnosisVOPostscript.animalHospitalName}]]</td>
 									</tr>
 									<tr>
-										<td id="PostscriptBold">별점 : <span th:switch="${proDiagnosisVOPostscript.postscriptSatisfaction}"> <span
-												th:case="'1'">★</span> <span th:case="'2'">★★</span> <span th:case="'3'">★★★</span> <span th:case="'4'">★★★★</span>
+										<td id="PostscriptBold">
+											별점 :
+											<span th:switch="${proDiagnosisVOPostscript.postscriptSatisfaction}">
+												<span th:case="'1'">★</span>
+												<span th:case="'2'">★★</span>
+												<span th:case="'3'">★★★</span>
+												<span th:case="'4'">★★★★</span>
 												<span th:case="'5'">★★★★★</span>
-										</span>
+											</span>
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<div id="PostscriptBold">내용</div> <!-- 내용 길 경우 자바스크립트 이용해서 자동줄바꿈 -->
+											<div id="PostscriptBold">내용</div>
+											<!-- 내용 길 경우 자바스크립트 이용해서 자동줄바꿈 -->
 											<div id="PostscriptContent">[[${proDiagnosisVOPostscript.postscriptContent}]]</div>
 										</td>
 									</tr>
@@ -267,8 +274,7 @@ input[name="DownloadPDF"] {
 							</div>
 							<div align="right">
 								<input type="button" class="btn btn-primary btn" id="updateBtn" value="수정하기" style="border-radius: 50px; margin-right: 10px; color: white;" />
-								<input type="submit" class="btn btn-danger btn" name="deleteBtn" id="deleteBtn" value="삭제하기"
-									style="border-radius: 50px; margin-right: 10px; color: white;" />
+								<input type="submit" class="btn btn-danger btn" name="deleteBtn" id="deleteBtn" value="삭제하기" style="border-radius: 50px; margin-right: 10px; color: white;" />
 							</div>
 						</div>
 						<p />
@@ -276,24 +282,28 @@ input[name="DownloadPDF"] {
 						<div class="card mb-3" style="width: 350px;">
 							<div class="row g-0">
 								<div class="col-md-4">
-									<img src="img/dog-unsolicited.jpg" class="img-fluid rounded-start" id="animalPicture" alt="..."
-										style="width: 100%; height: 100%;">
+									<img src="img/dog-unsolicited.jpg" class="img-fluid rounded-start" id="animalPicture" alt="..." style="width: 100%; height: 100%;">
 								</div>
 								<div class="col-md-8">
 									<div class="card-body">
 										<h5 class="animalName" style="text-align: center;">[[${proDiagnosisVO.animalName}]]</h5>
 										<hr />
 										<p class="card-text">
-											나이 : [[${proDiagnosisVO.animalAge}]] 살 <br /> 종 : [[${proDiagnosisVO.animalType}]] <br /> 사이즈
-											: [[${proDiagnosisVO.animalSize}]] <br /> 몸무게 : [[${proDiagnosisVO.animalWeight}]] kg <br />
+											나이 : [[${proDiagnosisVO.animalAge}]] 살
+											<br />
+											종 : [[${proDiagnosisVO.animalType}]]
+											<br />
+											사이즈 : [[${proDiagnosisVO.animalSize}]]
+											<br />
+											몸무게 : [[${proDiagnosisVO.animalWeight}]] kg
+											<br />
 										</p>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div align="right">
-							<a href="/scheduleProtector" class="btn btn-primary bt-sm"
-								style="border-radius: 50px; margin-right: 10px; color: white;">예약확인</a>
+							<a href="/scheduleProtector" class="btn btn-primary bt-sm" style="border-radius: 50px; margin-right: 10px; color: white;">예약확인</a>
 						</div>
 					</div>
 				</div>
