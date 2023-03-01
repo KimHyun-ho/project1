@@ -117,10 +117,10 @@ public class MainController {
 	}
 
 	// 스케줄 관리
-	@GetMapping("/scheduleDoctor")
-	public String scheduleDoctor() {
-		return "scheduleDoctor";
-	}
+//	@GetMapping("/scheduleDoctor")
+//	public String scheduleDoctor() {
+//		return "scheduleDoctor";
+//	}
 
 	// 나의 예약 정보
 	@GetMapping("/proSchedule")
