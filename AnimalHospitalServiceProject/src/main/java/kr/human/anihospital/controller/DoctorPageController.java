@@ -1,5 +1,6 @@
 package kr.human.anihospital.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
@@ -133,8 +134,10 @@ public class DoctorPageController {
 	}
 
 	@PostMapping("/diagnosisAddOk")
-	public String diagnosisAddOk(@RequestParam Map<String, Object> map, @RequestParam List<Integer> seqMedicineList,
-			@RequestParam List<String> medicineNameList, @RequestParam List<String> medicationGuideList) {
+	public String diagnosisAddOk(@RequestParam Map<String, Object> map, 
+								 @RequestParam List<Integer> seqMedicineList,
+								 @RequestParam List<String> medicineNameList, 
+								 @RequestParam List<String> medicationGuideList) {
 		// #########################################################
 		// ## seqDoctor는 로그인 정보 Session에서 받아와야 합니다.##
 		// #########################################################
@@ -145,5 +148,13 @@ public class DoctorPageController {
 		log.info("받은 진료내용 값 : {}", map);
 		doctorPageService.insertOneDiagnosisInfoAndDiagnosisMedicine(map, seqMedicineList, medicineNameList, medicationGuideList);
 		return "redirect:patientInfo?seqAnimal=" + map.get("seqAnimal");
+	}
+	
+	@PostMapping("/diagnosisAddFeedOk")
+	@ResponseBody
+	public String insertFeedExcelUpload(@RequestParam Map<String, String> feedJsonMap) {
+		log.info("insertFeedExcelUpload 실행, 화면에서 넘어온 값(컨트롤러) : {} {}", feedJsonMap);
+		doctorPageService.insertFeedExcelUpload(feedJsonMap);
+		return "diagnosisAdd";
 	}
 }

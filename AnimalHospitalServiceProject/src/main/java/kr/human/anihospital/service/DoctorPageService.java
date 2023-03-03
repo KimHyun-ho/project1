@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.human.anihospital.mapper.DoctorPageMapper;
 import kr.human.anihospital.vo.DoctorInfoVO;
+import kr.human.anihospital.vo.FeedVO;
 import kr.human.anihospital.vo.MedicineInfoVO;
+import lombok.extern.slf4j.Slf4j;
 import kr.human.anihospital.vo.DiagnosisInfoVO;
 import kr.human.anihospital.vo.DocPatientInfoVO;
 
@@ -23,6 +25,7 @@ import kr.human.anihospital.vo.DocPatientInfoVO;
 //##수의사 전용 페이지의 모든 CRUD를 담은 Service 클래스 파일입니다.##
 //####################################################################
 @Service
+@Slf4j
 public class DoctorPageService {
 
 	@Autowired
@@ -42,26 +45,26 @@ public class DoctorPageService {
 	// /doctorInfoEdit 페이지에서 수정한 값으로 DB를 업데이트 하는 서비스 메소드
 	public void updateOneDoctorInfoVO(DoctorInfoVO doctorInfoVO, MultipartFile file) {
 		// 저장할 경로를 지정
-		  String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-	        // UUID(식별자)를 사용해 사용해 랜덤으로 이름 만들어줌
-	        UUID uuid = UUID.randomUUID();
+		String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+		// UUID(식별자)를 사용해 사용해 랜덤으로 이름 만들어줌
+		UUID uuid = UUID.randomUUID();
 
-	        // 랜덤식별자_원래 파일 이름 = 저장될 파일이름 지정
-	        String fileName = uuid + "_" + file.getOriginalFilename();
+		// 랜덤식별자_원래 파일 이름 = 저장될 파일이름 지정
+		String fileName = uuid + "_" + file.getOriginalFilename();
 
-	        // File이 생성되며, 이름은 "name", projectPath 라는 경로에 담긴다
-	        File saveFile = new File(projectPath, fileName);
-	        	try {
-					file.transferTo(saveFile);
-				} catch (IllegalStateException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-	        //DB에 파일 넣기
-	        doctorInfoVO.setDoctorPicture(fileName);
-	        //저장되는 경로 설정 
-	        doctorInfoVO.setDoctorPicturePath("/files/" + fileName);
+		// File이 생성되며, 이름은 "name", projectPath 라는 경로에 담긴다
+		File saveFile = new File(projectPath, fileName);
+		try {
+			file.transferTo(saveFile);
+		} catch (IllegalStateException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		// DB에 파일 넣기
+		doctorInfoVO.setDoctorPicture(fileName);
+		// 저장되는 경로 설정
+		doctorInfoVO.setDoctorPicturePath("/files/" + fileName);
 		try {
 			doctorPageMapper.updateOneDoctorInfoVO(doctorInfoVO);
 		} catch (Exception e) {
@@ -163,4 +166,24 @@ public class DoctorPageService {
 			e.printStackTrace();
 		}
 	}
+
+	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
+	public void insertFeedExcelUpload(Map<String, String> feedJSONMap) {
+		log.info("insertFeedExcelUpload 실행, 화면에서 넘어온 값(서비스) : {}", feedJSONMap);
+		FeedVO feedVO = new FeedVO();
+		log.info("feedJSONMap.size() {}", feedJSONMap.size());
+		for (int i = 0; i < feedJSONMap.size() / 5; i++) {
+			feedVO.setFeedName(feedJSONMap.get("data[" + i + "][사료 이름]"));
+			feedVO.setFeedCompany(feedJSONMap.get("data[" + i + "][제조회사]"));
+			feedVO.setFeedAllergySymptom(feedJSONMap.get("data[" + i + "][성분]"));
+			feedVO.setFeedSideEffect(feedJSONMap.get("data[" + i + "][알레르기 증상]"));
+			feedVO.setFeedUpdateDate(feedJSONMap.get("data[" + i + "][DB추가일]"));
+			try {
+				doctorPageMapper.insertFeedExcelUpload(feedVO);
+				log.info("insertFeedExcelUpload 실행, 메퍼에서 넘어온 값(서비스) : {}", feedVO);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	};
 }
