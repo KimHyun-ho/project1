@@ -122,11 +122,11 @@ public class MainController {
 //		return "scheduleDoctor";
 //	}
 
-	// 나의 예약 정보
-	@GetMapping("/proSchedule")
-	public String proSchedule() {
-		return "proSchedule";
-	}
+//	// 나의 예약 정보
+//	@GetMapping("/proSchedule")
+//	public String proSchedule() {
+//		return "proSchedule";
+//	}
 
 	// 환자 추가
 	@GetMapping("/proPatientAdd")

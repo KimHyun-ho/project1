@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.human.anihospital.mapper.ProtectorPageMapper;
+import kr.human.anihospital.vo.AnimalHospitalVO;
+import kr.human.anihospital.vo.DoctorInfoVO;
 import kr.human.anihospital.vo.ProAnimalListVO;
 import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
@@ -277,6 +279,35 @@ public class ProtectorPageServiceImpl implements ProtectorPageService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄 페이지에서 보여줄 병원 정보 표시 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public List<AnimalHospitalVO> selectAllAnimalHospitalVO()  {
+		List<AnimalHospitalVO> animalHospitalList = null;
+		try {
+			animalHospitalList = protectorPageMapper.selectAllAnimalHospitalVO();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return animalHospitalList;
+	}
+
+
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄 페이지에서 보여줄 의사 정보 표시 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public List<DoctorInfoVO> selectAllDoctorName(String animalHospitalName) {
+		List<DoctorInfoVO> doctorList = null;
+		try {
+			doctorList = protectorPageMapper.selectAllDoctorName(animalHospitalName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return doctorList;
 	}
 	
 }

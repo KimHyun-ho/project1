@@ -27,6 +27,9 @@
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link href="fullcalendar-5.11.4/lib/main.css" rel="stylesheet" />
+<script src="fullcalendar-5.11.4/lib/main.js"></script>
+<script src="js/jsp/scheduleProtector.js"></script>
 <script type="text/javascript">
 	HTMLElement.prototype.change=function(){
 		  const e = document.createEvent("HTMLEvents");
@@ -179,39 +182,25 @@ input[name="selectDoctorBtn"] {
 						<p>병원을 선택한 후 날짜를 선택하면 진료 예약을 할 수 있습니다.</p>
 						<!--  ==============수정======================= -->
 						<!-- 예시: <form th:action="@{/board/list}" method="get"> -->
-						<form>
-							<input type="text" name="searchHospital" class="form-control" id="searchHospital" placeholder="병원이름을 입력해주세요."
-								data-rule="text" required="required">
-							<input type="submit" class="btn btn-primary" name="searchHospitalBtn" id="searchHospitaltBtn" value="병원찾기">
-						</form>
+						<div class="col-md-4 ">
+							<input type="text" class="form-control" id="animalHospitalName" list="animalHospital_name_option"
+								placeholder="병원을 선택해주세요." data-rule="text" required="required" onchange="hospital()">
+							<datalist id="animalHospital_name_option">
+								<option class="form-control" th:each="animalHospitalList : ${animalHospitalList}"
+									th:value="${animalHospitalList.animalHospitalName}">
+							</datalist>
+						</div>
 						<br />
-						<form style="display: inline;">
-							<select name="selectDoctor" id="selectDoctor" required="required">
-								<option value="" disabled selected></option>
-								<option value="김ㅇㅇ">김ㅇㅇ</option>
-								<option value="이ㅇㅇ">이ㅇㅇ</option>
-							</select>
-							<input type="submit" class="btn btn-primary" name="selectDoctorBtn" id="selectDoctortBtn" value="의사선택">
-						</form>
-						<br />
-						<!-- 
-						<select onchange="handleOnChange2(this)" id="selectHospital">
-							<option value="myCalendar">나의 달력</option>
-							<option value="" selected="selected">병원선택하기</option>
-							<option value="a">A동물병원</option>
-							<option value="b">B동물병원</option>
-							<option value="c">C동물병원</option>
-							<option value="d">D동물병원</option>
-						</select> <a onclick="location.href='/map'" class="btn btn-primary btn-sm"
-							style="border-radius: 50px; width: 90px; margin: auto; text-align: center; color: white;">병원찾기</a> 
-						-->
-
-						<!--  ==============수정======================= -->
-
-						<br />
-						<iframe
-							src="https://calendar.google.com/calendar/embed?src=75e1efd2c444b0e1d243b7fe83e3e542f03f13b5b91f3b49d8aef1660d7b819d%40group.calendar.google.com&ctz=Asia%2FSeoul"
-							style="border: 0" width="95%" height="100%" frameborder="0" scrolling="no"></iframe>
+						<div class="col-md-4 ">
+							<input type="text" class="form-control" id="doctorName" list="doctor_name_option" placeholder="의사를 선택해주세요."
+								data-rule="text" required="required" style="float: left;">
+							<datalist id="doctor_name_option">
+							</datalist>
+						</div>
+						&nbsp;
+						<input type="button" class="btn btn-primary" name="selectDoctorBtn" id="selectDoctortBtn" value="조회하기">
+						<br /> <br />
+						<div id="calendar"></div>
 					</div>
 					<div id="rightContainer">
 						<div id="reservation">

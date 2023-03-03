@@ -16,4 +16,23 @@
 			WHERE
 				seq_doctor = #{seqDoctor}
 	</select>
+	
+	<!-- 보호자의 스케줄 조회 -->
+	<select id="selectAllProSchedule" resultType="map" parameterType="int">
+		select 
+			p.seq_protector_schedule seqProtectorSchedule,
+			a.seq_member seqMember,
+			p.seq_animal seqAnimal,
+			p.seq_doctor_schedule seqDoctorSchedule,
+			p.schedule_protector_holiday_start holidayStart,
+			p.schedule_protector_holiday_end holidayEnd,
+			p.schedule_protector_content scheduleProtectorContent,
+			p.schedule_protector_write_date scheduleProtectorWriteDate,
+			p.schedule_protector_update_date scheduleProtectorUpdateDate
+		from 
+			protectorschedule p, animal a 
+		where 
+			p.seq_animal = a.seq_animal and
+			a.seq_member = #{seqMember}
+	</select>
 </mapper>  

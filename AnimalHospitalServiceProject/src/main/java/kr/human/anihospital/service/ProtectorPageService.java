@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.human.anihospital.vo.AnimalHospitalVO;
+import kr.human.anihospital.vo.DoctorInfoVO;
 import kr.human.anihospital.vo.ProAnimalListVO;
 import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
@@ -75,4 +77,14 @@ public interface ProtectorPageService {
 	// 진료내역페이지에서 후기 삭제하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	void deletePostscript(int seqPostscript) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄 페이지에서 보여줄 병원 정보 표시 메서드
+	//----------------------------------------------------------------------------------------------------
+	List<AnimalHospitalVO> selectAllAnimalHospitalVO() throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄 페이지에서 보여줄 의사 정보 표시 메서드
+	//----------------------------------------------------------------------------------------------------
+	List<DoctorInfoVO> selectAllDoctorName(String animalHospitalName) throws Exception;
 }
