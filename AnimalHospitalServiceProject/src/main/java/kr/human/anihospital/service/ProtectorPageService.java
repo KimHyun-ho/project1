@@ -87,4 +87,5 @@ public interface ProtectorPageService {
 	// 보호자 스케줄 페이지에서 보여줄 의사 정보 표시 메서드
 	//----------------------------------------------------------------------------------------------------
 	List<DoctorInfoVO> selectAllDoctorName(String animalHospitalName) throws Exception;
+
 }
