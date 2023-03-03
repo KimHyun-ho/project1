@@ -321,8 +321,6 @@ public class ProtectorPageServiceImpl implements ProtectorPageService {
 		}
 		return doctorList;
 	}
-	
-}
 
 	// ----------------------------------------------------------------------------------------------------
 	// PDF파일을 생성하는 메소드
@@ -396,7 +394,7 @@ public class ProtectorPageServiceImpl implements ProtectorPageService {
 		return fileName;
 	}
   
-  // ----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	// PDF파일을 삭제하는 메소드
 	// ----------------------------------------------------------------------------------------------------
 	public String deletePDF(String pdfName) {
@@ -409,5 +407,4 @@ public class ProtectorPageServiceImpl implements ProtectorPageService {
 			return "파일이 존재 하지 않습니다.";
 		}
 	}
-
 }
