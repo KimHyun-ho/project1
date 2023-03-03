@@ -120,8 +120,6 @@ input[name="DownloadPDF"] {
 			location.href = '/proPostscriptAdd?seqDiagnosis=' + seqDiagnosis + '&seqMember=' + seqMember + '&seqAnimal=' + seqAnimal;
 		});
 	});
-</script>
-<script type="text/javascript">
 	$(function() {
 		$('#deleteBtn').on('click', function() {
 			var result = window.confirm('정말로 삭제하시겠습니까?');
@@ -149,8 +147,6 @@ input[name="DownloadPDF"] {
 			}
 		});
 	});
-</script>
-<script type="text/javascript">
 	$(function() {
 		$('#updateBtn').on('click', function() {
 			var seqPostscript = $("#seqPostscript").val();
@@ -159,7 +155,69 @@ input[name="DownloadPDF"] {
 			var seqAnimal = $("#seqAnimal").val();
 			location.href = '/proPostscriptEdit?seqDiagnosis=' + seqDiagnosis + '&seqMember=' + seqMember + '&seqAnimal=' + seqAnimal + '&seqPostscript=' + seqPostscript;
 		});
+		$('#DownloadPDF').on('click', function() {
+			var medicineName = [];
+			var medicineCompany = [];
+			var medicationGuide = [];
+			var sideEffect = [];
+			var animalHospitalName = $("#animalHospitalName").html();
+			var seqDiagnosis = $("#seqDiagnosis02").html();
+			var diagnosisDate = $("#diagnosisDate").html();
+			var memberName = $("#memberName").html();
+			var animalName = $("#animalName").html();
+			var diagnosisInfo = [];
+			diagnosisInfo.push(seqDiagnosis);
+			diagnosisInfo.push(diagnosisDate);
+			diagnosisInfo.push(memberName);
+			diagnosisInfo.push(animalName);
+			diagnosisInfo.push(animalHospitalName);
+			var count = $('.proDiaMedicineVOList').length;
+			for (i = 0; i < count; i++) {
+				medicineName.push($('#medicineName' + i).val());
+				medicationGuide.push($('#medicineMedicationGuide' + i).val());
+				sideEffect.push($('#medicineSideEffect' + i).val());
+			}
+			$.ajax({
+				url : "/createPDF",
+				type : "post",
+				dataType : "text",
+				data : {
+					medicineName : medicineName,
+					medicationGuide : medicationGuide,
+					sideEffect : sideEffect,
+					diagnosisInfo : diagnosisInfo
+				},
+				success : function(data) {
+					var delay = 2000;
+					const anchorElement = document.createElement('a');
+					document.body.appendChild(anchorElement);
+					anchorElement.download = ''; // a tag에 download 속성을 줘서 클릭할 때 다운로드가 일어날 수 있도록 하기
+					anchorElement.href = '/pdf/' + data; // href에 url 달아주기
+					setTimeout(() => anchorElement.click(),delay);
+					document.body.removeChild(anchorElement); // cleanup - 쓰임을 다한 a 태그 삭제
+					setTimeout(() => deletePDF(data),delay+1000);
+				},
+				error : function(data) {
+					alert("다운로드에 실패했습니다.");
+				}
+			});
+		});
 	});
+	function deletePDF(e){
+		var pdfName = e;
+		$.ajax({
+			url : "/deletePDF",
+			type : "post",
+			dataType : "text",
+			data : {
+				pdfName : pdfName
+			},
+			success : function(data) {
+			},
+			error : function(data) {
+			}
+		});
+	}
 </script>
 </head>
 <body class="sb-nav-fixed">
@@ -189,12 +247,12 @@ input[name="DownloadPDF"] {
 							<input type="hidden" name="seqAnimal" id="seqAnimal" th:value="${proDiagnosisVO.seqAnimal}">
 							<input type="hidden" name="seqDiagnosis" id="seqDiagnosis" th:value="${proDiagnosisVO.seqDiagnosis}">
 							<div class="diagnosis">
-								<h6>진료번호 : [[${proDiagnosisVO.seqDiagnosis}]]</h6>
-								<h6>진료일 : [[${proDiagnosisVO.diagnosisDate}]]</h6>
-								<h6>진료병원 : [[${proDiagnosisVO.animalHospitalName}]]</h6>
-								<h6>의사명 : [[${proDiagnosisVO.memberName}]]</h6>
-								<h6>환자명 : [[${proDiagnosisVO.animalName}]]</h6>
-								<h6>복약방법 : [[${proDiagnosisVO.diagnosisMedicationWay}]]</h6>
+								<h6 id="seqDiagnosis02" th:text="'진료번호 : ' + ${proDiagnosisVO.seqDiagnosis}"></h6>
+								<h6 id="diagnosisDate" th:text="'진료일 : ' + ${proDiagnosisVO.diagnosisDate}"></h6>
+								<h6 id="animalHospitalName" th:text="'진료병원 : ' + ${proDiagnosisVO.animalHospitalName}"></h6>
+								<h6 id="memberName" th:text="'진료의 : ' + ${proDiagnosisVO.memberName}"></h6>
+								<h6 id="animalName" th:text="'환자명 : ' + ${proDiagnosisVO.animalName}"></h6>
+								<h6 id="diagnosisMedicationWay" th:text="'복약방법 : ' + ${proDiagnosisVO.diagnosisMedicationWay}"></h6>
 								<hr />
 								<h5>진료내용</h5>
 								&nbsp;&nbsp;[[${proDiagnosisVO.diagnosisSymptom}]]
@@ -202,7 +260,10 @@ input[name="DownloadPDF"] {
 							</div>
 							<hr />
 							<div id="MedicineList" style="margin-top: 10px;">처방목록</div>
-							<input type="button" name="DownloadPDF" value="PDF다운" class="btn btn-primary bt-sm" style="border-radius: 50px; margin-right: 10px; color: white; margin-top: -8px;" />
+							<input type="hidden" class="proDiaMedicineVOList" th:each="proDiaMedicineVOList,i : ${proDiaMedicineVOList}" th:id="'medicineName'+${i.index}" th:value="${proDiaMedicineVOList.medicineName}">
+							<input type="hidden" th:each="proDiaMedicineVOList,i : ${proDiaMedicineVOList}" th:id="'medicineMedicationGuide'+${i.index}" th:value="${proDiaMedicineVOList.medicineMedicationGuide}">
+							<input type="hidden" th:each="proDiaMedicineVOList,i : ${proDiaMedicineVOList}" th:id="'medicineSideEffect'+${i.index}" th:value="${proDiaMedicineVOList.medicineSideEffect}">
+							<input type="button" id="DownloadPDF" name="DownloadPDF" value="PDF다운" class="btn btn-primary bt-sm" style="border-radius: 50px; margin-right: 10px; color: white; margin-top: -8px;" />
 							<div id="medicineListNull" th:if="${#lists.isEmpty(proDiaMedicineVOList)}">
 								<br />
 								<h6 style="margin-left: 10px; font-size: 16px;">&nbsp;처방내역이 없습니다.</h6>
@@ -281,13 +342,11 @@ input[name="DownloadPDF"] {
 						<!-- 환자 정보 -->
 						<div class="card mb-3" style="width: 350px;">
 							<div class="row g-0">
-								<div class="col-md-4" th:if = "${proDiagnosisVO.animalPicturePath != null}">
-									<img th:src="${proDiagnosisVO.animalPicturePath}" class="img-fluid rounded-start" id="animalPicture"
-										style="width: 100%; height: 100%;">
+								<div class="col-md-4" th:if="${proDiagnosisVO.animalPicturePath != null}">
+									<img th:src="${proDiagnosisVO.animalPicturePath}" class="img-fluid rounded-start" id="animalPicture" style="width: 100%; height: 100%;">
 								</div>
-								<div class="col-md-4" th:if = "${proDiagnosisVO.animalPicturePath == null}">
-									<img src="img/fabric.jpg" class="img-fluid rounded-start" id="animalPicture" alt="..."
-										style="width: 100%; height: 100%;">
+								<div class="col-md-4" th:if="${proDiagnosisVO.animalPicturePath == null}">
+									<img src="img/fabric.jpg" class="img-fluid rounded-start" id="animalPicture" alt="..." style="width: 100%; height: 100%;">
 								</div>
 								<div class="col-md-8">
 									<div class="card-body">

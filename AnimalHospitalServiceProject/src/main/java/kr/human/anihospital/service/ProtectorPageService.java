@@ -75,4 +75,5 @@ public interface ProtectorPageService {
 	// 진료내역페이지에서 후기 삭제하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	void deletePostscript(int seqPostscript) throws Exception;
+	
 }
