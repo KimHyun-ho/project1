@@ -257,4 +257,28 @@
 		delete from postscript 
 		where seq_postscript = #{seqPostscript}
 	</delete>
+	
+	<!-- 보호자 스케줄 페이지에 나타낼 병원 리스트 -->
+	<select id="selectAllAnimalHospitalVO" resultType="AnimalHospitalVO">
+		SELECT
+			seq_animal_hospital seqAnimalHospital,
+			animal_hospital_name animalHospitalName,
+			animal_hospital_address animalHospitalAddress,
+			animal_hospital_phoneNo animalHospitalPhoneNo
+		FROM 
+			animalhospital 
+	</select>
+	
+	<!-- 보호자 스케줄 페이지에서 나타낼 의사 리스트 -->
+	<select id="selectAllDoctorName" resultType="DoctorInfoVO" parameterType="String">
+	select 
+		a.seq_member seqMember, a.member_name memberName, d.seq_doctor seqDoctor
+	from 
+		account a , doctor d , animalhospital ah 
+	where 
+		a.seq_member =d.seq_member and 
+		d.seq_animal_hospital = ah.seq_animal_hospital and 
+		ah.animal_hospital_name = #{animalHospitalName}
+	</select>
+	
 </mapper>

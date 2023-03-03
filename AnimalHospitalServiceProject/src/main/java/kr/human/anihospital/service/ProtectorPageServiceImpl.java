@@ -23,6 +23,8 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 import kr.human.anihospital.mapper.ProtectorPageMapper;
+import kr.human.anihospital.vo.AnimalHospitalVO;
+import kr.human.anihospital.vo.DoctorInfoVO;
 import kr.human.anihospital.vo.ProAnimalListVO;
 import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
@@ -290,6 +292,38 @@ public class ProtectorPageServiceImpl implements ProtectorPageService {
 		}
 	}
 
+
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄 페이지에서 보여줄 병원 정보 표시 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public List<AnimalHospitalVO> selectAllAnimalHospitalVO()  {
+		List<AnimalHospitalVO> animalHospitalList = null;
+		try {
+			animalHospitalList = protectorPageMapper.selectAllAnimalHospitalVO();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return animalHospitalList;
+	}
+
+
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄 페이지에서 보여줄 의사 정보 표시 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public List<DoctorInfoVO> selectAllDoctorName(String animalHospitalName) {
+		List<DoctorInfoVO> doctorList = null;
+		try {
+			doctorList = protectorPageMapper.selectAllDoctorName(animalHospitalName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return doctorList;
+	}
+	
+}
+
 	// ----------------------------------------------------------------------------------------------------
 	// PDF파일을 생성하는 메소드
 	// ----------------------------------------------------------------------------------------------------
@@ -361,7 +395,10 @@ public class ProtectorPageServiceImpl implements ProtectorPageService {
 
 		return fileName;
 	}
-
+  
+  // ----------------------------------------------------------------------------------------------------
+	// PDF파일을 삭제하는 메소드
+	// ----------------------------------------------------------------------------------------------------
 	public String deletePDF(String pdfName) {
 		String fileURL = "src/main/resources/static/pdf/";
 		File deletePDF = new File(fileURL + pdfName);
