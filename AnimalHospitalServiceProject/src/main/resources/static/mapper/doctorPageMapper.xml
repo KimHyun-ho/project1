@@ -193,4 +193,20 @@
 		VALUES
 			(null,#{seqDiagnosis},#{seqMedicine})
 	</insert>
+	
+	<insert id="insertFeedExcelUpload" parameterType="FeedVO">
+		insert into feed 
+			(feed_name,
+			 feed_company,
+			 feed_allergy_symptom,
+			 feed_side_effect,
+			 feed_update_date
+			 )
+		 values
+			 (#{feedName},
+			  #{feedCompany},
+			  #{feedAllergySymptom},
+			  #{feedSideEffect},
+			  now())
+	</insert>
 </mapper>
