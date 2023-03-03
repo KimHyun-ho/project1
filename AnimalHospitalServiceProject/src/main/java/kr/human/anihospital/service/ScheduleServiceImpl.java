@@ -34,4 +34,22 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 컨트롤러에 데이터 전달
 		return scheduleDoctorList;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 풀캘린더에 표시해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public List<Map<String, Object>> selectAllProSchedule(int seqMember) {
+		List<Map<String, Object>> scheduleProtectorList = null;
+		try {
+			scheduleProtectorList = scheduleMapper.selectAllProSchedule(seqMember);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// 데이터가 잘 담겨있는지 로그찍어보기
+		log.info("selectAllProSchedule실행 매퍼에서 돌아온 값(서비스) : {}", scheduleProtectorList);
+		// 컨트롤러에 데이터 전달
+		return scheduleProtectorList;
+	}
+
 }

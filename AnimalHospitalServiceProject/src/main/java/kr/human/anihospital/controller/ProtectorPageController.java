@@ -9,9 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.human.anihospital.service.ProtectorPageService;
+import kr.human.anihospital.vo.AnimalHospitalVO;
+import kr.human.anihospital.vo.DoctorInfoVO;
 import kr.human.anihospital.vo.ProAnimalListVO;
 import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
@@ -198,5 +201,27 @@ public class ProtectorPageController {
 		model.addAttribute("seqMember", seqMember);
 		model.addAttribute("seqAnimal", seqAnimal);
 		return "proPostscriptEdit";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄 페이지
+	//----------------------------------------------------------------------------------------------------
+	@GetMapping("/proSchedule")
+	public String proSchedule(Model model) throws Exception {
+		List<AnimalHospitalVO> animalHospitalList = null;
+		animalHospitalList = protectorPageService.selectAllAnimalHospitalVO();
+		model.addAttribute("animalHospitalList",animalHospitalList);
+		return "proSchedule";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄 페이지에서 병원 이름을 받아 의사 목록을 띄워줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@PostMapping("/proScheduleDoctorList")
+	@ResponseBody
+	public List<DoctorInfoVO> proScheduleDoctorList(@RequestParam String animalHospitalName) throws Exception {
+		List<DoctorInfoVO> doctorList = null;
+		doctorList = protectorPageService.selectAllDoctorName(animalHospitalName);
+		return doctorList;
 	}
 }
