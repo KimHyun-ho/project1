@@ -37,7 +37,7 @@
 			animalhospital ah
 		WHERE
 			a.seq_member = d.seq_member 
-			AND a.seq_member = #{seqMember} 
+			AND a.seq_member = #{seqMember}
 			AND d.seq_animal_hospital =ah.seq_animal_hospital 
 			AND a.member_role = 0
 	</select>
@@ -62,6 +62,26 @@
 	</update>
 
 	<!--  -->
+	<select id="selectCountPatientInfoVOList" parameterType="int" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			animal a,
+			diagnosis d,
+			account ac
+		WHERE
+			a.seq_animal in
+			(
+			SELECT
+				seq_animal
+			FROM
+				diagnosis dia
+			WHERE
+				dia.seq_doctor = #{seqDoctor} )
+			AND a.seq_animal = d.seq_animal
+			AND a.seq_member = ac.seq_member
+			
+	</select>
 	<select id="selectAllPatientInfoVO" parameterType="int"
 		resultType="kr.human.anihospital.vo.DocPatientInfoVO">
 		SELECT
@@ -93,9 +113,10 @@
 			AND a.seq_member = ac.seq_member
 		ORDER BY
 			d.diagnosis_date desc
+		LIMIT
+			#{startNo},#{pageSize}
 	</select>
 	
-		<!--  -->
 	<select id="selectOnePatientInfoVO" parameterType="int"
 		resultType="kr.human.anihospital.vo.DocPatientInfoVO">
 		SELECT

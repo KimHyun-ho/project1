@@ -17,6 +17,7 @@ import kr.human.anihospital.mapper.DoctorPageMapper;
 import kr.human.anihospital.vo.DoctorInfoVO;
 import kr.human.anihospital.vo.FeedVO;
 import kr.human.anihospital.vo.MedicineInfoVO;
+import kr.human.anihospital.vo.PagingVO;
 import lombok.extern.slf4j.Slf4j;
 import kr.human.anihospital.vo.DiagnosisInfoVO;
 import kr.human.anihospital.vo.DocPatientInfoVO;
@@ -73,14 +74,16 @@ public class DoctorPageService {
 	}
 
 	// 세션으로부터 seqDoctor값을 받아 /patientInfoList 페이지에서 진료내역을 리스트로 조회하는 서비스 메소드
-	public List<DocPatientInfoVO> selectAllPatientInfoVO(int seqDoctor) {
-		List<DocPatientInfoVO> patientInfoVOs = new ArrayList<>();
+	public PagingVO<DocPatientInfoVO> selectAllPatientInfoVO(int seqDoctor,int currentPage, int pageSize, int blockSize) {
+		PagingVO<DocPatientInfoVO> pagingVO = null;
 		try {
-			patientInfoVOs = doctorPageMapper.selectAllPatientInfoVO(seqDoctor);
+			int totalCount = doctorPageMapper.selectCountPatientInfoVOList(seqDoctor);
+			pagingVO = new PagingVO<>(totalCount, currentPage, pageSize, blockSize); 
+			pagingVO.setList(doctorPageMapper.selectAllPatientInfoVO(seqDoctor,pagingVO.getStartNo(),pagingVO.getPageSize()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return patientInfoVOs;
+		return pagingVO;
 	}
 
 	// /patientInfoList 페이지에서 진료내역을 클릭하여 /patientInfo 페이지로 이동할 때 seqAnimal 값을 받아

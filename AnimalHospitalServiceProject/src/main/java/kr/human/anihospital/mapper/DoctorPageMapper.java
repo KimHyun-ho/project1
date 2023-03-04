@@ -1,9 +1,9 @@
 package kr.human.anihospital.mapper;
 
 import java.sql.SQLException;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,8 +24,11 @@ public interface DoctorPageMapper {
 	// /doctorInfoEdit 페이지에서 수정한 값으로 DB를 업데이트 하는 매퍼 메소드
 	void updateOneDoctorInfoVO(DoctorInfoVO doctorInfoVO) throws SQLException;
 
+	// 세션으로부터 seqDoctor값을 받아 해당 의료인의 진료기록 수를 조회하는 메소드
+	int selectCountPatientInfoVOList(int seqDoctor) throws SQLException;
+	
 	// 세션으로부터 seqDoctor값을 받아 /patientInfoList 페이지에서 진료내역을 리스트로 조회하는 매퍼 메소드
-	List<DocPatientInfoVO> selectAllPatientInfoVO(int seqDoctor) throws SQLException;
+	List<DocPatientInfoVO> selectAllPatientInfoVO(int seqDoctor, int startNo, int pageSize) throws SQLException;
 
 	// /patientInfoList 페이지에서 진료내역을 클릭하여 /patientInfo 페이지로 이동할 때 seqAnimal 값을 받아
 	// 환자 정보를 조회하는 매퍼 메소드
@@ -52,7 +55,7 @@ public interface DoctorPageMapper {
 
 	// 진료기록의 처방되는 약 정보를 insert하는 매퍼 메소드
 	void insertOneDiagnosisMedicine(HashMap<String, Integer> hashMap) throws SQLException;
-	
+
 	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
 	void insertFeedExcelUpload(FeedVO feedVO) throws Exception;
 }

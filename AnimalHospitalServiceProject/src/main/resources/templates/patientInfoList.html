@@ -80,6 +80,7 @@ input[name="searchPatientBtn"] {
 				<div class="white_shd full margin_bottom_30">
 					<div class="full graph_head"></div>
 					<div class="table_section padding_infor_info">
+						<div th:text="${info}"></div>
 						<div class="table-responsive-sm" id="medicineListNull" th:if="${#lists.isEmpty(patientInfoList)}">
 							<br />
 							<h6 style="margin-left: 10px; font-size: 16px;">&nbsp;진료내역이 없습니다.</h6>
@@ -112,46 +113,7 @@ input[name="searchPatientBtn"] {
 							<br />
 							<nav aria-label="Page navigation example">
 								<ul class="pagination">
-									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Previous">
-											<span aria-hidden="true">&laquo;</span>
-										</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">1</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">2</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">3</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">4</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">5</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">6</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">7</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">8</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">9</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">10</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Next">
-											<span aria-hidden="true">&raquo;</span>
-										</a>
-									</li>
+									<li>[(${list})]</li>
 								</ul>
 							</nav>
 							<!-- 각 번호 페이지 버튼
