@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.human.anihospital.service.DoctorPageService;
 import kr.human.anihospital.vo.DoctorInfoVO;
 import kr.human.anihospital.vo.MedicineInfoVO;
+import kr.human.anihospital.vo.PagingVO;
 import kr.human.anihospital.vo.DiagnosisInfoVO;
 import kr.human.anihospital.vo.DocPatientInfoVO;
 import lombok.extern.slf4j.Slf4j;
@@ -68,12 +69,16 @@ public class DoctorPageController {
 	// #### 수의사 전용 페이지 -> 진료내역 조회 ####
 	// #############################################
 	@GetMapping("/patientInfoList")
-	public String patientInfoList(Model model) {
+	public String patientInfoList(@RequestParam(defaultValue = "1") int c, @RequestParam(defaultValue = "10") int p,
+			@RequestParam(defaultValue = "10") int b, Model model) {
 		// #########################################################
 		// ## seqDoctor는 로그인 정보 Session에서 받아와야 합니다.##
 		// #########################################################
 		int seqDoctor = 1;
-		model.addAttribute("patientInfoList", doctorPageService.selectAllPatientInfoVO(seqDoctor));
+		PagingVO<DocPatientInfoVO> pagingVO = doctorPageService.selectAllPatientInfoVO(seqDoctor, c, p, b);
+		model.addAttribute("patientInfoList", pagingVO.getList());
+		model.addAttribute("info", pagingVO.getInfo());
+		model.addAttribute("list",pagingVO.getPageList());
 		log.info("controller 에서 보내는 값 : {}", model);
 		return "patientInfoList";
 	}
@@ -134,10 +139,8 @@ public class DoctorPageController {
 	}
 
 	@PostMapping("/diagnosisAddOk")
-	public String diagnosisAddOk(@RequestParam Map<String, Object> map, 
-								 @RequestParam List<Integer> seqMedicineList,
-								 @RequestParam List<String> medicineNameList, 
-								 @RequestParam List<String> medicationGuideList) {
+	public String diagnosisAddOk(@RequestParam Map<String, Object> map, @RequestParam List<Integer> seqMedicineList,
+			@RequestParam List<String> medicineNameList, @RequestParam List<String> medicationGuideList) {
 		// #########################################################
 		// ## seqDoctor는 로그인 정보 Session에서 받아와야 합니다.##
 		// #########################################################
@@ -146,10 +149,11 @@ public class DoctorPageController {
 		map.put("seqDoctor", seqDoctor);
 		map.put("seqAnimalHospital", seqAnimalHospital);
 		log.info("받은 진료내용 값 : {}", map);
-		doctorPageService.insertOneDiagnosisInfoAndDiagnosisMedicine(map, seqMedicineList, medicineNameList, medicationGuideList);
+		doctorPageService.insertOneDiagnosisInfoAndDiagnosisMedicine(map, seqMedicineList, medicineNameList,
+				medicationGuideList);
 		return "redirect:patientInfo?seqAnimal=" + map.get("seqAnimal");
 	}
-	
+
 	@PostMapping("/diagnosisAddFeedOk")
 	@ResponseBody
 	public String insertFeedExcelUpload(@RequestParam Map<String, String> feedJsonMap) {
