@@ -56,6 +56,8 @@
 		select 
 			p.seq_postscript seqPostscript, 
 			p.seq_diagnosis seqDiagnosis,
+			a.seq_animal seqAnimal,
+			a.seq_member seqMember,
 			a.animal_name animalName,
 			p.postscript_satisfaction postscriptSatisfaction,
 			ah.animal_hospital_name animalHospitalName,
