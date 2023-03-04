@@ -124,7 +124,7 @@ public class PagingVO<T> {
 	public String getInfo() {
 		String result = "Total : " + totalCnt;
 		if (totalCnt > 0) {
-			result += "(" + currentPage + " / " + totalPage + "페이지)";
+			result += " (" + currentPage + " / " + totalPage + " 페이지)";
 		}
 		return result;
 	}
