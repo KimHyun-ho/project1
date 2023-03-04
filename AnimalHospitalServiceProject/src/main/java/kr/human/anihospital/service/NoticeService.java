@@ -1,15 +1,16 @@
 package kr.human.anihospital.service;
 
-import java.util.List;
 import java.util.Map;
 
 import kr.human.anihospital.vo.AllNoticeListVO;
+import kr.human.anihospital.vo.PagingVO;
 
 public interface NoticeService {
+	
 	//----------------------------------------------------------------------------------------------------
 	// 모든 공지를 화면에 표시해줄 메서드
 	//----------------------------------------------------------------------------------------------------
-	List<AllNoticeListVO> selectAllNoticeListVO() throws Exception;
+	PagingVO<AllNoticeListVO> selectAllNoticeListVO(int currentPage, int pageSize, int blockSize) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
 	// 공지 상세 화면 & 공지 수정 화면에 표시해줄 메서드

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.human.anihospital.mapper.NoticeMapper;
 import kr.human.anihospital.vo.AllNoticeListVO;
 import kr.human.anihospital.vo.InsertWriterInfoVO;
+import kr.human.anihospital.vo.PagingVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Service("NoticeService")
@@ -23,19 +24,21 @@ public class NoticeServiceImpl implements NoticeService {
 	// 모든 공지를 화면에 표시해줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
-	public List<AllNoticeListVO> selectAllNoticeListVO() {
+	public PagingVO<AllNoticeListVO> selectAllNoticeListVO(int currentPage, int pageSize, int blockSize) {
 		// 모든 공지 리스트를 담아줄 그릇 준비
-		List<AllNoticeListVO> allNoticeListVO = null;
+		PagingVO<AllNoticeListVO> pagingVO = null;
 		try {
+			int totalCount = noticeMapper.selectCountNoticeListVO();
+			pagingVO = new PagingVO<>(totalCount, currentPage, pageSize, blockSize);
 			// 공지 리스트를 받아오기
-			allNoticeListVO = noticeMapper.selectAllNoticeListVO();
+			pagingVO.setList(noticeMapper.selectAllNoticeListVO(pagingVO.getStartNo(), pagingVO.getPageSize()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		// 공지 리스트가 잘 넘어오고 있는지 찍어보기
-		log.info("selectAllNoticeList 실행 한 값 : {}", allNoticeListVO);
+		log.info("selectAllNoticeList 실행 한 값 : {}", pagingVO.getList());
 		// controller에 담아온 리스트 돌려주기
-		return allNoticeListVO;
+		return pagingVO;
 	}
 
 	//----------------------------------------------------------------------------------------------------
