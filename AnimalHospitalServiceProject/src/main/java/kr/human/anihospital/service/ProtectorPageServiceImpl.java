@@ -25,6 +25,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import kr.human.anihospital.mapper.ProtectorPageMapper;
 import kr.human.anihospital.vo.AnimalHospitalVO;
 import kr.human.anihospital.vo.DoctorInfoVO;
+import kr.human.anihospital.vo.PagingVO;
 import kr.human.anihospital.vo.ProAnimalListVO;
 import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
@@ -78,17 +79,19 @@ public class ProtectorPageServiceImpl implements ProtectorPageService {
 	// 보호자 정보 페이지에서 후기를 화면에 표시해줄 메서드
 	// ----------------------------------------------------------------------------------------------------
 	@Override
-	public List<ProDiagnosisVO> selectAllPostscript(int seqMember) {
+	public PagingVO<ProDiagnosisVO> selectAllPostscript(int seqMember, int currentPage, int pageSize, int blockSize) {
 		// 보호자 정보 페이지의 후기 리스트를 Mapper에 넘겨주기
-		List<ProDiagnosisVO> postscriptList = null;
+		PagingVO<ProDiagnosisVO> pagingVO = null;
 		try {
-			postscriptList = protectorPageMapper.selectAllPostscript(seqMember);
+			int totalCount = protectorPageMapper.selectCountPostscript(seqMember);
+			pagingVO = new PagingVO<>(totalCount, currentPage, pageSize, blockSize);
+			pagingVO.setList(protectorPageMapper.selectAllPostscript(seqMember, pagingVO.getStartNo(), pagingVO.getPageSize()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		// Mapper가 실행되고 나서 가져온 데이터 확인하기
-		log.info("selectAllPostscript Mapper에서 넘어온 값(서비스) : {}", postscriptList);
-		return postscriptList;
+		log.info("selectAllPostscript Mapper에서 넘어온 값(서비스) : {}", pagingVO.getList());
+		return pagingVO;
 	}
 
 	// ----------------------------------------------------------------------------------------------------
@@ -187,18 +190,20 @@ public class ProtectorPageServiceImpl implements ProtectorPageService {
 	// 한 명의 보호자에 따른 환자의 진료내역 리스트를 화면에 표시해줄 메서드
 	// ----------------------------------------------------------------------------------------------------
 	@Override
-	public List<ProAnimalListVO> selectAllProAnimalListVO(int seqMember) {
+	public PagingVO<ProAnimalListVO> selectAllProAnimalListVO(int seqMember, int currentPage, int pageSize, int blockSize) {
 		// 환자 진료내역 리스트를 Mapper에 넘겨주기
-		List<ProAnimalListVO> proAnimalList = null;
+		PagingVO<ProAnimalListVO> pagingVO = null;
 		try {
+			int totalCount = protectorPageMapper.selectCountProAnimalListVO(seqMember);
+			pagingVO = new PagingVO<>(totalCount, currentPage, pageSize, blockSize);
 			// Mapper에 SQL 실행 시 필요한 데이터 넘겨주기 및 실행할 메서드 부르기
-			proAnimalList = protectorPageMapper.selectAllProAnimalListVO(seqMember);
+			pagingVO.setList(protectorPageMapper.selectAllProAnimalListVO(seqMember, pagingVO.getStartNo(), pagingVO.getPageSize()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		// Mapper가 실행되고 나서 가져온 데이터 확인하기
-		log.info("selectAllProAnimalListVO Mapper에서 넘어온 값(서비스) : {}", proAnimalList);
-		return proAnimalList;
+		log.info("selectAllProAnimalListVO Mapper에서 넘어온 값(서비스) : {}", pagingVO.getList());
+		return pagingVO;
 	}
 
 	// ----------------------------------------------------------------------------------------------------
@@ -407,4 +412,5 @@ public class ProtectorPageServiceImpl implements ProtectorPageService {
 			return "파일이 존재 하지 않습니다.";
 		}
 	}
+
 }

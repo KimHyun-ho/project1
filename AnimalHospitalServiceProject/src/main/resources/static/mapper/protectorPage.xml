@@ -51,6 +51,20 @@
 	    	d.diagnosis_date desc
 	</select>
 	
+	<select id="selectCountPostscript" parameterType="int" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			postscript p, diagnosis d , animalhospital ah  , animal a
+		WHERE 
+			p.seq_diagnosis = d.seq_diagnosis and 
+			d.seq_animal_hospital = ah.seq_animal_hospital and
+			d.seq_animal = a.seq_animal and
+			a.seq_member = #{seqMember}
+		ORDER BY
+	    	p.postscript_update_date desc
+	</select>
+	
 	<!-- ProMypageDetail 페이지에서 조회할 후기 -->
 	<select id="selectAllPostscript" resultType="proDiagnosisVO" parameterType="int">
 		select 
@@ -73,6 +87,8 @@
 			a.seq_member = #{seqMember}
 		ORDER BY
 	    	p.postscript_update_date desc
+	    LIMIT
+	    	#{startNo},#{pageSize}
 	</select>
 	
 	<!-- 환자 등록 -->
@@ -140,6 +156,21 @@
 	        seq_animal = #{seqAnimal}
 	</update>
 
+	<!-- 보호자의 환자 진료내역 건수 조회 -->
+	<select id="selectCountProAnimalListVO" parameterType="int" resultType="int">
+		SELECT
+			COUNT(*)
+	   	FROM
+	    	diagnosis as d 
+	      	JOIN animal as a ON d.seq_animal = a.seq_animal
+	      	JOIN animalhospital as ah ON ah.seq_animal_hospital = d.seq_animal_hospital
+	      	join account as ac on ac.seq_member = a.seq_member 
+	   	WHERE
+	    	a.seq_member = #{seqMember}
+	   	ORDER BY
+	    	d.diagnosis_date desc
+	</select>
+	
 	<!-- 보호자의 환자 진료내역 조회  -->
 	<select id="selectAllProAnimalListVO" resultType="proAnimalListVO" parameterType="int">
 		SELECT 
@@ -151,15 +182,17 @@
 		    d.diagnosis_symptom AS diagnosisSymptom, 
 		    ah.animal_hospital_name AS animalHospitalName,
 		    DATE_FORMAT(d.diagnosis_date, '%Y-%m-%d') AS diagnosisDate
-	   FROM
+	   	FROM
 	    	diagnosis as d 
 	      	JOIN animal as a ON d.seq_animal = a.seq_animal
 	      	JOIN animalhospital as ah ON ah.seq_animal_hospital = d.seq_animal_hospital
 	      	join account as ac on ac.seq_member = a.seq_member 
-	   WHERE
+	   	WHERE
 	    	a.seq_member = #{seqMember}
-	   ORDER BY
+	   	ORDER BY
 	    	d.diagnosis_date desc
+	   	LIMIT
+	   		#{startNo},#{pageSize}
 	</select> 
 	<!-- 보호자가 한명의 환자의 상세 진료내역 1개를 조회(진료내역,환자정보) -->
 	<select id="selectOneProDiagnosisVO" resultType="ProDiagnosisVO" parameterType="map">

@@ -78,7 +78,7 @@ public class DoctorPageController {
 		PagingVO<DocPatientInfoVO> pagingVO = doctorPageService.selectAllPatientInfoVO(seqDoctor, c, p, b);
 		model.addAttribute("patientInfoList", pagingVO.getList());
 		model.addAttribute("info", pagingVO.getInfo());
-		model.addAttribute("list",pagingVO.getPageList());
+		model.addAttribute("list", pagingVO.getPageList());
 		log.info("controller 에서 보내는 값 : {}", model);
 		return "patientInfoList";
 	}

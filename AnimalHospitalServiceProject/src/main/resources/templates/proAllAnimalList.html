@@ -40,7 +40,8 @@ table {
 			<br />
 			<div class="section-title">
 				<h2 style="font-weight: bold; font-size: 30px;">
-					<br />진료 조회
+					<br />
+					진료 조회
 				</h2>
 			</div>
 		</div>
@@ -52,7 +53,11 @@ table {
 			<div class="col-md-9" style="margin-left: 200px;">
 				<a href="/proPatientAdd" class="btn btn-primary btn" th:onclick="|location.href='@{/proPatientAdd(seqMember=${proAllAnimalList[0].seqMember})}'|"
 					style="float: right; border-radius: 50px; margin-right: 10px; color: white;">환자등록</a>
-				&nbsp; <br /> <br /> <br />
+				&nbsp;
+				<br />
+				<br />
+				<br />
+				<div th:text="${info}"></div>
 				<div id="animalLookupList">
 					<div class="white_shd full margin_bottom_30">
 						<div class="table_section padding_infor_info">
@@ -84,46 +89,7 @@ table {
 								<br />
 								<nav aria-label="Page navigation example">
 									<ul class="pagination">
-										<li class="page-item">
-											<a class="page-link" href="#" aria-label="Previous">
-												<span aria-hidden="true">&laquo;</span>
-											</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">1</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">2</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">3</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">4</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">5</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">6</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">7</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">8</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">9</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#">10</a>
-										</li>
-										<li class="page-item">
-											<a class="page-link" href="#" aria-label="Next">
-												<span aria-hidden="true">&raquo;</span>
-											</a>
-										</li>
+										<li th:utext="${pageList}"></li>
 									</ul>
 								</nav>
 								<!-- 각 번호 페이지 버튼
