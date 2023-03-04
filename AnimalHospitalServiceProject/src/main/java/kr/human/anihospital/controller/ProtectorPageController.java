@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.human.anihospital.service.ProtectorPageService;
 import kr.human.anihospital.vo.AnimalHospitalVO;
 import kr.human.anihospital.vo.DoctorInfoVO;
+import kr.human.anihospital.vo.PagingVO;
 import kr.human.anihospital.vo.ProAnimalListVO;
 import kr.human.anihospital.vo.ProDiaMedicineVO;
 import kr.human.anihospital.vo.ProDiagnosisVO;
@@ -24,17 +25,19 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class ProtectorPageController {
-	
+
 	// 보호자 페이지 관련 Service
 	@Autowired
 	ProtectorPageService protectorPageService;
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 보호자 정보 페이지에서 보호자,환자 정보,환자의 진료리스트를 화면에 표시해줄 메서드
-	//----------------------------------------------------------------------------------------------------	
+	// ----------------------------------------------------------------------------------------------------
 	@GetMapping("/proMypageDetail")
-	public String ProMypageDetail(@RequestParam(required = false, defaultValue = "4") int seqMember, Model model) throws Exception {
-		
+	public String ProMypageDetail(@RequestParam(required = false, defaultValue = "4") int seqMember,
+			@RequestParam(defaultValue = "1") int c, @RequestParam(defaultValue = "10") int p,
+			@RequestParam(defaultValue = "10") int b, Model model) throws Exception {
+
 		// ----------------------------------------------------------------------------
 		// 보호자,환자 정보 화면에 넘겨주기 시작
 		// ----------------------------------------------------------------------------
@@ -45,7 +48,7 @@ public class ProtectorPageController {
 		model.addAttribute("proMyPageDetailVOList", proMyPageDetailVOList);
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
 		log.info("selectAllProMypageVOList 서비스에서 넘어온 값(컨트롤러) : {}", proMyPageDetailVOList);
-		
+
 		// ----------------------------------------------------------------------------
 		// 환자의 진료리스트 화면에 넘겨주기 시작
 		// ----------------------------------------------------------------------------
@@ -56,63 +59,66 @@ public class ProtectorPageController {
 		model.addAttribute("proMyPageDianosisList", proMyPageDianosisList);
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
 		log.info("selectAllProDiagnosisList 서비스에서 넘어온 값(컨트롤러) : {}", proMyPageDianosisList);
-		
+
 		// ----------------------------------------------------------------------------
 		// 후기리스트를 화면에 넘겨주기 시작
 		// ----------------------------------------------------------------------------
-		List<ProDiagnosisVO> postscriptList = null;
+		PagingVO<ProDiagnosisVO> pagingVO = protectorPageService.selectAllPostscript(seqMember, c, p, b);
 		// 데이터 그릇에 담기
-		postscriptList = protectorPageService.selectAllPostscript(seqMember);
 		// 받아온 데이터 화면에 넘겨주기
-		model.addAttribute("postscriptList", postscriptList);
+		model.addAttribute("postscriptList", pagingVO.getList());
+		model.addAttribute("info", pagingVO.getInfo());
+		model.addAttribute("pageList", pagingVO.getPageList());
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
-		log.info("selectAllPostscript 서비스에서 넘어온 값(컨트롤러) : {}", postscriptList);
-		
+		log.info("selectAllPostscript 서비스에서 넘어온 값(컨트롤러) : {}", pagingVO.getList());
+
 		return "proMypageDetail";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 보호자 정보 페이지에서 넘어온 값을 보호자 수정 화면에 표시해줄 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@PostMapping("/proMypageEdit")
-	public String proMypageEdit(@RequestParam Map<String, Object> proMyPagemap,Model model) {
-		// 보호자 정보 화면에서 수정 화면으로 값이 넘어왔는지 로그로 확인 
+	public String proMypageEdit(@RequestParam Map<String, Object> proMyPagemap, Model model) {
+		// 보호자 정보 화면에서 수정 화면으로 값이 넘어왔는지 로그로 확인
 		log.info("proMypageDetail에서 넘어온 보호자 정보 : {}", proMyPagemap);
 		// 넘어온 값을 보호자 정보 수정 페이지에 넘겨주기
 		model.addAttribute("proMyPagemap", proMyPagemap);
-		
+
 		return "proMypageEdit";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 보호자 정보 페이지에서 넘어온 값을 환자 정보 수정 화면에 표시해줄 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@PostMapping("/proPatientInfoEdit")
-	public String proPatientInfoEdit(@RequestParam Map<String, Object> proPatientmap,Model model) {
-		// 보호자 정보 화면에서 수정 화면으로 값이 넘어왔는지 로그로 확인 
+	public String proPatientInfoEdit(@RequestParam Map<String, Object> proPatientmap, Model model) {
+		// 보호자 정보 화면에서 수정 화면으로 값이 넘어왔는지 로그로 확인
 		log.info("proMypageDetail에서 넘어온 환자 정보 : {}", proPatientmap);
 		// 넘어온 값을 환자 정보 수정 페이지에 넘겨주기
 		model.addAttribute("proPatientmap", proPatientmap);
-		
+
 		return "proPatientInfoEdit";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 보호자가 환자 정보를 수정하는 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@PostMapping("/proPatientInfoEditOk")
-	public String proPatientInfoEditOk(@RequestParam Map<String, Object> updatePatientMap, MultipartFile file,  MultipartFile vidfile) throws Exception {
-		// 보호자 정보 화면에서 수정 화면으로 값이 넘어왔는지 로그로 확인 
+	public String proPatientInfoEditOk(@RequestParam Map<String, Object> updatePatientMap, MultipartFile file,
+			MultipartFile vidfile) throws Exception {
+		// 보호자 정보 화면에서 수정 화면으로 값이 넘어왔는지 로그로 확인
 		log.info("proPatientInfoEdit에서 넘어온 수정된 환자 정보 : {}", updatePatientMap, file, vidfile);
 		protectorPageService.updateProPatient(updatePatientMap, file, vidfile);
 		return "redirect:proMypageDetail";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 보호자가 환자 정보를 추가하는 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@PostMapping("/proPatientAddOk")
-	public String proPatientAdd(@RequestParam Map<String, Object> insertPatientMap, MultipartFile file,  MultipartFile vidfile) throws Exception {
+	public String proPatientAdd(@RequestParam Map<String, Object> insertPatientMap, MultipartFile file,
+			MultipartFile vidfile) throws Exception {
 		// 세션에서 보호자 seq를 가져와서 insertPatientMap에 넣기
 		insertPatientMap.put("seqMember", 4);
 		// proPatientAdd 페이지에서 받아온 값 확인
@@ -121,31 +127,36 @@ public class ProtectorPageController {
 		protectorPageService.insertProPatient(insertPatientMap, file, vidfile);
 		return "redirect:proMypageDetail";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 한 명의 보호자에 따른 환자의 진료내역 리스트를 화면에 표시해줄 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@GetMapping(value = "/proAllAnimalList")
-	public String selectAllProAnimalListVO(@RequestParam(required = false, defaultValue = "4") int seqMember, Model model) throws Exception{
+	public String selectAllProAnimalListVO(@RequestParam(required = false, defaultValue = "4") int seqMember,
+			@RequestParam(defaultValue = "1") int c, @RequestParam(defaultValue = "10") int p,
+			@RequestParam(defaultValue = "10") int b, Model model) throws Exception {
 		// 화면에 넘길 데이터를 담을 그릇 준비
-		List<ProAnimalListVO> proAllAnimalList = null;
+		PagingVO<ProAnimalListVO> pagingVO = protectorPageService.selectAllProAnimalListVO(seqMember, c, p, b);
 		// 데이터 그릇에 담기
-		proAllAnimalList = protectorPageService.selectAllProAnimalListVO(seqMember);
 		// 받아온 데이터 화면에 넘겨주기
-		model.addAttribute("proAllAnimalList", proAllAnimalList);
+		model.addAttribute("proAllAnimalList", pagingVO.getList());
+		model.addAttribute("info", pagingVO.getInfo());
+		model.addAttribute("pageList", pagingVO.getPageList());
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
-		log.info("selectAllProAnimalListVO 서비스에서 넘어온 값(컨트롤러) : {}", proAllAnimalList);
-		
-		// animallookup에 띄울 값 표시 종료 ---------------------------------------------------------------------
-		
+		log.info("selectAllProAnimalListVO 서비스에서 넘어온 값(컨트롤러) : {}", pagingVO);
+
+		// animallookup에 띄울 값 표시 종료
+		// ---------------------------------------------------------------------
+
 		return "proAllAnimalList";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 한 명의 보호자에 따른 환자의 1개의 상세진료내역을 화면에 표시해줄 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@GetMapping("/proDiagnosis")
-	public String selectOneProDiagnosisVO(@RequestParam Map<String, Object> diagnosisMap, Model model) throws Exception{
+	public String selectOneProDiagnosisVO(@RequestParam Map<String, Object> diagnosisMap, Model model)
+			throws Exception {
 		log.info("proAllAnimalList에서 넘어온 seq들 : {}", diagnosisMap);
 		// ----------------------------------------------------------------------------
 		// 처방 목록을 제외한 진료내역 화면에 넘겨주기
@@ -171,52 +182,52 @@ public class ProtectorPageController {
 		// ----------------------------------------------------------------------------
 		ProDiagnosisVO proDiagnosisVOPostscript = new ProDiagnosisVO();
 		proDiagnosisVOPostscript = protectorPageService.selectOnePostScript(diagnosisMap);
-		model.addAttribute("proDiagnosisVOPostscript",proDiagnosisVOPostscript);
+		model.addAttribute("proDiagnosisVOPostscript", proDiagnosisVOPostscript);
 		// 제대로 데이터가 담겨 있는지 로그에 찍어보기
 		log.info("selectOnePostScript 서비스에서 넘어온 값(컨트롤러) : {}", proDiagnosisVOPostscript);
-		
+
 		return "proDiagnosis";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 후기 작성 페이지 보여주는 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@GetMapping("/proPostscriptAdd")
-	public String proPostscriptAdd(@RequestParam int seqDiagnosis,@RequestParam int seqMember,
-								   @RequestParam int seqAnimal, Model model) {
+	public String proPostscriptAdd(@RequestParam int seqDiagnosis, @RequestParam int seqMember,
+			@RequestParam int seqAnimal, Model model) {
 		model.addAttribute("seqDiagnosis", seqDiagnosis);
 		model.addAttribute("seqMember", seqMember);
 		model.addAttribute("seqAnimal", seqAnimal);
 		return "proPostscriptAdd";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 후기 수정 페이지 보여주는 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@GetMapping("/proPostscriptEdit")
-	public String proPostscriptAdd(@RequestParam int seqPostscript,@RequestParam int seqDiagnosis,
-									@RequestParam int seqMember,@RequestParam int seqAnimal,Model model) {
+	public String proPostscriptAdd(@RequestParam int seqPostscript, @RequestParam int seqDiagnosis,
+			@RequestParam int seqMember, @RequestParam int seqAnimal, Model model) {
 		model.addAttribute("seqPostscript", seqPostscript);
 		model.addAttribute("seqDiagnosis", seqDiagnosis);
 		model.addAttribute("seqMember", seqMember);
 		model.addAttribute("seqAnimal", seqAnimal);
 		return "proPostscriptEdit";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 보호자 스케줄 페이지
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@GetMapping("/proSchedule")
 	public String proSchedule(Model model) throws Exception {
 		List<AnimalHospitalVO> animalHospitalList = null;
 		animalHospitalList = protectorPageService.selectAllAnimalHospitalVO();
-		model.addAttribute("animalHospitalList",animalHospitalList);
+		model.addAttribute("animalHospitalList", animalHospitalList);
 		return "proSchedule";
 	}
-	
-	//----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
 	// 보호자 스케줄 페이지에서 병원 이름을 받아 의사 목록을 띄워줄 메서드
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	@PostMapping("/proScheduleDoctorList")
 	@ResponseBody
 	public List<DoctorInfoVO> proScheduleDoctorList(@RequestParam String animalHospitalName) throws Exception {
