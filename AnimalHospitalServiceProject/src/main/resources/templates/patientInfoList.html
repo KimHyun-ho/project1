@@ -22,6 +22,9 @@
 
 <!-- Template Main CSS File -->
 <link href="css/style.css" rel="stylesheet">
+<!-- JS사용을 위한 라이브러리 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jsp/patientInfoList.js"></script>
 <style type="text/css">
 table {
 	border-collapse: collapse;
@@ -66,12 +69,12 @@ input[name="searchPatientBtn"] {
 		<main>
 			<!-- table section -->
 			<div class="col-md-9" style="margin-left: 200px">
-				<form style="float: right;">
+				<div style="float: right;">
 					<!-- 예시: <form th:action="@{/board/list}" method="get"> -->
 					<input type="text" name="searchPatient" class="form-control" id="searchPatient" placeholder="환자명을 입력해주세요." data-rule="text">
 					&nbsp;
-					<input type="submit" class="btn btn-primary" name="searchPatientBtn" id="searchPatientBtn" value="검색" style="width: 70px; text-align: center; border-radius: 50px; margin-top: -4px;">
-				</form>
+					<input type="button" class="btn btn-primary" name="searchPatientBtn" id="searchPatientBtn" onclick="selectOneAnimalPatientInfoList()" value="검색" style="width: 70px; text-align: center; border-radius: 50px; margin-top: -4px;">
+				</div>
 				<div>
 					<br />
 					<br />
