@@ -172,9 +172,11 @@ public class DoctorPageService {
 
 	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
 	public void insertFeedExcelUpload(Map<String, String> feedJSONMap) {
+		// 값이 제대로 넘어오는지 로그 찍어보기
 		log.info("insertFeedExcelUpload 실행, 화면에서 넘어온 값(서비스) : {}", feedJSONMap);
+		// 데이터 담을 그릇 준비
 		FeedVO feedVO = new FeedVO();
-		log.info("feedJSONMap.size() {}", feedJSONMap.size());
+		// Json에서 데이터 뽑아다 vo에 담기
 		for (int i = 0; i < feedJSONMap.size() / 5; i++) {
 			feedVO.setFeedName(feedJSONMap.get("data[" + i + "][사료 이름]"));
 			feedVO.setFeedCompany(feedJSONMap.get("data[" + i + "][제조회사]"));
@@ -182,11 +184,46 @@ public class DoctorPageService {
 			feedVO.setFeedSideEffect(feedJSONMap.get("data[" + i + "][알레르기 증상]"));
 			feedVO.setFeedUpdateDate(feedJSONMap.get("data[" + i + "][DB추가일]"));
 			try {
+				// vo에 담은 데이터 DB에 집어 넣기
 				doctorPageMapper.insertFeedExcelUpload(feedVO);
+				// vo에 데이터가 잘 담겨 있는지 로그 찍어보기
 				log.info("insertFeedExcelUpload 실행, 메퍼에서 넘어온 값(서비스) : {}", feedVO);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-	};
+	}
+	
+	// 검색창에 입력된 환자 이름에 해당하는 환자 정보를 조회하는 서비스 메소드
+	public PagingVO<DocPatientInfoVO> selectOneAnimalPatientInfoListVO(int seqDoctor, 
+																	   int currentPage, 
+																	   int pageSize, 
+																	   int blockSize,
+																	   String animalName) {
+		log.info("seqDoctor, currentPage, pageSize, blockSize, animalName : {} {} {} {} {}", seqDoctor, currentPage, pageSize, blockSize, animalName);
+		// 페이징에 필요한 그릇들 준비
+		PagingVO<DocPatientInfoVO> pagingVO = null;
+		// 페이징 count에 필요한 값 담을 그릇
+		Map<String, Object> countPagingOnePatient = new HashMap<>();
+		// 데이터 담기
+		countPagingOnePatient.put("seqDoctor", seqDoctor);
+		countPagingOnePatient.put("animalName", animalName);
+		Map<String, Object> pagingOnePatient = new HashMap<>();
+		pagingOnePatient.put("seqDoctor", seqDoctor);
+		pagingOnePatient.put("animalName", animalName);
+		try {
+			// 현재 페이지에 표시되는 내용 count
+			int totalCount = doctorPageMapper.selectOneAnimalPatientInfoListVOList(countPagingOnePatient);
+			log.info("selectOneAnimalPatientInfoListVO totalCount : {}", totalCount);
+			pagingVO = new PagingVO<>(totalCount, currentPage, pageSize, blockSize);
+			// 페이징에 필요한 데이터를 메퍼에서 받아와 계산하기
+			pagingOnePatient.put("startNo", pagingVO.getStartNo());
+			pagingOnePatient.put("pageSize", pagingVO.getPageSize());
+			pagingVO.setList(doctorPageMapper.selectOneAnimalPatientInfoListVO(pagingOnePatient));
+			log.info("selectOneAnimalPatientInfoListVO pagingVO : {}", pagingVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pagingVO;
+	}
 }

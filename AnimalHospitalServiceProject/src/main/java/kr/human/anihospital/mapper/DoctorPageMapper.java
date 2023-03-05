@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -58,4 +59,10 @@ public interface DoctorPageMapper {
 
 	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
 	void insertFeedExcelUpload(FeedVO feedVO) throws Exception;
+	
+	// 검색창에 입력된 환자 이름에 해당하는 환자 정보를 조회하는 매퍼 메소드
+	List<DocPatientInfoVO> selectOneAnimalPatientInfoListVO(Map<String, Object> pagingOnePatient) throws SQLException;
+	
+	// 세션으로부터 seqDoctor, animalNmae값을 받아 해당 의료인의 해당하는 환자의 진료기록 수를 조회하는 메소드
+	int selectOneAnimalPatientInfoListVOList(Map<String, Object> countPagingOnePatient) throws SQLException;
 }

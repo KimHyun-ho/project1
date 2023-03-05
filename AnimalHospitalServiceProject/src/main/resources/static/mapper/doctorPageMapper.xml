@@ -83,7 +83,7 @@
 			
 	</select>
 	<select id="selectAllPatientInfoVO" parameterType="int"
-		resultType="kr.human.anihospital.vo.DocPatientInfoVO">
+		resultType="DocPatientInfoVO">
 		SELECT
 			ac.seq_member as seqMember,
 			ac.member_name as memberName,
@@ -230,4 +230,73 @@
 			  #{feedSideEffect},
 			  now())
 	</insert>
+	
+	<select id="selectOneAnimalPatientInfoListVO" parameterType="map" resultType="DocPatientInfoVO">
+		SELECT 
+			allpatientlist.seq_member as seqMember,
+			allpatientlist.member_name as memberName,
+			allpatientlist.seq_animal as seqAnimal,
+			allpatientlist.animal_name as animalName,
+			allpatientlist.animal_age as animalBirthDay,
+			allpatientlist.animal_type as animalType,
+			allpatientlist.animal_size as animalSize,
+			allpatientlist.animal_gender as animalGender,
+			allpatientlist.animal_weight as animalWeight,
+			allpatientlist.seq_diagnosis as seqDiagnosis,
+			allpatientlist.diagnosis_date as diagnosisDate		
+		FROM (SELECT
+					ac.seq_member,
+					ac.member_name,
+					a.seq_animal,
+					a.animal_name,
+					a.animal_age,
+					a.animal_type,
+					a.animal_size,
+					a.animal_gender,
+					a.animal_weight,
+					d.seq_diagnosis,
+					d.diagnosis_date
+				FROM
+					animal a,
+					diagnosis d,
+					account ac
+				WHERE
+					a.seq_animal in (
+									SELECT
+										seq_animal
+									FROM
+										diagnosis dia
+									WHERE
+										dia.seq_doctor = #{seqDoctor})
+					AND a.seq_animal = d.seq_animal
+					AND a.seq_member = ac.seq_member
+				ORDER BY
+					d.diagnosis_date DESC) allpatientlist
+		WHERE 
+			allpatientlist.animal_name = #{animalName}
+		LIMIT
+			#{startNo},#{pageSize}
+	</select>
+	
+	<select id="selectOneAnimalPatientInfoListVOList" parameterType="map" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			animal a,
+			diagnosis d,
+			account ac
+		WHERE
+			a.seq_animal in
+			(
+			SELECT
+				seq_animal
+			FROM
+				diagnosis dia
+			WHERE
+				dia.seq_doctor = #{seqDoctor}
+			AND a.animal_name = #{animalName} )
+			AND a.seq_animal = d.seq_animal
+			AND a.seq_member = ac.seq_member
+			
+	</select>
 </mapper>
