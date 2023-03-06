@@ -34,7 +34,7 @@ table {
 	justify-content: center;
 }
 
-input[name="searchPatient"] {
+input[id="searchPatient"] {
 	width: 70%;
 	height: 38px;
 	border: 1px solid #ced4da;
@@ -47,6 +47,13 @@ input[name="searchPatientBtn"] {
 	height: 38px;
 	display: inline;
 	margin-left: -5px;
+}
+
+input[name="viewAllListBtn"] {
+	width: 30%;
+	height: 38px;
+	display: inline;
+	margin-left: 55px;
 }
 </style>
 </head>
@@ -71,9 +78,14 @@ input[name="searchPatientBtn"] {
 			<div class="col-md-9" style="margin-left: 200px">
 				<div style="float: right;">
 					<!-- 예시: <form th:action="@{/board/list}" method="get"> -->
-					<input type="text" name="searchPatient" class="form-control" id="searchPatient" placeholder="환자명을 입력해주세요." data-rule="text">
-					&nbsp;
-					<input type="button" class="btn btn-primary" name="searchPatientBtn" id="searchPatientBtn" onclick="selectOneAnimalPatientInfoList()" value="검색" style="width: 70px; text-align: center; border-radius: 50px; margin-top: -4px;">
+					<form action="patientInfoList" method="get" id="searchSubmit">
+						<input type="text" name="animalName" class="form-control" id="searchPatient" placeholder="환자명을 입력해주세요." data-rule="text">
+						&nbsp;
+						<input type="button" class="btn btn-primary" name="searchPatientBtn" id="searchPatientBtn" onclick="selectOneAnimalPatientInfoList()" value="검색"
+							style="width: 70px; text-align: center; border-radius: 50px; margin-top: -4px;">
+					</form>
+					<input type="button" class="btn btn-primary" name="viewAllListBtn" id="viewAllListBtn" onclick="viewAllList()" value="전체보기"
+						style="width: 100px; text-align: center; border-radius: 50px; margin-left: -670px; margin-top: -60px;">
 				</div>
 				<div>
 					<br />
@@ -84,11 +96,7 @@ input[name="searchPatientBtn"] {
 					<div class="full graph_head"></div>
 					<div class="table_section padding_infor_info">
 						<div th:text="${info}"></div>
-						<div class="table-responsive-sm" id="medicineListNull" th:if="${#lists.isEmpty(patientInfoList)}">
-							<br />
-							<h6 style="margin-left: 10px; font-size: 16px;">&nbsp;진료내역이 없습니다.</h6>
-						</div>
-						<div class="table-responsive-sm" th:if="${patientInfoList != null}">
+						<div class="table-responsive-sm">
 							<table class="table table-hover" style="text-align: center">
 								<thead>
 									<tr>
@@ -102,7 +110,10 @@ input[name="searchPatientBtn"] {
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="patientInfo : ${patientInfoList}" th:onclick="|location.href='@{/patientInfo(seqAnimal=${patientInfo.seqAnimal})}'|">
+									<tr class="table-responsive-sm" id="medicineListNull" th:if="${#lists.isEmpty(patientInfoList)}">
+										<td colspan="7">진료내역이 없습니다.</td>
+									</tr>
+									<tr th:if="${patientInfoList != null}" th:each="patientInfo : ${patientInfoList}" th:onclick="|location.href='@{/patientInfo(seqAnimal=${patientInfo.seqAnimal})}'|">
 										<td th:text="${patientInfo.memberName}"></td>
 										<td th:text="${patientInfo.animalName}"></td>
 										<td th:text="${#dates.format(patientInfo.animalBirthDay,'yyyy년 MM월 dd일')}"></td>
