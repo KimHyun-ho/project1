@@ -18,6 +18,7 @@ import kr.human.anihospital.vo.DoctorInfoVO;
 import kr.human.anihospital.vo.FeedVO;
 import kr.human.anihospital.vo.MedicineInfoVO;
 import kr.human.anihospital.vo.PagingVO;
+import kr.human.anihospital.vo.SupplementsVO;
 import lombok.extern.slf4j.Slf4j;
 import kr.human.anihospital.vo.DiagnosisInfoVO;
 import kr.human.anihospital.vo.DocPatientInfoVO;
@@ -188,6 +189,29 @@ public class DoctorPageService {
 				doctorPageMapper.insertFeedExcelUpload(feedVO);
 				// vo에 데이터가 잘 담겨 있는지 로그 찍어보기
 				log.info("insertFeedExcelUpload 실행, 메퍼에서 넘어온 값(서비스) : {}", feedVO);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
+	public void insertSupplementsExcelUpload(Map<String, String> SupplementsJSONMap) {
+		// 값이 제대로 넘어오는지 로그 찍어보기
+		log.info("insertFeedExcelUpload 실행, 화면에서 넘어온 값(서비스) : {}", SupplementsJSONMap);
+		// 데이터 담을 그릇 준비
+		SupplementsVO supplementsVO = new SupplementsVO();
+		// Json에서 데이터 뽑아다 vo에 담기
+		for (int i = 0; i < SupplementsJSONMap.size() / 4; i++) {
+			supplementsVO.setSupplementsName(SupplementsJSONMap.get("data[" + i + "][영양제 이름]"));
+			supplementsVO.setSupplementsCompany(SupplementsJSONMap.get("data[" + i + "][제조회사]"));
+			supplementsVO.setSupplementsSideEffect(SupplementsJSONMap.get("data[" + i + "][알레르기 증상]"));
+			supplementsVO.setSupplementsUpdateDate(SupplementsJSONMap.get("data[" + i + "][DB추가일]"));
+			try {
+				// vo에 담은 데이터 DB에 집어 넣기
+				doctorPageMapper.insertSupplementsExcelUpload(supplementsVO);
+				// vo에 데이터가 잘 담겨 있는지 로그 찍어보기
+				log.info("insertSupplementsExcelUpload 실행, 메퍼에서 넘어온 값(서비스) : {}", supplementsVO);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

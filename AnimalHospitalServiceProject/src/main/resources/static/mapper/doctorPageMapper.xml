@@ -231,6 +231,20 @@
 			  now())
 	</insert>
 	
+	<insert id="insertSupplementsExcelUpload" parameterType="SupplementsVO">
+		insert into Supplements
+			(supplements_name,
+			 supplements_company,
+			 supplements_side_effect,
+			 supplements_update_date
+			 )
+		 values
+			 (#{supplementsName},
+			  #{supplementsCompany},
+			  #{supplementsSideEffect},
+			  now())
+	</insert>
+	
 	<select id="selectOneAnimalPatientInfoListVO" parameterType="map" resultType="DocPatientInfoVO">
 		SELECT 
 			allpatientlist.seq_member as seqMember,

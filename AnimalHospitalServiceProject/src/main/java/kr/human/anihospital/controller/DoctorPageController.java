@@ -170,5 +170,16 @@ public class DoctorPageController {
 		doctorPageService.insertFeedExcelUpload(feedJsonMap);
 		return "diagnosisAdd";
 	}
+	
+	// #####################################################################################################
+	// #### 수의사 전용 페이지 -> 진료내역 조회 -> 환자 정보및 이전 진료 내역 -> 진료내용 작성(추천사료 추가) ####
+	// #####################################################################################################
+	@PostMapping("/diagnosisAddSupplementsOk")
+	@ResponseBody
+	public String insertSupplementsExcelUpload(@RequestParam Map<String, String> SupplementsJsonMap) {
+		log.info("insertSupplementsExcelUpload 실행, 화면에서 넘어온 값(컨트롤러) : {} {}", SupplementsJsonMap);
+		doctorPageService.insertSupplementsExcelUpload(SupplementsJsonMap);
+		return "diagnosisAdd";
+	}
 
 }
