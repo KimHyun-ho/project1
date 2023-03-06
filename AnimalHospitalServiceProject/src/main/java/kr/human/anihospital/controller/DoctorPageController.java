@@ -166,7 +166,9 @@ public class DoctorPageController {
 	@PostMapping("/diagnosisAddFeedOk")
 	@ResponseBody
 	public String insertFeedExcelUpload(@RequestParam Map<String, String> feedJsonMap) {
+		// 화면에서 추가한 엑셀 데이터가 잘 넘어왔는지 찍어보기
 		log.info("insertFeedExcelUpload 실행, 화면에서 넘어온 값(컨트롤러) : {} {}", feedJsonMap);
+		// 값 서비스에 넘기기
 		doctorPageService.insertFeedExcelUpload(feedJsonMap);
 		return "diagnosisAdd";
 	}
@@ -177,7 +179,9 @@ public class DoctorPageController {
 	@PostMapping("/diagnosisAddSupplementsOk")
 	@ResponseBody
 	public String insertSupplementsExcelUpload(@RequestParam Map<String, String> SupplementsJsonMap) {
+		// 화면에서 추가한 엑셀 데이터가 잘 넘어왔는지 찍어보기
 		log.info("insertSupplementsExcelUpload 실행, 화면에서 넘어온 값(컨트롤러) : {} {}", SupplementsJsonMap);
+		// 값 서비스에 넘기기
 		doctorPageService.insertSupplementsExcelUpload(SupplementsJsonMap);
 		return "diagnosisAdd";
 	}
