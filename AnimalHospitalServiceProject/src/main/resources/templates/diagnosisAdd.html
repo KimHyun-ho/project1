@@ -70,6 +70,24 @@ input[name="recoFeed_excel_download"] {
 	border-radius: 50px;
 }
 
+label[id="recoSupplementsAdd_input"] {
+	height: 38px;
+	display: inline;
+	float: right;
+	margin-right: 5px;
+	font-size: 10pt;
+	border-radius: 50px;
+}
+
+input[name="recoSupplements_excel_download"] {
+	height: 38px;
+	display: inline;
+	float: right;
+	margin-right: 5px;
+	font-size: 10pt;
+	border-radius: 50px;
+}
+
 img {
 	width: 200px;
 	height: 200px;
@@ -262,7 +280,7 @@ img {
 									<div class="validate"></div>
 								</div>
 								<div class="col-md-10 form-group">
-									<label for="recoFeed">추천사료 및 영양제</label>
+									<label for="recoFeed">추천사료</label>
 									양식파일을 다운로드 하시고 파일내에 있는 모든 항목들을 채워서 업로드하셔야 정상적으로 등록됩니다.
 									<div class="form-control" style="margin-bottom: 4px;">
 										<ul id="recoFeed_list">
@@ -272,6 +290,24 @@ img {
 									<input type="button" class="btn btn-primary" name="recoFeed_excel_download" id="recoFeed_excel_download" value="양식 다운로드"/>
 									<label for="recoFeedAdd" class="btn btn-primary" id="recoFeedAdd_input" style="border-radius: 50px;">추가(Excel)</label>
 									<input type="file" name="recoFeedAdd" id="recoFeedAdd" onchange="upload(event)" style="display: none;" />
+									<div class="validate"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-10 form-group">
+									<div class="validate"></div>
+								</div>
+								<div class="col-md-10 form-group">
+									<label for="recoSupplements">영양제</label>
+									양식파일을 다운로드 하시고 파일내에 있는 모든 항목들을 채워서 업로드하셔야 정상적으로 등록됩니다.
+									<div class="form-control" style="margin-bottom: 4px;">
+										<ul id="recoSupplements_list">
+											
+										</ul>
+									</div>
+									<input type="button" class="btn btn-primary" name="recoSupplements_excel_download" id="recoSupplements_excel_download" value="양식 다운로드"/>
+									<label for="recoSupplementsAdd" class="btn btn-primary" id="recoSupplementsAdd_input" style="border-radius: 50px;">추가(Excel)</label>
+									<input type="file" name="recoSupplementsAdd" id="recoSupplementsAdd" onchange="uploadSupplements(event)" style="display: none;" />
 									<div class="validate"></div>
 								</div>
 							</div>

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.human.anihospital.vo.DoctorInfoVO;
 import kr.human.anihospital.vo.FeedVO;
 import kr.human.anihospital.vo.MedicineInfoVO;
+import kr.human.anihospital.vo.SupplementsVO;
 import kr.human.anihospital.vo.DiagnosisInfoVO;
 import kr.human.anihospital.vo.DocPatientInfoVO;
 
@@ -59,6 +60,9 @@ public interface DoctorPageMapper {
 
 	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
 	void insertFeedExcelUpload(FeedVO feedVO) throws Exception;
+	
+	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
+	void insertSupplementsExcelUpload(SupplementsVO supplementsVO) throws Exception;
 	
 	// 검색창에 입력된 환자 이름에 해당하는 환자 정보를 조회하는 매퍼 메소드
 	List<DocPatientInfoVO> selectOneAnimalPatientInfoListVO(Map<String, Object> pagingOnePatient) throws SQLException;
