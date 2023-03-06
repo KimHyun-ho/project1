@@ -4,9 +4,17 @@
 * Author: Park Ji Young
 */
 /* 환자 리스트 검색 기능 추가 */
-function selectOneAnimalPatientInfoList(){
-	const animalNameVar = $('#searchPatient').val();
-	$.ajax({
+function selectOneAnimalPatientInfoList() {
+	const animalName = $('#searchPatient').val();
+	if (animalName == null || animalName.trim().length == 0) {
+		$('#searchPatient').val('');
+		$('#searchPatient').focus();
+		alert('검색어는 적어도 한글자 이상이어야 합니다.');
+		return false;
+	} else {
+		$('#searchSubmit').submit();
+	}
+	/*$.ajax({
 		url : '/patientInfoListOk',
 		type : 'post',
 		data : {
@@ -19,5 +27,9 @@ function selectOneAnimalPatientInfoList(){
 		error : function() {
 			alert("해당하는 환자가 존재하지 않습니다.");
 		}
-	});
+	});*/
+}
+
+function viewAllList(){
+	location.href = 'patientInfoList';
 }
