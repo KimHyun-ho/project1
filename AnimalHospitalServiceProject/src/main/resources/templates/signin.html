@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -24,6 +24,7 @@
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <!-- Template Main CSS File -->
 <link href="css/style.css" rel="stylesheet">
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -42,31 +43,11 @@
 	    </section><!-- End Breadcrumbs Section -->
 	    <section class="inner-page">
 	      <div class="container">
-	         <form action="forms/appointment.php" method="post" role="form" class="php-email-form">
-	          <div class="row">
-	            <div class="col-md-4 form-group">
-	              <div class="validate"></div>
-	            </div>
-	            <div class="col-md-4 form-group mt-3 mt-md-0">
-	              <input type="email" class="form-control" name="idEmail" id="idEmail" placeholder="이메일주소를 입력해주세요." style="margin:auto;width: 300px;" data-rule="email" data-msg="아이디는 필수입력 항목입니다.">
-	              <div class="validate"></div>
-	            </div>
-	          </div>
-	          <div class="row">
-	            <div class="col-md-4 form-group mt-3">
-	              <div class="validate"></div>
-	            </div>
-	            <div class="col-md-4 form-group mt-3">
-	              <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호를 입력해주세요" style="margin:auto;width: 300px;" data-msg="비밀번호는 필수입력 항목입니다.">
-	              <div class="validate"></div>
-	            </div>
-	          </div>
 	          <br />
-	          <button type="submit" id="anihospital_login" class="w-40 btn btn-lg btn-primary" style="margin:auto;display:block;width:300px;border-radius: 50px; font-size: 12pt;height:50px;">email 로그인</button>
 	          <button type="button" id="kakao_login" class="w-40 btn kakao_login_btn" style="margin:auto;display:block;"><img src="img/kakao_login_btn.png" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=(받은 토큰값)&redirect_uri=http://localhost:8080&response_type=code'" style="border-radius: 50px; width:300px;height:50px;"></button>
-	          <button type="button" id="naver_login" class="w-40 btn naver_login_btn" style="margin:auto;display:block;"><img src="img/naver_login_btn.png" style="border-radius: 50px; width:300px;height:50px;"></button>
+<!-- 	          <div id="naverIdLogin" style="margin:auto;display:block;" th:onclick="${apiURL}"></div> -->
+	          <button type="button" id="naver_login" class="w-40 btn naver_login_btn" style="margin:auto;display:block;" th:onclick="'location.href=\''+ @{${apiURL}} + '\''"><img src="img/naver_login_btn.png" style="border-radius: 50px; width:300px;height:50px;"></button>
 	          <button type="button" id="google_login" class="w-40 btn google_login_btn" style="margin:auto;display:block;"><img src="img/google_login_btn.png" style="border-radius: 50px; width:300px;height:50px;"></button>
-	        </form>
 	      <br />
 	      	<div class="col-md-3 form-group" style="margin: auto;">
 				<a href="/" class="btn btn-secondary" style="border-radius:50px;width: 110px;text-align: center;color: white;">이전페이지</a>

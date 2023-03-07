@@ -1,9 +1,15 @@
 package kr.human.anihospital.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
 public class MainController {
 
 	// 메인 페이지
@@ -17,11 +23,11 @@ public class MainController {
 		return "inner";
 	}
 
-	// 로그인 페이지
-	@GetMapping("/signin")
-	public String signin() {
-		return "signin";
-	}
+//	// 로그인 페이지
+//	@GetMapping("/signin")
+//	public String signin() {
+//		return "signin";
+//	}
 
 	// 후기 작성
 	@GetMapping("/ProPostscriptAdd")
@@ -77,19 +83,7 @@ public class MainController {
 	public String roleCheck() {
 		return "roleCheck";
 	}
-
-	// 의사 전용 회원가입
-	@GetMapping("/doctorMemberJoin")
-	public String doctorMemberJoin() {
-		return "doctorMemberJoin";
-	}
-
-	// 보호자 전용 회원가입
-	@GetMapping("/protectorMemberJoin")
-	public String protectorMemberJoin() {
-		return "protectorMemberJoin";
-	}
-
+	
 	/*
 	 * // 내 정보 수정 (보호자 용)
 	 * 

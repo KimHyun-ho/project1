@@ -23,6 +23,7 @@
 <!-- Tables - SB Admin -->
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
 <script type="text/javascript" src="js/jsp/roleCheck.js"></script>
 <!-- Template Main CSS File -->
@@ -42,6 +43,15 @@
 		</section>
 		<!-- End Breadcrumbs Section -->
 		<section class="inner-page">
+		<div th:if="${memberVO != null}" >
+			<form action="doctorMemberJoin" method="post" id="doctorMemberJoinForm">
+			<input type="hidden" name="memberEmailId" th:value="${memberVO.memberEmailId}" id="emailId">
+			</form>
+			<input type="hidden" th:value="${memberVO.memberName}" id="name">
+			<input type="hidden" th:value="${memberVO.memberGender}" id="gender">
+			<input type="hidden" th:value="${memberVO.memberBirthdate}" id="birthDate">
+			<input type="hidden" th:value="${memberVO.memberPhoneNo}" id="phoneNo">
+		</div>
 			<div class="container">
 				<div>
 					<span class="input_chk" style="text-align: center; display: inline-block; margin: auto; width: 430px; line-height: 50px;"> <input type="checkbox" id="using_check" name="using_check"
@@ -87,6 +97,7 @@
 			<div class="row">
 				<div class="col-md-2 form-group">
 					<div class="validate"></div>
+					
 				</div>
 				<div class="col-md-8 form-group">
 					<input type="button" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" value="이전페이지" onclick="location='/signin'"
@@ -102,28 +113,74 @@
 	<div th:replace="~{fragment/footer :: #footer}"></div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <script type="text/javascript">
-	$(function() {
-		$('#join_membership').on('click', function() {
-			if ($("#using_check").is(":checked") == false) {
-				$('#using_check_val').html('<div id="using_check_warning"><b style="color: red;">이용약관에 동의해주세요.</b></div>');
-			} else {
-				var check = $("input[name='checkRole']:checked").val();
-				var result = window.confirm('선택한 내용으로 회원가입하시겠습니까?');
-				if (result) {
-					if (check == 1) {
-						location.href = '/doctorMemberJoin';
-					} else {
-						location.href = '/protectorMemberJoin';
-					}
-				}
-			}
-		});
-	});
-	$('#using_check').on('input', function() {
-		if ($('#using_check').val() != '') {
-			$('#using_check_warning').remove();
-		}
-	})
+$(function() {
+	$('#join_membership').on('click', function() {
+		if ($("#using_check").is(":checked") == false) {
+			$('#using_check_val').html('<div id="using_check_warning"><b style="color: red;">이용약관에 동의해주세요.</b></div>');
+		}else {
+			var check = $("input[name='checkRole']:checked").val();
+			var emailId = $('#emailId').val();
+			var name = $('#name').val();
+			var gender = $('#gender').val();
+			var birthDate = $('#birthDate').val();
+			var phoneNo = $('#phoneNo').val();
+			var result = window.confirm('선택한 내용으로 회원가입하시겠습니까?');
+			if(result){
+		        $.ajax({
+		        	type: 'post',
+		            url: '/naverLoginInsert',
+		            data: {
+		            	memberEmailId : emailId,
+		            	memberName : name,
+		            	memberGender : gender, 
+		            	memberBirthdate : birthDate, 
+		            	memberPhoneNo : phoneNo,
+		            	memberRole : 0
+		            	},
+		            dataType: 'text',
+		            success: function(data) {
+		                if(data=='성공') {
+		                    console.log('성공')
+		                    doctorMemberJoinForm.submit();
+		                } else{
+		                    console.log('실패')
+		                }
+		            },
+		            error: function(data) {
+		                console.log('오류 발생')
+		            }
+		        })// ajax
+				}else{
+					$.ajax({
+			        	type: 'post',
+			            url: '/naverLoginInsert',
+			            data: {
+			            	memberEmailId : emailId,
+			            	memberName : name,
+			            	memberGender : gender, 
+			            	memberBirthdate : birthDate, 
+			            	memberPhoneNo : phoneNo,
+			            	memberRole : 1
+			            	},
+			            dataType: 'text',
+			            success: function(data) {
+			                if(data=='ok') {
+			                    console.log('성공')
+			                    location.href = '/';
+			                } else if(result=='no') {
+			                    console.log('실패')
+			                }
+			            },
+			            error: function(data) {
+			                console.log('오류 발생')
+			            }
+			        })// ajax
+				}// check == 1 if문
+		}//using_check 확인 if-else문
+	}); //join_membership 클릭 함수
+}); // 시작 함수
 </script>
 </html>
