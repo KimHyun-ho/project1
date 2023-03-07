@@ -6,7 +6,7 @@ public interface LoginService {
 	//----------------------------------------------------------------------------------------------------
 	// 아이디가 존재하는지 비교할 메서드
 	//----------------------------------------------------------------------------------------------------
-	int selectListLoginId(String memberEmailId) throws Exception;
+	int selectNaverLoginId(String memberEmailId) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
 	// 최초의 네이버 로그인시 정보 insert
@@ -17,4 +17,9 @@ public interface LoginService {
 	// 의사 회원가입시 아이디를 받아 seqMember를 찾아줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	int selectNaverFindSeq(String memberEmailId) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 로그인시 이메일 아이디로 seqMember,memberRole을 찾아줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	MemberVO selectNaverFindSession(String memberEmailId) throws Exception;
 }

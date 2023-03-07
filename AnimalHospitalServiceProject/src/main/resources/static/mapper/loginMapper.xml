@@ -46,4 +46,15 @@
 		where
 			member_email_id = #{memberEmailId}
 	</select>
+	
+	<!-- 네이버 로그인 시 세션에 넣어줄 값을 가져올 쿼리 -->
+	<select id="selectNaverFindSession" parameterType="string" resultType="memberVO">
+		select 
+			seq_member seqMember,
+			member_role memberRole
+		from 
+			account a 
+		where
+			member_email_id = #{memberEmailId}
+	</select>
 </mapper>  

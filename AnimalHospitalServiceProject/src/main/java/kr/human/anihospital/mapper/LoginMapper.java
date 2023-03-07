@@ -20,4 +20,9 @@ public interface LoginMapper {
 	// 의사 회원가입시 아이디를 받아 seqMember를 찾아줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	int selectNaverFindSeq(String memberEmailId) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 로그인시 이메일 아이디로 seqMember,memberRole을 찾아줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	MemberVO selectNaverFindSession(String memberEmailId) throws Exception;
 }
