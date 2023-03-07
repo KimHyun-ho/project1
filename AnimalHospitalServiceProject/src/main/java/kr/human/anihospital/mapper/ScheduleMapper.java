@@ -16,4 +16,9 @@ public interface ScheduleMapper {
 	// 보호자 스케줄을 풀캘린더에 표시해줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	List<Map<String, Object>> selectAllProSchedule(int seqMember) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 풀캘린더에 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	void insertScheduleDoctor(Map<String, Object> scheduleDoctorMap) throws Exception;
 }
