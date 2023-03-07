@@ -49,49 +49,6 @@ function upload(event){
   	document.getElementById('recoFeed_list').appendChild(li);
 }
 
-/* 업로드할 엑셀 양식 다운로드 */
-function s2ab(s) { 
-    var buf = new ArrayBuffer(s.length);
-    var view = new Uint8Array(buf);
-    for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-    return buf;    
-}
-
-// 양식 다운로드 버튼이 눌리면
-$(document).ready(function() { 
-	$("#recoFeed_excel_download").click(function exportExcel(){
-	    // step 1. workbook 생성
-	    var wb = XLSX.utils.book_new();
-	
-	    // step 2. 시트 만들기 
-	    var newWorksheet = excelHandler.getWorksheet();
-	    
-	    // step 3. workbook에 새로만든 워크시트에 이름을 주고 붙인다.  
-	    XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());
-	
-	    // step 4. 엑셀 파일 만들기 
-	    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
-	
-	    // step 5. 엑셀 파일 내보내기 
-	    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), excelHandler.getExcelFileName());
-	});
-});
-
-var excelHandler = {
-    getExcelFileName : function(){
-        return '추천 사료.xlsx';
-    },
-    getSheetName : function(){
-        return '추천 사료';
-    },
-    getExcelData : function(){
-        return [{'사료 이름':'', '제조회사':'', '성분':'', '알레르기 증상':'', 'DB추가일':''}]; 
-    },
-    getWorksheet : function(){
-        return XLSX.utils.json_to_sheet(this.getExcelData());
-    }
-}
-
 /* 엑셀 파일 업로드시 JSON파일로 변환 */
 function uploadSupplements(event){
 	// 추가 버튼으로 추가된 엑셀 파일을 변수 안에 담는다.
@@ -147,9 +104,56 @@ function s2ab(s) {
 
 // 양식 다운로드 버튼이 눌리면
 $(document).ready(function() { 
+	$("#recoFeed_excel_download").click(function exportExcel(){
+	    // step 1. workbook 생성
+	    var wb = XLSX.utils.book_new();
+	    
+	    var excelHandler = {
+		    getExcelFileName : function(){
+		        return '추천 사료.xlsx';
+		    },
+		    getSheetName : function(){
+		        return '추천 사료';
+		    },
+		    getExcelData : function(){
+		        return [{'사료 이름':'', '제조회사':'', '성분':'', '알레르기 증상':'', 'DB추가일':''}]; 
+		    },
+		    getWorksheet : function(){
+		        return XLSX.utils.json_to_sheet(this.getExcelData());
+		    }
+		}
+	
+	    // step 2. 시트 만들기 
+	    var newWorksheet = excelHandler.getWorksheet();
+	    
+	    // step 3. workbook에 새로만든 워크시트에 이름을 주고 붙인다.  
+	    XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());
+	
+	    // step 4. 엑셀 파일 만들기 
+	    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+	
+	    // step 5. 엑셀 파일 내보내기 
+	    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), excelHandler.getExcelFileName());
+	});
+	
 	$("#recoSupplements_excel_download").click(function exportExcel(){
 	    // step 1. workbook 생성
 	    var wb = XLSX.utils.book_new();
+	    
+	    var excelHandler = {
+		    getExcelFileName : function(){
+		        return '추천 영양제.xlsx';
+		    },
+		    getSheetName : function(){
+		        return '추천 영양제';
+		    },
+		    getExcelData : function(){
+		        return [{'영양제 이름':'', '제조회사':'', '알레르기 증상':'', 'DB추가일':''}]; 
+		    },
+		    getWorksheet : function(){
+		        return XLSX.utils.json_to_sheet(this.getExcelData());
+		    }
+		}
 	
 	    // step 2. 시트 만들기 
 	    var newWorksheet = excelHandler.getWorksheet();
@@ -164,18 +168,3 @@ $(document).ready(function() {
 	    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), excelHandler.getExcelFileName());
 	});
 });
-
-var excelHandler = {
-    getExcelFileName : function(){
-        return '추천 영양제.xlsx';
-    },
-    getSheetName : function(){
-        return '추천 영양제';
-    },
-    getExcelData : function(){
-        return [{'영양제 이름':'', '제조회사':'', '알레르기 증상':'', 'DB추가일':''}]; 
-    },
-    getWorksheet : function(){
-        return XLSX.utils.json_to_sheet(this.getExcelData());
-    }
-}
