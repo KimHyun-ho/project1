@@ -1,15 +1,9 @@
 package kr.human.anihospital.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@Slf4j
 public class MainController {
 
 	// 메인 페이지
@@ -23,12 +17,6 @@ public class MainController {
 		return "inner";
 	}
 
-//	// 로그인 페이지
-//	@GetMapping("/signin")
-//	public String signin() {
-//		return "signin";
-//	}
-
 	// 후기 작성
 	@GetMapping("/ProPostscriptAdd")
 	public String postscriptSave() {
@@ -41,63 +29,12 @@ public class MainController {
 		return "ProPostscriptEdit";
 	}
 
-	// 공지 사항
-	//	@GetMapping("/notice")
-	//	public String notice() {
-	//		return "notice";
-	//	}
-
-	// 공지 사항 추가
-//	@GetMapping("/noticeAdd")
-//	public String noticeAdd() {
-//		return "noticeAdd";
-//	}
-
-//	// 환자 정보 수정 (의사 용)
-//	@GetMapping("/patientInfoEditDoctor")
-//	public String patientInfoEditDoctor() {
-//		return "patientInfoEditDoctor";
-//	}
-
-	// 환자 조회 페이지
-//	@GetMapping("/animallookup")
-//	public String animallookup() {
-//		return "animallookup";
-//	}
-
-	/*
-	 * // 환자 조회 (한 환자의 진료 이력 리스트)
-	 * 
-	 * @GetMapping("/animallookupdetail") public String animallookupdetail() {
-	 * return "animallookupdetail"; }
-	 */
-
-	/*
-	 * // 진료 내역
-	 * 
-	 * @GetMapping("/diagnosis") public String diagnosis() { 
-	 * return "diagnosis"; }
-	 */
 	// 약관동의 및 역할 체크
 	@GetMapping("/roleCheck")
 	public String roleCheck() {
 		return "roleCheck";
 	}
 	
-	/*
-	 * // 내 정보 수정 (보호자 용)
-	 * 
-	 * @GetMapping("/editMyPageProtector") public String editMyPageProtector() {
-	 * return "editMyPageProtector"; }
-	 */
-
-	/*
-	 * // 내 정보
-	 * 
-	 * @GetMapping("/myPageProtector") public String myPageProtector() { return
-	 * "myPageProtector"; }
-	 */
-
 	// 서비스 소개
 	@GetMapping("/serviceIntroduce")
 	public String serviceIntroduce() {
@@ -109,18 +46,6 @@ public class MainController {
 	public String docDiagnosis() {
 		return "docDiagnosis";
 	}
-
-	// 스케줄 관리
-//	@GetMapping("/scheduleDoctor")
-//	public String scheduleDoctor() {
-//		return "scheduleDoctor";
-//	}
-
-//	// 나의 예약 정보
-//	@GetMapping("/proSchedule")
-//	public String proSchedule() {
-//		return "proSchedule";
-//	}
 
 	// 환자 추가
 	@GetMapping("/proPatientAdd")
@@ -150,32 +75,6 @@ public class MainController {
 	public String pharmacyInfoAdd() {
 		return "pharmacyInfoAdd";
 	}
-
-	
-
-	// 환자 정보 및 이전 진료 내역
-//	@GetMapping("/patientInfo")
-//	public String patientInfo() {
-//		return "patientInfo";
-//	}
-
-	// 환자 정보 수정 (보호자 용)
-//	@GetMapping("/patientInfoEditProtector")
-//	public String patientInfoEditProtector() {
-//		return "patientInfoEditProtector";
-//	}
-
-//	// 진단서 작성
-//	@GetMapping("/diagnosisAdd")
-//	public String diagnosisAdd() {
-//		return "diagnosisAdd";
-//	}
-
-//	// 진단서 상세
-//	@GetMapping("/noticeDetail")
-//	public String noticeDetail() {
-//		return "noticeDetail";
-//	}
 	
    // 의사스케줄 등록
    @GetMapping("/scheduleDoctorAdd")

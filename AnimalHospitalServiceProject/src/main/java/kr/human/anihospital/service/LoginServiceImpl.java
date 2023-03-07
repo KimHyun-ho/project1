@@ -16,7 +16,7 @@ public class LoginServiceImpl implements LoginService{
 	// 아이디가 존재하는지 비교할 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
-	public int selectListLoginId(String memberEmailId) throws Exception {
+	public int selectNaverLoginId(String memberEmailId) throws Exception {
 		int count = 0;
 		try {
 			count = loginMapper.selectNaverLoginId(memberEmailId);
@@ -51,5 +51,17 @@ public class LoginServiceImpl implements LoginService{
 		return seqMember;
 	}
 
-
+	//----------------------------------------------------------------------------------------------------
+	// 로그인시 이메일 아이디로 seqMember,memberRole을 찾아줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public MemberVO selectNaverFindSession(String memberEmailId) {
+		MemberVO memberVO = new MemberVO();
+		try {
+			memberVO = loginMapper.selectNaverFindSession(memberEmailId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return memberVO;
+	}
 }

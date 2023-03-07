@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import kr.human.anihospital.service.LoginService;
 import kr.human.anihospital.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -49,14 +50,15 @@ public class NaverLoginConrtoller {
 	
 	// 네이버 로그인 후 정보를 받아 아이디 존재 여부를 판단해 넘겨줄 컨트롤러
 	@GetMapping("/naverCallback")
-	public String callback(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
+	public String callback(HttpServletRequest request, Model model,HttpSession session) throws UnsupportedEncodingException {
 		String clientId = "jjZSe4Dzr_Kpcinyf4bH";// 애플리케이션 클라이언트 아이디값";
 		String clientSecret = "TNFD4HY8OF";// 애플리케이션 클라이언트 시크릿값";
 		String code = request.getParameter("code");
 		log.info("code : {}", code);
 		String state = request.getParameter("state");
 		log.info("state : {}", state);
-		// session.setAttribute("state", state);
+		session.setAttribute("state", state);
+		log.info("sessionTest : {}", session.getAttribute("state"));
 		String redirectURI = URLEncoder.encode("http://localhost:8080/naverCallback", "UTF-8");
 		String apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code" + "&client_id=" + clientId
 				+ "&client_secret=" + clientSecret + "&redirect_uri=" + redirectURI + "&code=" + code + "&state="
@@ -87,7 +89,7 @@ public class NaverLoginConrtoller {
 				JSONObject jsonObj = (JSONObject) obj;
 
 				accessToken = (String) jsonObj.get("access_token");
-				//session.setAttribute("acces_token", accessToken);
+				session.setAttribute("NaverAccesToken", accessToken);
 				refreshToken = (String) jsonObj.get("refresh_token");
 				
 			}
@@ -139,14 +141,17 @@ public class NaverLoginConrtoller {
 				String naverCode = (String)resObj.get("id");
 				
 				int count = 0;
-				count = loginService.selectListLoginId(memberEmailId);
+				count = loginService.selectNaverLoginId(memberEmailId);
+				MemberVO sessionMemberVO = new MemberVO();
+				sessionMemberVO = loginService.selectNaverFindSession(memberEmailId);
 				String page = null;
 				if(count == 0) {
-					// 아이디가 DB에 존재하지 않으면 roleCheck로
 					model.addAttribute("memberVO",memberVO);
 					page = "roleCheck";
 				}else {
-					// 아이디가 DB에 존재하면 홈으로
+					// 아이디가 DB에 존재하면 홈으로, session에 seq넣는 작업 필요
+					session.setAttribute("seqMember", sessionMemberVO.getSeqMember());
+					session.setAttribute("memberRole", sessionMemberVO.isMemberRole());
 					page = "index";
 				}
 				return page;
@@ -160,9 +165,11 @@ public class NaverLoginConrtoller {
 	// 최초 로그인일때 roleCheck에서 넘어온 정보가 insert될 메서드
 	@PostMapping("/naverLoginInsert")
 	@ResponseBody
-	public String naverLoginInsert(@ModelAttribute MemberVO memberVO) throws Exception {
+	public String naverLoginInsert(@ModelAttribute MemberVO memberVO,HttpSession session) throws Exception {
 		log.info("roleCheck에서 넘어온 insert 정보 : {}", memberVO);
 		loginService.insertNaverLogin(memberVO);
+		session.setAttribute("seqMember", memberVO.getSeqMember());
+		session.setAttribute("seqMember", memberVO.isMemberRole());
 		return "성공";
 	}
 	

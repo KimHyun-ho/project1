@@ -111,25 +111,12 @@
 						<label for="phone">전화번호</label>
 						<div class="wrap">
 							<!-- th:value=${proMyPagemap.memberPhoneNo} -->
-							<input type="text" class="form-control" name="memberPhoneNo" id="phoneNum" placeholder="수정할 전화번호를 입력해주세요." maxlength="13"
+							<input type="text" class="form-control" name="memberPhoneNo" id="phoneNum" placeholder="'-'을 넣어서 입력해주세요." maxlength="13"
 								data-rule="age" data-msg="필수입력 항목입니다.">
 							&nbsp;
-							<input type="button" value="인증번호" class="btn btn-primary"
-								style="border-radius: 50px; width: 110px; margin: auto; text-align: center; float: right; color: white;">
 							<div id="uneditablePhone" style="font-size: 9pt; color: red;"></div>
 						</div>
 						<div class="validate" id="phoneMessage"></div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4 form-group mt-3">
-						<div class="validate"></div>
-					</div>
-					<div class="col-md-4 form-group mt-3">
-						<label for="cNum">인증번호 확인</label>
-						<input type="number" class="form-control" name="confirm_certificationNumber" id="cNum" placeholder="인증번호를 입력해주세요."
-							data-rule="text" required="required">
-						<div class="validate" id="cNumMessage"></div>
 					</div>
 				</div>
 				<div class="row">

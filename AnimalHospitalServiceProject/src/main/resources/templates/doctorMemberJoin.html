@@ -97,8 +97,8 @@ input[name="pictureAdd"] {
 		<form action="doctorMemberJoinOk" method="post" id="doctorMemberJoinOk">
 			<section class="inner-page">
 				<div class="container">
-				<input type="hidden" th:value="${memberEmailId}" id="memberEmailId">
-				<input type="hidden" th:value="${seqMember}" id="seqMember">
+<!-- 				<input type="hidden" th:value="${memberEmailId}" id="memberEmailId"> -->
+				<input type="hidden" th:value="${seqMember}" id="seqMember" name="seqMember">
 					<div class="col-md-2 form-group mt-3" style="margin-left: 34%;">
 						<table>
 							<tr>
@@ -124,7 +124,7 @@ input[name="pictureAdd"] {
 						</div>
 						<div class="col-md-4 form-group mt-3">
 							<label for="number">면허취득일</label>
-							<input type="date" class="form-control" name="doctor_license_date" id="doctor_license_date">
+							<input type="date" class="form-control" name="doctorWorkYear" id="doctor_license_date">
 							<div class="validate" id="doctor_license_date_val"></div>
 						</div>
 					</div>
@@ -134,7 +134,7 @@ input[name="pictureAdd"] {
 						</div>
 						<div class="col-md-4 form-group mt-3">
 							<label for="number">의사 등록번호</label>
-							<input type="number" class="form-control" name="doctor_license_seq" id="doctor_license_seq" placeholder="의사 등록번호를 입력해주세요." data-rule="text" required="required">
+							<input type="number" class="form-control" name="doctorRegistrationNumber" id="doctor_license_seq" placeholder="의사 등록번호를 입력해주세요." data-rule="text" required="required">
 							<div class="validate" id="doctor_license_seq_val"></div>
 						</div>
 					</div>
