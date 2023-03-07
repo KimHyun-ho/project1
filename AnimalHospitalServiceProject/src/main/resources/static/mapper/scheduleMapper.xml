@@ -35,4 +35,23 @@
 			p.seq_animal = a.seq_animal and
 			a.seq_member = #{seqMember}
 	</select>
+	
+	<insert id="insertScheduleDoctor" parameterType="Map">
+		insert into doctorschedule 
+			(seq_doctor,
+			 schedule_doctor_holiday_start,
+			 schedule_doctor_holiday_end,
+			 schedule_doctor_content,
+			 schedule_doctor_write_date,
+			 schedule_doctor_update_date
+			 )
+		 values
+			 (#{seqDoctor},
+			  #{scheduleDoctorHolidayStart},
+			  #{scheduleDoctorHolidayEnd},
+			  #{scheduleDoctorContent},
+			  NOW(),
+			  NOW()
+			  )
+	</insert>
 </mapper>  

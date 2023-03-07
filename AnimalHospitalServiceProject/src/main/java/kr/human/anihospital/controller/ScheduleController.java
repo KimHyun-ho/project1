@@ -1,7 +1,10 @@
 package kr.human.anihospital.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -59,10 +63,42 @@ public class ScheduleController {
 		return jsonArr;
 	}
 	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 풀캘린더에 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@PostMapping("/scheduleDoctorInsertOk")
+	@ResponseBody
+	public String insertScheduleDoctor(@RequestBody List<Map<String, Object>> scheduleDoctorList) throws Exception {
+		// 화면에서 추가한 캘린더에 추가한 데이터가 잘 넘어왔는지 찍어보기
+		log.info("insertScheduleDoctor 실행, 화면에서 넘어온 값(컨트롤러) : {}", scheduleDoctorList);
+		// 한국 표준 시간으로 시간 포멧 설정
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
+		// 맵에서 시작, 종료 시간 꺼내 변수에 담아두기
+		LocalDateTime startDate = null;
+		LocalDateTime endDate = null;
+		for (Map<String, Object> list : scheduleDoctorList) {
+			String startDateString = (String) list.get("start");
+	        String endDateString = (String) list.get("end");
+	        // 한국 표준 시간으로 시간 포멧 설정
+			startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
+	        endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+		}
+		int seqDoctor = 1;
+		Map<String, Object> scheduleDoctorMap = new HashMap<>();
+		for(int i = 0; i < scheduleDoctorList.size(); i++) {
+			scheduleDoctorMap.put("seqDoctor", seqDoctor);
+			scheduleDoctorMap.put("scheduleDoctorHolidayStart", startDate);
+			scheduleDoctorMap.put("scheduleDoctorHolidayEnd", endDate);
+			scheduleDoctorMap.put("scheduleDoctorContent", scheduleDoctorList.get(i).get("title"));
+		}
+		scheduleService.insertScheduleDoctor(scheduleDoctorMap);
+		log.info("insertScheduleDoctor 실행, 서비스에 넘길값(컨트롤러) : {}", scheduleDoctorMap);
+		return "scheduleDoctor";
+	}
+	
 	@GetMapping("/scheduleDoctor")
 	public String selectScheduleDoctor() {
 		return "scheduleDoctor";
-		
 	}
 	
 	//----------------------------------------------------------------------------------------------------

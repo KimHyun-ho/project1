@@ -50,7 +50,46 @@ document.addEventListener('DOMContentLoaded', function() {
 				        }*/
 				    // },
 				    // JSON으로 값 넘겨주기
-				    events: data
+				    events: data,
+				    // 캘린더에서 이벤트를 생성할 수 있다.
+				    select: function (arg) { 
+                            var title = prompt('일정을 입력해주세요.');
+                            if (title) {
+                                calendar.addEvent({
+                                    title: title,
+                                    start: arg.start,
+                                    end: arg.end,
+                                    allDay: arg.allDay,
+                                })
+                            }
+ 							// Json 데이터를 받기 위한 배열 선언
+                            var events = new Array();
+                            // Json 을 담기 위해 Object 선언
+                            var obj = new Object();
+                                obj.title = title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
+                                obj.start = arg.start; // 시작
+                                obj.end = arg.end; // 끝
+                                events.push(obj);
+                            var jsondata = JSON.stringify(events);
+                            console.log(jsondata);
+ 							// 작성한 데이터 저장
+                            $(function saveData(jsondata) {
+                                $.ajax({
+                                    url: "/scheduleDoctorInsertOk",
+                                    method: "POST",
+                                    dataType: "text",
+                                    data: JSON.stringify(events),
+                                    contentType: 'application/json',
+                                })
+                                    .done(function() {
+                                        alert("새 일정이 저장 되었습니다. : " + result);
+                                    })
+                                    .fail(function(error) {
+                                         alert("insert 데이터 전송 실패 : " + error);
+                                    });
+                                calendar.unselect()
+                            });
+                        }
 			  });
 			  // 캘린더 화면에 띄우기
 			  calendar.render();

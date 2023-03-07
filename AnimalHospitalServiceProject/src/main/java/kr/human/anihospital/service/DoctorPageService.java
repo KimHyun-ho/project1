@@ -33,10 +33,14 @@ public class DoctorPageService {
 	@Autowired
 	DoctorPageMapper doctorPageMapper;
 
+	//----------------------------------------------------------------------------------------------------
 	// 세션으로부터 seqMember값을 받아 내 정보 조회(의사)하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public DoctorInfoVO selectOneDoctorInfoVO(int seqMember) {
+		// 데이터 담을 그릇 준비
 		DoctorInfoVO doctorInfoVO = new DoctorInfoVO();
 		try {
+			// 데이터 담아오기
 			doctorInfoVO = doctorPageMapper.selectOneDoctorInfoVO(seqMember);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,7 +48,9 @@ public class DoctorPageService {
 		return doctorInfoVO;
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	// /doctorInfoEdit 페이지에서 수정한 값으로 DB를 업데이트 하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public void updateOneDoctorInfoVO(DoctorInfoVO doctorInfoVO, MultipartFile file) {
 		// 저장할 경로를 지정
 		String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
@@ -74,10 +80,14 @@ public class DoctorPageService {
 		}
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	// 세션으로부터 seqDoctor값을 받아 /patientInfoList 페이지에서 진료내역을 리스트로 조회하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public PagingVO<DocPatientInfoVO> selectAllPatientInfoVO(int seqDoctor,int currentPage, int pageSize, int blockSize) {
+		// 데이터 담을 그릇 준비
 		PagingVO<DocPatientInfoVO> pagingVO = null;
 		try {
+			// 데이터 담아오기
 			int totalCount = doctorPageMapper.selectCountPatientInfoVOList(seqDoctor);
 			pagingVO = new PagingVO<>(totalCount, currentPage, pageSize, blockSize); 
 			pagingVO.setList(doctorPageMapper.selectAllPatientInfoVO(seqDoctor,pagingVO.getStartNo(),pagingVO.getPageSize()));
@@ -87,11 +97,15 @@ public class DoctorPageService {
 		return pagingVO;
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	// /patientInfoList 페이지에서 진료내역을 클릭하여 /patientInfo 페이지로 이동할 때 seqAnimal 값을 받아
 	// 환자 정보를 조회하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public DocPatientInfoVO selectOnePatientInfoVO(int seqAnimal) {
+		// 데이터 담을 그릇 준비
 		DocPatientInfoVO patientInfoVO = new DocPatientInfoVO();
 		try {
+			// 데이터 담아오기
 			patientInfoVO = doctorPageMapper.selectOnePatientInfoVO(seqAnimal);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -99,11 +113,15 @@ public class DoctorPageService {
 		return patientInfoVO;
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	// /patientInfoList 페이지에서 진료내역을 클릭하여 /patientInfo 페이지로 이동할 때 seqAnimal 값을 받아
 	// 환자의 이전 진료내역을 조회하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public List<DiagnosisInfoVO> selectAllPatientDiaRecord(int seqAnimal) {
+		// 데이터 담을 그릇 준비
 		List<DiagnosisInfoVO> patientDiaRecords = new ArrayList<>();
 		try {
+			// 데이터 담아오기
 			patientDiaRecords = doctorPageMapper.selectAllPatientDiaRecord(seqAnimal);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,19 +130,26 @@ public class DoctorPageService {
 
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	// /patientInfo 페이지에서 '수정'버튼을 눌러 환자의 개인정보를 수정하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public void updateOnePatientInfo(DocPatientInfoVO docPatientInfoVO) {
 		try {
+			// 데이터 추가하기
 			doctorPageMapper.updateOnePatientInfo(docPatientInfoVO);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	// /diagnosisAdd 페이지에 의약품 정보를 출력하기 위한 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public List<MedicineInfoVO> selectAllMedicineInfo() {
+		// 데이터 담을 그릇 준비
 		List<MedicineInfoVO> medicineInfoVOs = new ArrayList<>();
 		try {
+			// 데이터 담아오기
 			medicineInfoVOs = doctorPageMapper.selectAllMedicineInfo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,9 +157,14 @@ public class DoctorPageService {
 		return medicineInfoVOs;
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	// diagnosisAdd 페이지에서 처방약 정보를 select하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public MedicineInfoVO selectOneMedicineInfo(String medicineName) {
+		// 데이터 담을 그릇 준비
 		MedicineInfoVO medicineInfoVO = new MedicineInfoVO();
 		try {
+			// 데이터 담아오기
 			medicineInfoVO = doctorPageMapper.selectOneMedicineInfo(medicineName);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -142,14 +172,20 @@ public class DoctorPageService {
 		return medicineInfoVO;
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	// diagnosisAdd 페이지에서 처방약 정보를 insert하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public void insertOneDiagnosisInfoAndDiagnosisMedicine(Map<String, Object> map, List<Integer> seqMedicineList,
-			List<String> medicineNameList, List<String> medicationGuideList) {
+		List<String> medicineNameList, List<String> medicationGuideList) {
+		// 데이터 담을 그릇 준비
 		HashMap<String, Integer> hashMap = new HashMap<>();
 		DiagnosisInfoVO diagnosisInfoVO = new DiagnosisInfoVO();
+		// 준비한 그릇에 화면에서 넘어온 데이터 담기
 		diagnosisInfoVO.setSeqDoctor(Integer.parseInt(String.valueOf(map.get("seqDoctor"))));
 		diagnosisInfoVO.setSeqAnimal(Integer.parseInt(String.valueOf(map.get("seqAnimal"))));
 		diagnosisInfoVO.setSeqAnimalHospital(Integer.parseInt(String.valueOf(map.get("seqAnimalHospital"))));
 		diagnosisInfoVO.setDiagnosisSymptom(String.valueOf(map.get("diagnosisSymptom")));
+		// 날짜 포멧 설정
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String diagnosisMedicationWay = "";
 		for (int i = 0; i < seqMedicineList.size(); i++) {
@@ -158,6 +194,7 @@ public class DoctorPageService {
 		}
 		diagnosisInfoVO.setDiagnosisMedicationWay(diagnosisMedicationWay);
 		try {
+			// 데이터 추가하기
 			diagnosisInfoVO.setDiagnosisDate(dateFormat.parse(String.valueOf(map.get("diagnosisDate"))));
 			doctorPageMapper.insertOneDiagnosisInfo(diagnosisInfoVO);
 			int seqDiagnosis = doctorPageMapper.selectLastInsertIndex();
@@ -171,7 +208,9 @@ public class DoctorPageService {
 		}
 	}
 
-	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
+	//----------------------------------------------------------------------------------------------------
+	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public void insertFeedExcelUpload(Map<String, String> feedJSONMap) {
 		// 값이 제대로 넘어오는지 로그 찍어보기
 		log.info("insertFeedExcelUpload 실행, 화면에서 넘어온 값(서비스) : {}", feedJSONMap);
@@ -195,7 +234,9 @@ public class DoctorPageService {
 		}
 	}
 	
-	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 메퍼 메소드
+	//----------------------------------------------------------------------------------------------------
+	// diagnosisAdd 페이지에서 추천사료 엑셀 파일을 추가해 넘어온 JSON파일을 insert하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public void insertSupplementsExcelUpload(Map<String, String> SupplementsJSONMap) {
 		// 값이 제대로 넘어오는지 로그 찍어보기
 		log.info("insertFeedExcelUpload 실행, 화면에서 넘어온 값(서비스) : {}", SupplementsJSONMap);
@@ -218,7 +259,9 @@ public class DoctorPageService {
 		}
 	}
 	
+	//----------------------------------------------------------------------------------------------------
 	// 검색창에 입력된 환자 이름에 해당하는 환자 정보를 조회하는 서비스 메소드
+	//----------------------------------------------------------------------------------------------------
 	public PagingVO<DocPatientInfoVO> selectOneAnimalPatientInfoListVO(int seqDoctor, 
 																	   int currentPage, 
 																	   int pageSize, 

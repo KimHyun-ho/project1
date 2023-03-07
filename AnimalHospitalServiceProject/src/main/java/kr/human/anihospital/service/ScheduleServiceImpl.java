@@ -52,4 +52,16 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return scheduleProtectorList;
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 풀캘린더에 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void insertScheduleDoctor(Map<String, Object> scheduleDoctorMap) {
+		log.info("insertScheduleDoctor실행, 넘어온 값(서비스) : {}", scheduleDoctorMap);
+		try {
+			scheduleMapper.insertScheduleDoctor(scheduleDoctorMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
