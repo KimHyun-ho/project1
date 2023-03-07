@@ -97,6 +97,8 @@ input[name="pictureAdd"] {
 		<form action="doctorMemberJoinOk" method="post" id="doctorMemberJoinOk">
 			<section class="inner-page">
 				<div class="container">
+				<input type="hidden" th:value="${memberEmailId}" id="memberEmailId">
+				<input type="hidden" th:value="${seqMember}" id="seqMember">
 					<div class="col-md-2 form-group mt-3" style="margin-left: 34%;">
 						<table>
 							<tr>
