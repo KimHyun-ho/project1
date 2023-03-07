@@ -18,8 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				var calendarEl = document.getElementById('calendar');
 				
 				var calendar = new FullCalendar.Calendar(calendarEl, {
-				    // 캘린더 사용을 위해 발급 받은 API Key(Google Calendar전용 Key)
-				    googleCalendarApiKey: 'AIzaSyBZqlqGpA_CWEYa-S0zSasKdiZW5GTGQao',
 				    // 달력 로드시 기본으로 띄울 설정(월, 주, 일 등 선택가능)
 					initialView: 'timeGridWeek', // dayGridMonth(월), timeGridWeek(주)
 					// 달력의 헤더 설정, 설정이 없으면 기본 today만 선택 가능
@@ -51,15 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				        }*/
 				    // },
 				    // JSON으로 값 넘겨주기
-				    events: data,
-					// 풀캘린더에 표시할 공.개.된 구글캘린더 정보
-				    /*eventSources: [
-				      {
-				          googleCalendarId: '01eb943a198c2d1b3946f74b933a302aed241cad6729e8371d86f112503a600e@group.calendar.google.com',
-				          className: '동물병원 통합의료 시스템',
-				          color: '#be5683' 
-				      }
-				    ]*/
+				    events: data
 			  });
 			  // 캘린더 화면에 띄우기
 			  calendar.render();
@@ -119,8 +109,6 @@ $(function(){
 				var calendarEl = document.getElementById('calendar');
 				
 				var calendar = new FullCalendar.Calendar(calendarEl, {
-				    // 캘린더 사용을 위해 발급 받은 API Key(Google Calendar전용 Key)
-				    googleCalendarApiKey: 'AIzaSyBZqlqGpA_CWEYa-S0zSasKdiZW5GTGQao',
 				    // 달력 로드시 기본으로 띄울 설정(월, 주, 일 등 선택가능)
 					initialView: 'timeGridWeek', // dayGridMonth(월), timeGridWeek(주)
 					// 달력의 헤더 설정, 설정이 없으면 기본 today만 선택 가능
@@ -152,15 +140,7 @@ $(function(){
 				        }*/
 				    // },
 				    // JSON으로 값 넘겨주기
-				    events: data,
-					// 풀캘린더에 표시할 공.개.된 구글캘린더 정보
-				    /*eventSources: [
-				      {
-				          googleCalendarId: '01eb943a198c2d1b3946f74b933a302aed241cad6729e8371d86f112503a600e@group.calendar.google.com',
-				          className: '동물병원 통합의료 시스템',
-				          color: '#be5683' 
-				      }
-				    ]*/
+				    events: data
 			  });
 			  // 캘린더 화면에 띄우기
 			  calendar.render();
