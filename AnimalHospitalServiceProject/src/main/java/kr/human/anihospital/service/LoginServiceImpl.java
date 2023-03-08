@@ -75,14 +75,14 @@ public class LoginServiceImpl implements LoginService{
 	// 의사일 경우 세션에 의사seq를 넣어주기 위해 값을 가져올 쿼리
 	//----------------------------------------------------------------------------------------------------
 	@Override
-	public int selectFindDoctorSeq(int seqMember) {
-		int seqDoctor = 0;
+	public Map<String, Object> selectFindDoctorSeq(int seqMember) {
+		Map<String, Object> seqDoctorMap = null;
 		try {
-			seqDoctor = loginMapper.selectFindDoctorSeq(seqMember);
+			seqDoctorMap = loginMapper.selectFindDoctorSeq(seqMember);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return seqDoctor;
+		return seqDoctorMap;
 	}
 	
 	//----------------------------------------------------------------------------------------------------

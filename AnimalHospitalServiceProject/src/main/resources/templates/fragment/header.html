@@ -46,7 +46,7 @@
 						<a class="nav-link scrollto" href="/serviceIntroduce">서비스소개</a>
 					</li> 
 					&nbsp;&nbsp;
-					<div th:if="${session.memberRole == false || session.NaverAccesToken == null}">
+					<div th:if="${session.memberRole == false || session.naverAccessToken == null}">
 						<li class="dropdown">
 							<a href="#">
 								<span>수의사 전용 페이지</span>
@@ -65,7 +65,7 @@
 							</ul>
 						</li>
 					</div>
-					<div th:if="${session.memberRole == true || session.NaverAccesToken == null}">
+					<div th:if="${session.memberRole == true || session.naverAccessToken == null}">
 						<li class="dropdown">
 							<a href="#">
 								<span>보호자 전용 페이지</span>
@@ -97,8 +97,8 @@
 				<i class="bi bi-list mobile-nav-toggle"></i>
 			</nav>
 			<!-- .navbar -->
-			<a href="/signin" class="signin-btn" th:if="${session.NaverAccesToken == null}">Login</a>
-			<a th:onclick="|location.href='@{/naverLogout}'|" class="signin-btn" th:if="${session.NaverAccesToken != null}">Logout</a>
+			<a href="/signin" class="signin-btn" th:if="${session.naverAccessToken == null}">Login</a>
+			<a th:onclick="|location.href='@{/naverLogout}'|" class="signin-btn" th:if="${session.naverAccessToken != null}">Logout</a>
 		</div>
 		<!-- End Header -->
 	</header>

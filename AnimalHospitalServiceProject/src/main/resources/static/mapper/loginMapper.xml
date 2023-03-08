@@ -58,14 +58,15 @@
 			member_email_id = #{memberEmailId}
 	</select>
 	
-	<!-- 의사일 경우 세션에 의사seq를 넣어주기 위해 값을 가져올 쿼리 -->
-	<select id="selectFindDoctorSeq" parameterType="int" resultType="int">
+	<!-- 의사일 경우 세션에 의사 seq를 넣어주기 위해 값을 가져올 쿼리 -->
+	<!-- count가 0일 경우 최초 가입 후 의사 정보를 입력하지 않고 종료했다는 뜻 -->
+	<select id="selectFindDoctorSeq" parameterType="int" resultType="map">
 		select 
-			seq_doctor 
+			count(*) count, seq_doctor seqDoctor
 		from 
 			doctor 
 		where 
-			seq_member =#{seqMember}
+			seq_member = #{seqMember}
 	</select>
 	<!-- 의사일 경우 의사 테이블 정보를 insert할 쿼리 -->
 	<insert id="insertNaverDoctorInfo" parameterType="map">

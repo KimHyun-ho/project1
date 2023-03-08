@@ -44,7 +44,7 @@
 		<!-- End Breadcrumbs Section -->
 		<section class="inner-page">
 		<div th:if="${memberVO != null}" >
-			<form action="doctorMemberJoin" method="post" id="doctorMemberJoinForm">
+			<form action="doctorMemberJoin" method="get" id="doctorMemberJoinForm">
 			<input type="hidden" name="memberEmailId" th:value="${memberVO.memberEmailId}" id="emailId">
 			</form>
 			<input type="hidden" th:value="${memberVO.memberName}" id="name">
@@ -129,7 +129,7 @@ $(function() {
 			var phoneNo = $('#phoneNo').val();
 			var result = window.confirm('선택한 내용으로 회원가입하시겠습니까?');
 			if(result){
-				if(check==0){
+				if(check==1){
 			        $.ajax({
 			        	type: 'post',
 			            url: '/naverLoginInsert',
@@ -154,8 +154,7 @@ $(function() {
 			                console.log('오류 발생')
 			            }
 			        })// ajax
-				}
-				else{
+				} else if(check==2){
 					$.ajax({
 			        	type: 'post',
 			            url: '/naverLoginInsert',
