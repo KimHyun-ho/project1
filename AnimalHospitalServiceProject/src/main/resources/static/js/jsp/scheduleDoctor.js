@@ -3,6 +3,7 @@
 * Page Name : scheduleDoctor.js
 * Author: Park Ji Young
 */
+
 /* 풀 캘린더 띄우기 */
 document.addEventListener('DOMContentLoaded', function() {
   $(function() {
@@ -61,7 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                     end: arg.end,
                                     allDay: arg.allDay,
                                 })
-                            }
+                            } else if (!title) {
+								alert('취소되었습니다.');
+								return false;
+							}
  							// Json 데이터를 받기 위한 배열 선언
                             var events = new Array();
                             // Json 을 담기 위해 Object 선언
@@ -100,4 +104,3 @@ document.addEventListener('DOMContentLoaded', function() {
           });
 	  });
 });
-

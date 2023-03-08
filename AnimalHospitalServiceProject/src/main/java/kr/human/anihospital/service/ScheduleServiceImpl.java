@@ -40,8 +40,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 	//----------------------------------------------------------------------------------------------------
 	@Override
 	public List<Map<String, Object>> selectAllProSchedule(int seqMember) {
+		// 데이터 담을 그릇 준비
 		List<Map<String, Object>> scheduleProtectorList = null;
 		try {
+			// 데이터 조회를 위해 mapper호출
 			scheduleProtectorList = scheduleMapper.selectAllProSchedule(seqMember);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,9 +59,71 @@ public class ScheduleServiceImpl implements ScheduleService {
 	//----------------------------------------------------------------------------------------------------
 	@Override
 	public void insertScheduleDoctor(Map<String, Object> scheduleDoctorMap) {
+		// 데이터가 잘 넘어오는지 로그 찍어보기
 		log.info("insertScheduleDoctor실행, 넘어온 값(서비스) : {}", scheduleDoctorMap);
 		try {
+			// mapper를 불러 insert처리하기
 			scheduleMapper.insertScheduleDoctor(scheduleDoctorMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	// TO DO LIST를 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void insertTodolist(Map<String, Object> todolistMap){
+		// 데이터가 잘 넘어오는지 로그 찍어보기
+		log.info("insertTodolist실행, 넘어온 값(서비스) : {}", todolistMap);
+		try {
+			// mapper를 불러 insert처리하기
+			scheduleMapper.insertTodolist(todolistMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	// TO DO LIST를 화면에 뿌려줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public List<Map<String, Object>> selectAllTodolist(int seqDoctor) {
+		// 데이터담을 그릇 준비
+		List<Map<String, Object>> allTodolist = null;
+		try {
+			// mapper를 불러 select처리하기
+			allTodolist = scheduleMapper.selectAllTodolist(seqDoctor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		log.info("selectAllTodolist실행, 메퍼에서 넘어온 값(서비스) : {}", allTodolist);
+		return allTodolist;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	// TO DO LIST를 수정해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void updateTodolist(Map<String, Object> todolistMap) {
+		// 데이터가 잘 넘어오는지 로그 찍어보기
+		log.info("updateTodolist실행, 넘어온 값(서비스) : {}", todolistMap);
+		try {
+			scheduleMapper.updateTodolist(todolistMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	// TO DO LIST를 삭제해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void deleteTodolist(int seqTodo) {
+		// 데이터가 잘 넘어오는지 로그 찍어보기
+		log.info("deleteTodolist실행, 넘어온 값(서비스) : {}", seqTodo);
+		try {
+			scheduleMapper.deleteTodolist(seqTodo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

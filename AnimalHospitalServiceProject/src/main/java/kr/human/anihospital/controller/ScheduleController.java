@@ -11,6 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,7 +59,7 @@ public class ScheduleController {
 			jsonObj = new JSONObject(scheduleDoctorHash);
 			// 대괄호 안에 넣어주기[{key:value , key:value, key:value},{key:value , key:value, key:value}]
 			jsonArr.add(jsonObj);
-			log.info("jsonArrCheck: {}", jsonArr);
+			// log.info("jsonArrCheck: {}", jsonArr);
 		}
 		return jsonArr;
 	}
@@ -93,11 +94,6 @@ public class ScheduleController {
 		}
 		scheduleService.insertScheduleDoctor(scheduleDoctorMap);
 		log.info("insertScheduleDoctor 실행, 서비스에 넘길값(컨트롤러) : {}", scheduleDoctorMap);
-		return "scheduleDoctor";
-	}
-	
-	@GetMapping("/scheduleDoctor")
-	public String selectScheduleDoctor() {
 		return "scheduleDoctor";
 	}
 	
@@ -161,7 +157,7 @@ public class ScheduleController {
 				jsonObj = new JSONObject(scheduleProtectorHash);
 				// 대괄호 안에 넣어주기[{key:value , key:value, key:value},{key:value , key:value, key:value}]
 				jsonArr.add(jsonObj);
-				log.info("jsonArrCheck: {}", jsonArr);
+				// log.info("jsonArrCheck: {}", jsonArr);
 			}
 			
 		return jsonArr;
@@ -204,5 +200,71 @@ public class ScheduleController {
 			log.info("jsonArrCheck: {}", jsonArr);
 		}
 		return jsonArr;
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// TO DO LIST를 화면에 뿌려줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@GetMapping("/scheduleDoctor")
+	public String selectScheduleDoctor(Model model) throws Exception {
+		// session에서 받아야 할 값
+		int seqDoctor = 1;
+		// 데이터 담을 그릇 준비
+		List<Map<String, Object>> allTodolist = null;
+		// 데이터 담아오기
+		allTodolist = scheduleService.selectAllTodolist(seqDoctor);
+		log.info("selectScheduleDoctor실행, 서비스에서 넘어온 값(컨트롤러) : {}", allTodolist);
+		// 데이터 화면에 넘겨주기
+		model.addAttribute("allTodolist", allTodolist);
+		return "scheduleDoctor";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// TO DO LIST를 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@PostMapping("/todolistInsertOk")
+	public String insertTodolist(@RequestParam Map<String, Object> todolistMap) throws Exception {
+		// 화면에서 값이 잘 넘어오는지 로그 찍어보기
+		log.info("insertTodolist실행, 화면에서 넘어온 값(컨트롤러) : {}", todolistMap);
+		int seqDoctor = 1;
+		Map<String, Object> todolistInsertMap = new HashMap<>();
+		todolistInsertMap.put("seqDoctor", seqDoctor);
+		todolistInsertMap.put("todoSubject", todolistMap.get("toDoSubject"));
+		todolistInsertMap.put("todoContent", todolistMap.get("toDoContent"));
+		// map에 잘 담겼는지 확인하기
+		log.info("insertTodolist실행, 서비스에 넘겨줄 값(컨트롤러) : {}", todolistInsertMap);
+		// insert하기 위해 서비스 호출
+		scheduleService.insertTodolist(todolistInsertMap);
+		return "scheduleDoctor";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// TO DO LIST를 수정해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@PostMapping("/todolistUpdateOk")
+	public String updateTodolist(@RequestParam Map<String, Object> todolistMap) throws Exception {
+		// 화면에서 값이 잘 넘어오는지 로그 찍어보기
+		log.info("updateTodolist실행, 화면에서 넘어온 값(컨트롤러) : {}", todolistMap);
+		Map<String, Object> todolistUpdateMap = new HashMap<>();
+		todolistUpdateMap.put("seqTodo", todolistMap.get("seqTodo"));
+		todolistUpdateMap.put("todoSubject", todolistMap.get("toDoSubject"));
+		todolistUpdateMap.put("todoContent", todolistMap.get("toDoContent"));
+		// map에 잘 담겼는지 확인하기
+		log.info("updateTodolist실행, 서비스에 넘겨줄 값(컨트롤러) : {}", todolistUpdateMap);
+		// update하기 위해 서비스 호출
+		scheduleService.updateTodolist(todolistUpdateMap);
+		return "scheduleDoctor";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// TO DO LIST를 삭제해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@PostMapping("/todolistDeleteOk")
+	public String deleteTodolist(@RequestParam int seqTodo) throws Exception {
+		// 화면에서 값이 잘 넘어오는지 로그 찍어보기
+		log.info("deleteTodolist실행, 화면에서 넘어온 값(컨트롤러) : {}", seqTodo);
+		// delete하기 위해 서비스 호출
+		scheduleService.deleteTodolist(seqTodo);
+		return "scheduleDoctor";
 	}
 }

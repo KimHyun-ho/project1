@@ -16,6 +16,7 @@
 <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
 
 <!-- Tables - SB Admin -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"></script>
 <link href="fullcalendar-5.11.4/lib/main.css" rel="stylesheet" />
@@ -29,17 +30,54 @@
 	position: static;
 }
 
-#do {
-	padding: 10px;
-	margin-bottom: 10px;
-	border: 1px solid #CCCCFF;
-	border-radius: 10px;
-	background-color: transparent;
-	box-shadow: 2px 2px 5px 0px rgba(200, 200, 200, 1);
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: block; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    pointer-events: none;
 }
 
-#today {
-	display: inline;
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */                          
+}
+
+/* The Close Button */
+/* to do list 모달(등록) 닫기버튼*/
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* to do list 모달(수정) 닫기버튼*/
+.close2 {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close2:hover,
+.close2:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 input[name="toDoTime"] {
@@ -81,6 +119,8 @@ input[name="toDoContent"] {
 #deleteToDo {
 	border-radius: 50px;
 	float: right;
+	height: 35px;
+	font-size: 10pt;
 }
 
 #calendar{
@@ -119,99 +159,71 @@ input[name="toDoContent"] {
 								<b>to do list</b>
 							</h4>
 							<div id="do">
-								<p id="today">
-									<b>오늘의 할 일</b>
-								</p>
-								<button type="button" class="btn btn-primary" style="border-radius: 50px; float: right;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-  										<path
-											d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-									</svg>
+								<button type="button" id="insertToDoBtn" class="btn btn-primary" style="border-radius: 50px; float: right;" data-bs-toggle="modal">
+									<i class="bi bi-pencil"></i>
 									등록하기
 								</button>
-								<!-- Modal -->
-								<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" id="staticBackdropLabel">오늘의 할 일</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								<div id="myModal" class="modal">
+							      <div class="modal-content">
+								        <span class="close" id="close" style="text-align: right;">&times;</span>                                                               
+								        	<div>
+												제목
+												<input type="text" class="form-control" name="toDoSubject" id="toDoSubject" maxlength="50">
 											</div>
-											<form action="">
-												<div class="modal-body">
-													<div>
-														시간
-														<input type="time" class="form-control" name="toDoTime" id="toDoTime">
-													</div>
-													<div id="timeMessage"></div>
-													<br />
-													<div>
-														제목
-														<input type="text" class="form-control" name="toDoSubject" id="toDoSubject" maxlength="50">
-													</div>
-													<div id="subjectMessage"></div>
-													<br />
-													<div>
-														<label>
-															내용
-															<textarea rows="4px" cols="100%" class="form-control" id="toDoContent" maxlength="100"></textarea>
-														</label>
-													</div>
-													<div id="contentMessage"></div>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-secondary" style="border-radius: 50px;" data-bs-dismiss="modal">취소하기</button>
-													<button type="button" class="btn btn-primary" id="insertToDo" style="border-radius: 50px;">등록하기</button>
-												</div>
-											</form>
-										</div>
+											<div id="subjectMessage"></div>
+											<br />
+											<div>
+												<label>
+													내용
+													<textarea rows="4px" cols="100%" class="form-control" id="toDoContent" maxlength="100"></textarea>
+												</label>
+											</div>
+											<div id="contentMessage"></div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary" id="insertToDo" style="border-radius: 50px;">등록하기</button>
+											</div>
 									</div>
-								</div>
+							  	</div>
 								<br />
 								<hr />
-								<div class="form-check" id="toDoCheck">
-									<div>
-										<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-										<label class="form-check-label" for="flexCheckDefault" id="toDoToday" title="A환자 진료보기">15:00 진료</label>
-										<input type="button" class="btn btn-primary" style="border-radius: 50px; float: right;" value="수정하기" data-bs-toggle="modal" data-bs-target="#exampleModal">
+								<div class="form-check" id="toDoCheck" style="margin-top: 10px;">
+									<div th:each="allTodolist, i : ${allTodolist}">
+										<input class="form-check-input" type="checkbox" id="flexCheckDefault" name="is_check" th:attrappend="name=${i.index}">
+										<span th:text="${allTodolist.todoUpdateDate}">
+                           				</span>
+                           				<br>
+										<span th:if="${#strings.length(allTodolist.todoContent) gt 14}"
+                           					th:text="${#strings.substring(allTodolist.todoContent,0,14)} + '...'">
+                           				</span>
+                      					<span th:unless="${#strings.length(allTodolist.todoContent) gt 14}"
+                           					th:text="${allTodolist.todoContent}">
+                           				</span>
+										<button type="button" id="updateToDoBtn" th:onclick="openModal('[[${i.index}]]')" class="btn btn-primary" style="border-radius: 50px; float: right; height: 28px; text-align: center; font-size: 10pt;">수정</button>
+										<button type="button" id="deleteToDoBtn" class="btn btn-danger" th:onclick="deleteTodo('[[${i.index}]]')" style="border-radius: 50px; float: right; height: 28px; text-align: center; font-size: 10pt;">삭제</button>
 									</div>
+								</div>
 									<br />
-									<!-- Modal -->
-									<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
-													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							    <div th:each="allTodolist, i : ${allTodolist}">
+									<div id="updateModal" th:attrappend="id=${i.index}" class="modal">
+								      	 <div class="modal-content">
+									        <span class="close2" id="close2" style="text-align: right;" th:onclick="closeModal('[[${i.index}]]')">&times;</span> 
+							     				<input type="hidden" id="seqTodo" name="seqTodo" th:attrappend="id=${i.index}" th:value="${allTodolist.seqTodo}">
+									        	<div>
+													제목
+													<input type="text" class="form-control" name="updateSubject" id="updateSubject" maxlength="50" th:value="${allTodolist.todoSubject}">
 												</div>
-												<form action="">
-													<div class="modal-body">
-
-														<div>
-															시간
-															<input type="time" class="form-control" name="updateTime" id="updateTime">
-														</div>
-														<div id="timeMessage2"></div>
-														<br />
-														<div>
-															제목
-															<input type="text" class="form-control" name="updateSubject" id="updateSubject" maxlength="50">
-														</div>
-														<div id="subjectMessage2"></div>
-														<br />
-														<div>
-															<label>
-																내용
-																<textarea rows="4px" cols="100%" class="form-control" id="updateContent" maxlength="100"></textarea>
-															</label>
-														</div>
-														<div id="contentMessage2"></div>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary" style="border-radius: 50px;" data-bs-dismiss="modal">취소하기</button>
-														<button type="button" class="btn btn-primary" id="updateToDo" style="border-radius: 50px;">수정하기</button>
-													</div>
-												</form>
+												<div id="subjectMessage2"></div>
+												<br />
+												<div>
+													<label>
+														내용
+														<textarea rows="4px" cols="100%" class="form-control" id="updateContent" maxlength="100" th:value="${allTodolist.todoContent}">[[${allTodolist.todoContent}]]</textarea>
+													</label>
+												</div>
+												<div id="contentMessage2"></div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-primary" id="updateToDo" th:attrappend="id=${i.index}" th:onclick="updateTodo('[[${i.index}]]')" style="border-radius: 50px;">수정하기</button>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -220,13 +232,9 @@ input[name="toDoContent"] {
 								<p style="text-align: center; font-size: 10.5pt;">등록된 내용이 없습니다</p>
 								-->
 							</div>
-							<form action="">
-								<input type="submit" class="btn btn-primary" id="deleteToDo" value="삭제하기">
-							</form>
 						</div>
 					</div>
 				</div>
-			</div>
 		</section>
 	</main>
 	<!-- End #main -->
@@ -235,113 +243,191 @@ input[name="toDoContent"] {
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
-	$(function() {
-		$('#insertToDo').on('click', function() {
-			var toDoTime = $('#toDoTime').val();
-			var toDoSubject = $('#toDoSubject').val();
-			var toDoContent = $('#toDoContent').val();
-			if (toDoTime == null || toDoTime.trim().length == 0) {
-				$('#toDoTime').attr('style', 'border-color: #dc3545;');
-				$('#toDoTime').val('');
-				$('#timeMessage').html('<div id="warning1"><b style="color: red;">시간을 입력해주세요.</b></div>');
-				$('#toDoTime').focus();
-			} else if (toDoSubject == null || toDoSubject.trim().length == 0) {
-				$('#toDoSubject').attr('style', 'border-color: #dc3545;');
-				$('#toDoSubject').val('');
-				$('#subjectMessage').html('<div id="warning2"><b style="color: red;">제목을 입력해주세요.</b></div>');
-				$('#toDoSubject').focus();
-			} else if (toDoContent == null || toDoContent.trim().length == 0) {
-				$('#toDoContent').attr('style', 'border-color: #dc3545;');
-				$('#toDoContent').val('');
-				$('#contentMessage').html('<div id="warning3"><b style="color: red;">내용을 입력해주세요.</b></div>');
-				$('#toDoContent').focus();
-			} else {
-				var result = window.confirm('작성한 내용을 등록하시겠습니까?');
-				if (result) {
-					alert('정상적으로 등록되었습니다.');
-					location.href = '/scheduleDoctor';
-				}
-			}
-		});
-	});
-	$('#toDoTime').on('input', function() {
-		if ($('#toDoTime').val() != '') {
-			$('#toDoTime').attr('style', 'border-color : #ced4da;');
-			$('#warning1').remove();
-		}
-	});
-	$('#toDoSubject').on('input', function() {
-		if ($('#toDoSubject').val() != '') {
-			$('#toDoSubject').attr('style', 'border-color : #ced4da;');
-			$('#warning2').remove();
-		}
-	});
-	$('#toDoContent').on('input', function() {
-		if ($('#toDoContent').val() != '') {
-			$('#toDoContent').attr('style', 'border-color : #ced4da;');
-			$('#warning3').remove();
-		}
-	});
-	$(function() {
-		$('#updateToDo').on('click', function() {
-			var updateTime = $('#updateTime').val();
-			var updateSubject = $('#updateSubject').val();
-			var updateContent = $('#updateContent').val();
-			if (updateTime == null || updateTime.trim().length == 0) {
-				$('#updateTime').attr('style', 'border-color: #dc3545;');
-				$('#updateTime').val('');
-				$('#timeMessage2').html('<div id="warning1"><b style="color: red;">시간을 입력해주세요.</b></div>');
-				$('#updateTime').focus();
-			} else if (updateSubject == null || updateSubject.trim().length == 0) {
-				$('#updateSubject').attr('style', 'border-color: #dc3545;');
-				$('#updateSubject').val('');
-				$('#subjectMessage2').html('<div id="warning2"><b style="color: red;">제목을 입력해주세요.</b></div>');
-				$('#updateSubject').focus();
-			} else if (updateContent == null || updateContent.trim().length == 0) {
-				$('#updateContent').attr('style', 'border-color: #dc3545;');
-				$('#updateContent').val('');
-				$('#contentMessage2').html('<div id="warning3"><b style="color: red;">내용을 입력해주세요.</b></div>');
-				$('#updateContent').focus();
-			} else {
-				var result = window.confirm('작성한 내용을 수정하시겠습니까?');
-				if (result) {
-					alert('정상적으로 수정되었습니다.');
-					location.href = '/scheduleDoctor';
-				}
-			}
-		});
-	});
-	$('#updateTime').on('input', function() {
-		if ($('#updateTime').val() != '') {
-			$('#updateTime').attr('style', 'border-color : #ced4da;');
-			$('#warning1').remove();
-		}
-	});
-	$('#updateSubject').on('input', function() {
-		if ($('#updateSubject').val() != '') {
-			$('#updateSubject').attr('style', 'border-color : #ced4da;');
-			$('#warning2').remove();
-		}
-	});
-	$('#updateContent').on('input', function() {
-		if ($('#updateContent').val() != '') {
-			$('#updateContent').attr('style', 'border-color : #ced4da;');
-			$('#warning3').remove();
-		}
-	});
-	$("#flexCheckDefault").on('click', function() {
-		if ($(this).is(':checked')) {
-			$('#toDoToday').attr('style', 'text-decoration: line-through;');
+
+/* to do list 추가 */
+$(function() {
+	$('#insertToDo').on('click', function() {
+		var toDoSubject = $('#toDoSubject').val();
+		var toDoContent = $('#toDoContent').val();
+		if (toDoSubject == null || toDoSubject.trim().length == 0) {
+			$('#toDoSubject').attr('style', 'border-color: #dc3545;');
+			$('#toDoSubject').val('');
+			$('#subjectMessage').html('<div id="warning2"><b style="color: red;">제목을 입력해주세요.</b></div>');
+			$('#toDoSubject').focus();
+		} else if (toDoContent == null || toDoContent.trim().length == 0) {
+			$('#toDoContent').attr('style', 'border-color: #dc3545;');
+			$('#toDoContent').val('');
+			$('#contentMessage').html('<div id="warning3"><b style="color: red;">내용을 입력해주세요.</b></div>');
+			$('#toDoContent').focus();
 		} else {
-			$('#toDoToday').attr('style', 'text-decoration: none;');
+			var toDoSubjectVar = $('#toDoSubject').val();
+			var toDoContentVar = $('#toDoContent').val();
+			$.ajax({
+				url : "/todolistInsertOk",
+				dataType: "text",
+				type : "post",
+				//contentType : 'application/json; charset=utf-8',
+				data : {
+					toDoSubject : toDoSubjectVar,
+					toDoContent : toDoContentVar,
+				},
+				success : function(data) {
+					alert("To Do List 추가가 완료 되었습니다.");
+					// 모달창 닫기
+					modal.style.display = "none";
+					location.reload();
+				},
+				error : function() {
+					alert("To Do List 추가를 실패 하였습니다.");
+				}
+			});
 		}
 	});
-	$("#deleteToDo").on('click', function() {
-		var result = window.confirm('선택한 항목을 모두 삭제하시겠습니까?');
-		if (result) {
-			alert('정상적으로 삭제되었습니다.');
-			location.href = '/scheduleDoctor';
-		}
-	});
+});
+
+/* to do list 삭제 */
+function deleteTodo(index){
+	if($("input:checkbox[name=is_check"+ index +"]").is(":checked") == true) {
+		var seqTodoVar = $('#seqTodo'+ index).val();
+		console.log(index);
+		console.log(seqTodoVar);
+		$.ajax({
+			url : "/todolistDeleteOk",
+			dataType: "text",
+			type : "post",
+			//contentType : 'application/json; charset=utf-8',
+			data : {
+				seqTodo : seqTodoVar,
+			},
+			success : function(data) {
+				alert("To Do List 삭제가 완료 되었습니다.");
+				location.reload();
+			},
+			error : function() {
+				alert("To Do List 삭제를 실패 하였습니다.");
+			}
+		});
+	} else if ($("input:checkbox[name=is_check"+ index +"]").is(":checked") == false) {
+		alert('취소되었습니다.');
+		return false;
+	}
+}
+
+/* to do list 수정 */
+function updateTodo(index){
+	var updateSubject = $('#updateSubject').val();
+	var updateContent = $('#updateContent').val();
+	if (updateSubject == null || updateSubject.trim().length == 0) {
+		$('#updateSubject').attr('style', 'border-color: #dc3545;');
+		$('#updateSubject').val('');
+		$('#subjectMessage2').html('<div id="warning2"><b style="color: red;">제목을 입력해주세요.</b></div>');
+		$('#updateSubject').focus();
+	} else if (updateContent == null || updateContent.trim().length == 0) {
+		$('#updateContent').attr('style', 'border-color: #dc3545;');
+		$('#updateContent').val('');
+		$('#contentMessage2').html('<div id="warning3"><b style="color: red;">내용을 입력해주세요.</b></div>');
+		$('#updateContent').focus();
+	} else {
+		var seqTodoVar = $('#seqTodo').val();
+		var updateSubjectVar = $('#updateSubject').val();
+		var updateContentVar = $('#updateContent').val();
+		$.ajax({
+			url : "/todolistUpdateOk",
+			dataType: "text",
+			type : "post",
+			//contentType : 'application/json; charset=utf-8',
+			data : {
+				seqTodo : seqTodoVar,
+				toDoSubject : updateSubjectVar,
+				toDoContent : updateContentVar,
+			},
+			success : function(data) {
+				alert("To Do List 수정이 완료 되었습니다.");
+				// 모달창 닫기
+				document.getElementById('updateModal'+index).style.display = "none";
+				location.reload();
+			},
+			error : function() {
+				alert("To Do List 수정을 실패 하였습니다.");
+			}
+		});
+	}
+}
+
+$('#toDoTime').on('input', function() {
+	if ($('#toDoTime').val() != '') {
+		$('#toDoTime').attr('style', 'border-color : #ced4da;');
+		$('#warning1').remove();
+	}
+});
+$('#toDoSubject').on('input', function() {
+	if ($('#toDoSubject').val() != '') {
+		$('#toDoSubject').attr('style', 'border-color : #ced4da;');
+		$('#warning2').remove();
+	}
+});
+$('#toDoContent').on('input', function() {
+	if ($('#toDoContent').val() != '') {
+		$('#toDoContent').attr('style', 'border-color : #ced4da;');
+		$('#warning3').remove();
+	}
+});
+
+$('#updateTime').on('input', function() {
+	if ($('#updateTime').val() != '') {
+		$('#updateTime').attr('style', 'border-color : #ced4da;');
+		$('#warning1').remove();
+	}
+});
+$('#updateSubject').on('input', function() {
+	if ($('#updateSubject').val() != '') {
+		$('#updateSubject').attr('style', 'border-color : #ced4da;');
+		$('#warning2').remove();
+	}
+});
+$('#updateContent').on('input', function() {
+	if ($('#updateContent').val() != '') {
+		$('#updateContent').attr('style', 'border-color : #ced4da;');
+		$('#warning3').remove();
+	}
+});
+$("#flexCheckDefault").on('click', function() {
+	if ($(this).is(':checked')) {
+		$('#toDoToday').attr('style', 'text-decoration: line-through;');
+		$('#toDoContent').attr('style', 'text-decoration: line-through;');
+	} else {
+		$('#toDoToday').attr('style', 'text-decoration: none;');
+		$('#toDoContent').attr('style', 'text-decoration: none;');
+	}
+});
+
+/* To Do List 추가, 수정 창 띄우기 */
+//모달창 띄워 to do list 등록하기
+var modal = document.getElementById('myModal');
+
+// 모달창을 닫기 위한 태그
+var span = document.getElementsByClassName("close")[0];
+
+document.getElementById('insertToDoBtn').addEventListener('click', function() {
+    // 모달창 띄우기
+	modal.style.display = "block";
+    modal.focus();
+});
+document.getElementById('close').addEventListener('click', function() {
+    // 모달창 닫기
+	modal.style.display = "none";
+});
+
+//모달창 띄워 to do list 수정하기
+function closeModal(index){
+	document.getElementById('updateModal'+index).style.display = "none";
+}
+//모달창을 닫기 위한 태그
+var span2 = document.getElementsByClassName("close2")[0]; 
+
+function openModal(index){
+    // value = num
+    $("#updateModal"+index).fadeIn();
+}
 </script>
 </html>
