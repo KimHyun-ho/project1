@@ -98,7 +98,7 @@ public class NaverLoginConrtoller {
 				JSONObject jsonObj = (JSONObject) obj;
 
 				accessToken = (String) jsonObj.get("access_token");
-				session.setAttribute("NaverAccesToken", accessToken);
+				session.setAttribute("naverAccessToken", accessToken);
 				refreshToken = (String) jsonObj.get("refresh_token");
 				
 			}
@@ -123,13 +123,11 @@ public class NaverLoginConrtoller {
 				} else {  // 에러 발생
 				  br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
 				}
-
 				String inputLine;
 				StringBuffer res = new StringBuffer();
 				while ((inputLine = br.readLine()) != null) {
 				  res.append(inputLine);
 				}
-
 				br.close();
 				JSONParser parsing = new JSONParser();
 				Object obj = parsing.parse(res.toString());
@@ -138,6 +136,7 @@ public class NaverLoginConrtoller {
 				
 				MemberVO memberVO = new MemberVO();
 				String memberEmailId = (String)resObj.get("email");
+				session.setAttribute("memberEmailId", memberEmailId);
 				memberVO.setMemberEmailId(memberEmailId);
 				memberVO.setMemberName((String)resObj.get("name"));
 				String birthday = (String)resObj.get("birthday");
@@ -164,9 +163,17 @@ public class NaverLoginConrtoller {
 					log.info("session에 저장된 memberRole : {}", session.getAttribute("memberRole"));
 					page = "index";
 					if(((Boolean)session.getAttribute("memberRole")).booleanValue()==false) {
-						int seqDoctor = 0;
-						seqDoctor = loginService.selectFindDoctorSeq((int)session.getAttribute("seqMember"));
-						session.setAttribute("seqDoctor", seqDoctor);
+						log.info("memberRole : {}", session.getAttribute("memberRole"));
+						Map<String, Object> seqDoctorMap = null;
+						seqDoctorMap = loginService.selectFindDoctorSeq((int)session.getAttribute("seqMember"));
+						// count 가 0 이면 의사role로 가입만 하고 의사 정보를 입력하지 않았다는 뜻이므로
+						if(Integer.parseInt(seqDoctorMap.get("count").toString())==0) {
+							// memberEmailId를 가지고 다시 doctorMemberJoin로 보낸다.
+							return "redirect:doctorMemberJoin";
+						}else {
+							session.setAttribute("seqDoctor", seqDoctorMap.get("seqDoctor"));
+							page = "index";
+						}
 						log.info("seqDoctor : {}", session.getAttribute("seqDoctor"));
 					}
 				}
@@ -175,7 +182,7 @@ public class NaverLoginConrtoller {
 		    	e1.printStackTrace();
 		    }
 		}
-		return "naverCallback";
+		return "redirect:/";
 	}
 	
 	// 최초 로그인일때 roleCheck에서 넘어온 정보가 insert될 메서드
@@ -193,9 +200,10 @@ public class NaverLoginConrtoller {
 	// 로그인시 아이디를 받아와서 아이디로 seq값을 찾아 
 	// doctor테이블에 seqMember를 insert하기 위함
 	// ##############나중에 Post로 다시 돌리기!!!!!!!!!!!!!!!################
-	@PostMapping("/doctorMemberJoin")
-	public String doctorMemberJoin(@RequestParam String memberEmailId, Model model) throws Exception {
-		log.info("roleCheck에서 넘어온 memberEmailId : {}",memberEmailId);
+	@GetMapping("/doctorMemberJoin")
+	public String doctorMemberJoin(HttpSession session, Model model) throws Exception {
+		String memberEmailId = session.getAttribute("memberEmailId").toString();
+		log.info("session에서 받아온 memberEmailId : {}",memberEmailId);
 		model.addAttribute("memberEmailId", memberEmailId);
 		// 이메일을 받아서 seqMember를 찾은 후 doctorMemberJoin 페이지로 넘겨주기
 		int seqMember = 0;
@@ -218,10 +226,10 @@ public class NaverLoginConrtoller {
 		log.info("doctorMemberJoin에서 넘어온 의사 정보 :{} {}",naverDoctorJoinMap, file);
 		// 의사 정보 insert sql문 실행
 		loginService.insertNaverDoctorInfo(naverDoctorJoinMap, file);
-		int seqDoctor = 0;
-		seqDoctor = loginService.selectFindDoctorSeq(Integer.parseInt(naverDoctorJoinMap.get("seqMember").toString()));
-		log.info("selectFindDoctorSeq에서 넘어온 seqDoctor : {}",seqDoctor);
-		session.setAttribute("seqDoctor", seqDoctor);
+		Map<String, Object> seqDoctorMap = null;
+		seqDoctorMap = loginService.selectFindDoctorSeq((int)session.getAttribute("seqMember"));
+		log.info("selectFindDoctorSeq에서 넘어온 seqDoctor : {}",seqDoctorMap.get("seqDoctor"));
+		session.setAttribute("seqDoctor", seqDoctorMap.get("seqDoctor"));
 		log.info("session에 저장된 seqDoctor : {}",session.getAttribute("seqDoctor"));
 		return "redirect:/";
 	}
@@ -231,7 +239,7 @@ public class NaverLoginConrtoller {
 	public String naverLogout(HttpSession session)  {
 		String clientId = "jjZSe4Dzr_Kpcinyf4bH";// 애플리케이션 클라이언트 아이디값";
 		String clientSecret = "TNFD4HY8OF";// 애플리케이션 클라이언트 시크릿값";
-		String accessToken = session.getAttribute("NaverAccesToken").toString();
+		String accessToken = session.getAttribute("naverAccessToken").toString();
 		String apiUrl = "https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id="+clientId+
 				"&client_secret="+clientSecret+"&access_token="+accessToken+"&service_provider=NAVER";
 		try {
