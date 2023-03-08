@@ -21,27 +21,26 @@
 <link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
 
 <!-- Template Main CSS File -->
-<script type="text/javascript" src="js/jsp/doctorMemberJoin.js"></script>
 <link href="css/style.css" rel="stylesheet">
 <style>
-
 #doctorImg {
 	width: 200px;
 	height: 200px;
 	display: inline;
-    border-radius: 10%;
+	border-radius: 10%;
 	object-fit: cover;
 	border: 3px solid #F5F5F5;
 	text-align: center;
 	font-size: 9pt;
 }
+
 .no_content_img {
-  width: 200px;
-  height: 200px;
-  margin: auto;
-  border: 3px solid #F5F5F5;
-  text-align: center;
-  font-size: 9pt;
+	width: 200px;
+	height: 200px;
+	margin: auto;
+	border: 3px solid #F5F5F5;
+	text-align: center;
+	font-size: 9pt;
 }
 
 input[name="pictureAdd"] {
@@ -77,6 +76,8 @@ input[name="pictureAdd"] {
 }
 </style>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jsp/doctorMemberJoin.js"></script>
 <body>
 	<div th:replace="~{fragment/header :: #header}"></div>
 	<main id="main">
@@ -94,30 +95,40 @@ input[name="pictureAdd"] {
 			</div>
 		</section>
 		<!-- End Breadcrumbs Section -->
-		<form action="doctorMemberJoinOk" method="post" id="doctorMemberJoinOk">
 			<section class="inner-page">
+				<form action="doctorMemberJoinOk" id="doctorMemberJoinOk" method="post" enctype="multipart/form-data">
 				<div class="container">
-<!-- 				<input type="hidden" th:value="${memberEmailId}" id="memberEmailId"> -->
-				<input type="hidden" th:value="${seqMember}" id="seqMember" name="seqMember">
+					<input type="hidden" th:value="${seqMember}" id="seqMember" name="seqMember">
 					<div class="col-md-2 form-group mt-3" style="margin-left: 34%;">
 						<table>
 							<tr>
-								<td class="no_content_img" id="no_content_img">
-									<i class="bi bi-x-circle"></i> 등록된 파일이 없습니다.
-								</td>
+								<td class="no_content_img" id="no_content_img"><i class="bi bi-x-circle"></i> 등록된 파일이 없습니다.</td>
 							</tr>
 							<tr>
-								<td id="doctorImgTd">
-									<img id="doctorImg" alt="" src="" style="width: 200px; height: 200px;"> <br />
+								<td id="doctorImgTd"><img id="doctorImg" alt="" src="" style="width: 200px; height: 200px;"> <br />
 								</td>
 							</tr>
 						</table>
-							<div class="FileBtn">
-								<label for="doctorFileUp" class="btn btn-primary" style="border-radius: 50px;">사진추가</label>
-								<input type="file" class="btn btn-primary" id="doctorFileUp" name="file" accept="image/*">
-							</div>
+						<div class="FileBtn">
+							<label for="doctorFileUp" class="btn btn-primary" style="border-radius: 50px;">사진추가</label>
+							<input type="file" class="btn btn-primary" id="doctorFileUp" name="file" accept="image/*">
+						</div>
 						<br />
 					</div>
+					<div class="row">
+						<div class="col-md-4 form-group mt-3" style="margin: auto;">
+							<div class="validate"></div>
+								<label for="value">소속병원</label>
+							<input onkeyup="filter()" class="form-control" type="text" id="value" placeholder="병원을 입력해주세요." name="">
+							<div class="validate" id="value_val"></div>
+							<div th:each="animalHospitalList : ${animalHospitalList}" class="item">
+								<div th:text="${animalHospitalList.animalHospitalName}" th:value="${animalHospitalList.seqAnimalHospital}"
+									class="name" th:id="'animalHospitalName'+${animalHospitalList.seqAnimalHospital}"
+									th:onclick="getValue([[${animalHospitalList.seqAnimalHospital}]])"></div>
+							</div>
+						</div>
+					</div>
+
 					<div class="row">
 						<div class="col-md-4 form-group mt-3">
 							<div class="validate"></div>
@@ -134,100 +145,47 @@ input[name="pictureAdd"] {
 						</div>
 						<div class="col-md-4 form-group mt-3">
 							<label for="number">의사 등록번호</label>
-							<input type="number" class="form-control" name="doctorRegistrationNumber" id="doctor_license_seq" placeholder="의사 등록번호를 입력해주세요." data-rule="text" required="required">
+							<input type="number" class="form-control" name="doctorRegistrationNumber" id="doctor_license_seq"
+								placeholder="의사 등록번호를 입력해주세요." data-rule="text" required="required">
 							<div class="validate" id="doctor_license_seq_val"></div>
 						</div>
 					</div>
 					<br />
 					<div class="col-md-4 form-group mt-3" style="margin: auto;">
 						<label for="text">인사말</label>
-						<textarea class="form-control" name="greetingMessage" id="greetingMessage" rows="3" placeholder="인사말을 입력해주세요." style="resize: none;"></textarea>
+						<textarea class="form-control" name="doctorSay" id="greetingMessage" rows="3" placeholder="인사말을 입력해주세요."
+							style="resize: none;"></textarea>
 						<div class="validate"></div>
 					</div>
 					<div class="col-md-4 form-group mt-3" style="margin: auto;">
 						<label for="text">이력</label>
-						<textarea class="form-control" name="careerMessage" id="careerMessage" rows="3" placeholder="이력을 입력해주세요." style="resize: none;"></textarea>
+						<textarea class="form-control" name="doctorWorkSpace" id="careerMessage" rows="3" placeholder="이력을 입력해주세요."
+							style="resize: none;"></textarea>
 						<div class="validate"></div>
 					</div>
 					<div class="col-md-4 form-group mt-3" style="margin: auto;">
 						<label for="text">학력</label>
-						<textarea class="form-control" name="educationMessage" id="educationMessage" rows="3" placeholder="학력을 입력해주세요." style="resize: none;"></textarea>
+						<textarea class="form-control" name="doctorEducation" id="educationMessage" rows="3" placeholder="학력을 입력해주세요."
+							style="resize: none;"></textarea>
 						<div class="validate"></div>
 					</div>
 					<br /> <br>
 					<div class="row">
 						<div class="col-md-4 form-group" style="margin: auto;">
-							<a href="/roleCheck" class="btn btn-secondary" name="move_pre_page" id="move_pre_page" style="border-radius: 50px; width: 110px; text-align: center; color: white;">이전페이지</a>
-							<a class="btn btn-primary" name="join_membership_doctor" id="join_membership_doctor" style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">회원가입</a>
+							<a href="/roleCheck" class="btn btn-secondary" name="move_pre_page" id="move_pre_page"
+								style="border-radius: 50px; width: 110px; text-align: center; color: white;">이전페이지</a>
+							<a class="btn btn-primary" name="join_membership_doctor" id="join_membership_doctor"
+								style="border-radius: 50px; width: 110px; text-align: center; float: right; color: white;">회원가입</a>
 							<div class="validate"></div>
 						</div>
 					</div>
 				</div>
+				</form>
 			</section>
-		</form>
 		<br>
 		<!-- End Appointment Section -->
 	</main>
 	<!-- End #main -->
 	<div th:replace="~{fragment/footer :: #footer}"></div>
 </body>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script type="text/javascript">
-$("#doctorImgTd").hide();
-//사진 미리보기
-$("#doctorFileUp").on("change", function(event) {
-	$("#doctorImgTd").show();
-    var doctorImg = event.target.files[0];
-    var reader = new FileReader(); 
-    reader.onload = function(e) {
-		$("#no_content_img").hide();
-        $("#doctorImg").attr("src", e.target.result);
-    }
-    reader.readAsDataURL(doctorImg);
-});
-$(function() {
-	$('#join_membership_doctor').on('click', function() {
-		var doctor_license_seq = $('#doctor_license_seq').val();
-		var doctorLicenseSeqRegEx = /^[0-9]{4,6}$/;
-		if (doctor_license_seq == '' || doctor_license_seq.trim().length == 0 || doctor_license_seq.includes(' ')) {
-			$('#doctor_license_seq').focus();
-			$('#doctor_license_seq').attr('style', 'border-color: #dc3545;');
-			$('#doctor_license_seq').val('');
-			$('#doctor_license_seq_val').html('<div id="doctor_license_seq_warning"><b style="color: red; font-size:10pt;">의사 등록번호를 입력해주세요.</b></div>');
-		} else if (!doctorLicenseSeqRegEx.test(doctor_license_seq)) {
-			$('#doctor_license_seq').focus();
-			$('#doctor_license_seq').attr('style', 'border-color: #dc3545;');
-			$('#doctor_license_seq').val('');
-			$('#doctor_license_seq_val').html('<div id="doctor_license_seq_warning"><b style="color: red; font-size:10pt;">올바른 의사 등록번호를 입력해주세요.</b></div>');
-		} else {
-			var result = window.confirm('작성한 내용대로 가입하시겠습니까?');
-			if (result) {
-				alert('정상적으로 처리되었습니다.');
-				$('#doctorMemberJoinOk').submit();
-			} else {
-				alert('취소되었습니다.');
-				return false;
-			}
-		}
-	});
-});
-
-$('#doctor_license_seq').on('input', function() {
-	if ($('#doctor_license_seq').val() != '') {
-		$('#doctor_license_seq').attr('style', 'border-color : #ced4da;');
-		$('#doctor_license_seq_warning').remove();
-	}
-})
-
-// 나이 달력 이벤트 및 게산
-$(function() {
-	// 생년월일 기본값 현재날짜로 설정, 현재날짜 이후는 선택 불가능하게 함
-	today = new Date();
-	today = today.toISOString().slice(0, 10);
-	bir = document.getElementById("doctor_license_date");
-	bir.value = today;
-	document.getElementById("doctor_license_date").setAttribute("max", today);
-});
-</script>
 </html>

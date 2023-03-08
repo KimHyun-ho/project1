@@ -1,5 +1,7 @@
 package kr.human.anihospital.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.human.anihospital.vo.MemberVO;
@@ -25,4 +27,15 @@ public interface LoginMapper {
 	// 로그인시 이메일 아이디로 seqMember,memberRole을 찾아줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	MemberVO selectNaverFindSession(String memberEmailId) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사일 경우 세션에 의사seq를 넣어주기 위해 값을 가져올 쿼리
+	//----------------------------------------------------------------------------------------------------
+	int selectFindDoctorSeq(int seqMember) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 최초 로그인시 정보를 insert해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	void insertNaverDoctorInfo(Map<String, Object> naverDoctorJoinMap) throws Exception;
+	
 }

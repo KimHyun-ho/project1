@@ -24,9 +24,19 @@
 <link href="vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
 <link href="vendor/remixicon/remixicon.css" rel="stylesheet">
 <link href="vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
 <!-- Template Main CSS File -->
 <link href="css/style.css" rel="stylesheet">
+
+<style type="text/css">
+	.member-info{
+		margin-top: 20px;
+	}
+	
+</style>
 </head>
 <body>
 	<div th:replace="~{fragment/header :: #header}"></div>
@@ -49,12 +59,14 @@
 				<div class="row">
 					<div class="col-lg-4 d-flex align-items-stretch">
 						<div class="content">
-							<h3>Why Choose Medilab?</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-								dolore magna aliqua. Duis aute irure dolor in reprehenderit Asperiores dolores sed et. Tenetur quia eos. Autem
-								tempore quibusdam vel necessitatibus optio ad corporis.</p>
+							<br />
+							<h3>마이펫닥터란?</h3>
+							<br />
+								<p>
+								소중한 우리 가족을 위해 동네에 있는 병원을 24시간 언제나 예약할 수 있는 기능을 제공합니다.
+								</p>
 							<div class="text-center">
-								<a href="#" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
+								<a href="#" class="more-btn">서비스소개<i class="bx bx-chevron-right"></i></a>
 							</div>
 						</div>
 					</div>
@@ -63,23 +75,26 @@
 							<div class="row">
 								<div class="col-xl-4 d-flex align-items-stretch">
 									<div class="icon-box mt-4 mt-xl-0">
-										<i class="bx bx-receipt"></i>
-										<h4>Corporis voluptates sit</h4>
-										<p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
+										<i class="bi bi-person"></i>
+										<p></p>
+										<h4>Doctor</h4>
+										<p>환자 조회 및 진료내역 확인과 간편한 스케줄 관리를 할 수 있습니다.</p>
 									</div>
 								</div>
 								<div class="col-xl-4 d-flex align-items-stretch">
 									<div class="icon-box mt-4 mt-xl-0">
-										<i class="bx bx-cube-alt"></i>
-										<h4>Ullamco laboris ladore pan</h4>
-										<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
+										<span class="material-symbols-outlined" style="color: #1977cc; font-size: 42px; margin-top: 10px;">pets</span>
+										<p></p>
+										<h4>Patient</h4>
+										<p>소중한 우리 가족을 위해 간편하게 병원을 예약하고 내원관리를 할 수 있습니다.</p>
 									</div>
 								</div>
 								<div class="col-xl-4 d-flex align-items-stretch">
 									<div class="icon-box mt-4 mt-xl-0">
-										<i class="bx bx-images"></i>
-										<h4>Labore consequatur</h4>
-										<p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
+										<i class="bi bi-map"></i>
+										<p></p>
+										<h4>Map</h4>
+										<p>동네에 있는 병원과 약국의 정보를 알 수 있습니다.</p>
 									</div>
 								</div>
 							</div>
@@ -99,208 +114,85 @@
 							<i class="fas fa-user-md"></i> <span data-purecounter-start="0" data-purecounter-end="85"
 								data-purecounter-duration="1" class="purecounter"></span>
 							<p>Doctors</p>
+							<h4>123</h4>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+						<div class="count-box">
+							<i class="fa-solid fa-heart-pulse"></i><span data-purecounter-start="0" data-purecounter-end="150"
+								data-purecounter-duration="1" class="purecounter"></span>
+							<p>Client</p>
+							<h4>123</h4>
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6 mt-5 mt-md-0">
 						<div class="count-box">
 							<i class="far fa-hospital"></i> <span data-purecounter-start="0" data-purecounter-end="18"
 								data-purecounter-duration="1" class="purecounter"></span>
-							<p>Departments</p>
+							<p>Hospital</p>
+							<h4>123</h4>
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
 						<div class="count-box">
 							<i class="fas fa-flask"></i> <span data-purecounter-start="0" data-purecounter-end="12"
 								data-purecounter-duration="1" class="purecounter"></span>
-							<p>Research Labs</p>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
-						<div class="count-box">
-							<i class="fas fa-award"></i> <span data-purecounter-start="0" data-purecounter-end="150"
-								data-purecounter-duration="1" class="purecounter"></span>
-							<p>Awards</p>
+							<p>Pharmacy</p>
+							<h4>123</h4>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 		<!-- End Counts Section -->
-		<!-- ======= Services Section ======= -->
-		<section id="services" class="services">
-			<div class="container">
-				<div class="section-title">
-					<h2>Services</h2>
-					<p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
-						consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in
-						iste officiis commodi quidem hic quas.</p>
-				</div>
-				<div class="row">
-					<div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-						<div class="icon-box">
-							<div class="icon">
-								<i class="fas fa-heartbeat"></i>
-							</div>
-							<h4>
-								<a href="">Lorem Ipsum</a>
-							</h4>
-							<p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
-						<div class="icon-box">
-							<div class="icon">
-								<i class="fas fa-pills"></i>
-							</div>
-							<h4>
-								<a href="">Sed ut perspiciatis</a>
-							</h4>
-							<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
-						<div class="icon-box">
-							<div class="icon">
-								<i class="fas fa-hospital-user"></i>
-							</div>
-							<h4>
-								<a href="">Magni Dolores</a>
-							</h4>
-							<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-						<div class="icon-box">
-							<div class="icon">
-								<i class="fas fa-dna"></i>
-							</div>
-							<h4>
-								<a href="">Nemo Enim</a>
-							</h4>
-							<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-						<div class="icon-box">
-							<div class="icon">
-								<i class="fas fa-wheelchair"></i>
-							</div>
-							<h4>
-								<a href="">Dele cardo</a>
-							</h4>
-							<p>Quis consequatur saepe eligendi voluptatem consequatur dolor consequuntur</p>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-						<div class="icon-box">
-							<div class="icon">
-								<i class="fas fa-notes-medical"></i>
-							</div>
-							<h4>
-								<a href="">Divera don</a>
-							</h4>
-							<p>Modi nostrum vel laborum. Porro fugit error sit minus sapiente sit aspernatur</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- End Services Section -->
 		<!-- ======= Departments Section ======= -->
 		<section id="departments" class="departments">
 			<div class="container">
 				<div class="section-title">
-					<h2>Departments</h2>
-					<p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
-						consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in
-						iste officiis commodi quidem hic quas.</p>
+					<h2>이달의 추천</h2>
+					<p>의사들이 추천하는 이달의 사료와 영양제를 알려드립니다.</p>
 				</div>
 				<div class="row gy-4">
 					<div class="col-lg-3">
-						<ul class="nav nav-tabs flex-column">
-							<li class="nav-item"><a class="nav-link active show" data-bs-toggle="tab" href="#tab-1">Cardiology</a></li>
-							<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-2">Neurology</a></li>
-							<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-3">Hepatology</a></li>
-							<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-4">Pediatrics</a></li>
-							<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-5">Eye Care</a></li>
-						</ul>
+						<div class="d-flex align-items-start">
+						  	<ul class="nav nav-tabs flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width: 250px; ">
+						    	<li class="nav-link active" id="v-pills-feed-tab" data-bs-toggle="pill" data-bs-target="#v-pills-feed" type="button" role="tab" aria-controls="v-pills-feed" aria-selected="true" style="font-size: 20px;">추천사료</li>
+						    	<li class="nav-link" id="v-pills-supplements-tab" data-bs-toggle="pill" data-bs-target="#v-pills-supplements" type="button" role="tab" aria-controls="v-pills-supplements" aria-selected="false" style="font-size: 20px;">영양제</li>
+							</ul>
+						</div>
 					</div>
 					<div class="col-lg-9">
-						<div class="tab-content">
-							<div class="tab-pane active show" id="tab-1">
-								<div class="row gy-4">
+						<div class="tab-content" id="v-pills-tabContent">
+						    <div class="tab-pane fade show active" id="v-pills-feed" role="tabpanel" aria-labelledby="v-pills-feed-tab" tabindex="0">
+						    	<div class="row gy-4">
 									<div class="col-lg-8 details order-2 order-lg-1">
-										<h3>Cardiology</h3>
-										<p class="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a
-											videna mareta paulona marka</p>
-										<p>Et nobis maiores eius. Voluptatibus ut enim blanditiis atque harum sint. Laborum eos ipsum ipsa odit
-											magni. Incidunt hic ut molestiae aut qui. Est repellat minima eveniet eius et quis magni nihil. Consequatur
-											dolorem quaerat quos qui similique accusamus nostrum rem vero</p>
+										<h3>Feed</h3>
+										<p class="fst-italic">추천 사료 이름</p>
+										<p>
+											효능 또는 알레르기 정보 및 부작용 정보를 적는 칸입니다.
+											효능 또는 알레르기 정보 및 부작용 정보를 적는 칸입니다.
+										</p>
 									</div>
 									<div class="col-lg-4 text-center order-1 order-lg-2">
-										<img src="img/departments-1.jpg" alt="" class="img-fluid">
+										<img src="img/feed.png" alt="feed.png" class="img-fluid">
 									</div>
 								</div>
-							</div>
-							<div class="tab-pane" id="tab-2">
-								<div class="row gy-4">
+						    </div>
+						    <div class="tab-pane fade" id="v-pills-supplements" role="tabpanel" aria-labelledby="v-pills-supplements-tab" tabindex="1">
+						    	<div class="row gy-4">
 									<div class="col-lg-8 details order-2 order-lg-1">
-										<h3>Et blanditiis nemo veritatis excepturi</h3>
-										<p class="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a
-											videna mareta paulona marka</p>
-										<p>Ea ipsum voluptatem consequatur quis est. Illum error ullam omnis quia et reiciendis sunt sunt est. Non
-											aliquid repellendus itaque accusamus eius et velit ipsa voluptates. Optio nesciunt eaque beatae accusamus
-											lerode pakto madirna desera vafle de nideran pal</p>
+										<h3>Supplement</h3>
+										<p class="fst-italic">추천 영양제 이름</p>
+										<p>
+											효능 또는 알레르기 정보 및 부작용 정보를 적는 칸입니다.
+											효능 또는 알레르기 정보 및 부작용 정보를 적는 칸입니다.
+										</p>
 									</div>
 									<div class="col-lg-4 text-center order-1 order-lg-2">
-										<img src="img/departments-2.jpg" alt="" class="img-fluid">
+										<img src="img/supplements.png" alt="supplements.png" class="img-fluid">
 									</div>
 								</div>
-							</div>
-							<div class="tab-pane" id="tab-3">
-								<div class="row gy-4">
-									<div class="col-lg-8 details order-2 order-lg-1">
-										<h3>Impedit facilis occaecati odio neque aperiam sit</h3>
-										<p class="fst-italic">Eos voluptatibus quo. Odio similique illum id quidem non enim fuga. Qui natus non
-											sunt dicta dolor et. In asperiores velit quaerat perferendis aut</p>
-										<p>Iure officiis odit rerum. Harum sequi eum illum corrupti culpa veritatis quisquam. Neque necessitatibus
-											illo rerum eum ut. Commodi ipsam minima molestiae sed laboriosam a iste odio. Earum odit nesciunt fugiat sit
-											ullam. Soluta et harum voluptatem optio quae</p>
-									</div>
-									<div class="col-lg-4 text-center order-1 order-lg-2">
-										<img src="img/departments-3.jpg" alt="" class="img-fluid">
-									</div>
-								</div>
-							</div>
-							<div class="tab-pane" id="tab-4">
-								<div class="row gy-4">
-									<div class="col-lg-8 details order-2 order-lg-1">
-										<h3>Fuga dolores inventore laboriosam ut est accusamus laboriosam dolore</h3>
-										<p class="fst-italic">Totam aperiam accusamus. Repellat consequuntur iure voluptas iure porro quis
-											delectus</p>
-										<p>Eaque consequuntur consequuntur libero expedita in voluptas. Nostrum ipsam necessitatibus aliquam
-											fugiat debitis quis velit. Eum ex maxime error in consequatur corporis atque. Eligendi asperiores sed qui
-											veritatis aperiam quia a laborum inventore</p>
-									</div>
-									<div class="col-lg-4 text-center order-1 order-lg-2">
-										<img src="img/departments-4.jpg" alt="" class="img-fluid">
-									</div>
-								</div>
-							</div>
-							<div class="tab-pane" id="tab-5">
-								<div class="row gy-4">
-									<div class="col-lg-8 details order-2 order-lg-1">
-										<h3>Est eveniet ipsam sindera pad rone matrelat sando reda</h3>
-										<p class="fst-italic">Omnis blanditiis saepe eos autem qui sunt debitis porro quia.</p>
-										<p>Exercitationem nostrum omnis. Ut reiciendis repudiandae minus. Omnis recusandae ut non quam ut quod
-											eius qui. Ipsum quia odit vero atque qui quibusdam amet. Occaecati sed est sint aut vitae molestiae voluptate
-											vel</p>
-									</div>
-									<div class="col-lg-4 text-center order-1 order-lg-2">
-										<img src="img/departments-5.jpg" alt="" class="img-fluid">
-									</div>
-								</div>
-							</div>
+						    </div>
 						</div>
 					</div>
 				</div>
@@ -311,10 +203,8 @@
 		<section id="doctors" class="doctors">
 			<div class="container">
 				<div class="section-title">
-					<h2>Doctors</h2>
-					<p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
-						consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in
-						iste officiis commodi quidem hic quas.</p>
+					<h2>이달의 의사</h2>
+					<p>해당 월의 환자 수가 가장 많은 의사들을 소개합니다.</p>
 				</div>
 				<div class="row">
 					<div class="col-lg-6">
@@ -323,14 +213,12 @@
 								<img src="img/doctors/doctors-1.jpg" class="img-fluid" alt="">
 							</div>
 							<div class="member-info">
-								<h4>Walter White</h4>
-								<span>Chief Medical Officer</span>
-								<p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
-								<div class="social">
-									<a href=""><i class="ri-twitter-fill"></i></a> <a href=""><i class="ri-facebook-fill"></i></a> <a href=""><i
-										class="ri-instagram-fill"></i></a> <a href=""> <i class="ri-linkedin-box-fill"></i>
-									</a>
-								</div>
+								<h4>의사이름</h4>
+								<span>소속병원</span>
+								<p>인사말 <br />
+									혹은<br />
+									경력
+								</p>
 							</div>
 						</div>
 					</div>
@@ -340,14 +228,12 @@
 								<img src="img/doctors/doctors-2.jpg" class="img-fluid" alt="">
 							</div>
 							<div class="member-info">
-								<h4>Sarah Jhonson</h4>
-								<span>Anesthesiologist</span>
-								<p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
-								<div class="social">
-									<a href=""><i class="ri-twitter-fill"></i></a> <a href=""><i class="ri-facebook-fill"></i></a> <a href=""><i
-										class="ri-instagram-fill"></i></a> <a href=""> <i class="ri-linkedin-box-fill"></i>
-									</a>
-								</div>
+								<h4>의사이름</h4>
+								<span>소속병원</span>
+								<p>인사말 <br />
+									혹은<br />
+									경력
+								</p>
 							</div>
 						</div>
 					</div>
@@ -357,14 +243,12 @@
 								<img src="img/doctors/doctors-3.jpg" class="img-fluid" alt="">
 							</div>
 							<div class="member-info">
-								<h4>William Anderson</h4>
-								<span>Cardiology</span>
-								<p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>
-								<div class="social">
-									<a href=""><i class="ri-twitter-fill"></i></a> <a href=""><i class="ri-facebook-fill"></i></a> <a href=""><i
-										class="ri-instagram-fill"></i></a> <a href=""> <i class="ri-linkedin-box-fill"></i>
-									</a>
-								</div>
+								<h4>의사이름</h4>
+								<span>소속병원</span>
+								<p>인사말 <br />
+									혹은<br />
+									경력
+								</p>
 							</div>
 						</div>
 					</div>
@@ -374,14 +258,12 @@
 								<img src="img/doctors/doctors-4.jpg" class="img-fluid" alt="">
 							</div>
 							<div class="member-info">
-								<h4>Amanda Jepson</h4>
-								<span>Neurosurgeon</span>
-								<p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
-								<div class="social">
-									<a href=""><i class="ri-twitter-fill"></i></a> <a href=""><i class="ri-facebook-fill"></i></a> <a href=""><i
-										class="ri-instagram-fill"></i></a> <a href=""> <i class="ri-linkedin-box-fill"></i>
-									</a>
-								</div>
+								<h4>의사이름</h4>
+								<span>소속병원</span>
+								<p>인사말 <br />
+									혹은<br />
+									경력
+								</p>
 							</div>
 						</div>
 					</div>
@@ -393,57 +275,108 @@
 		<section id="faq" class="faq section-bg">
 			<div class="container">
 				<div class="section-title">
-					<h2>Frequently Asked Questions</h2>
-					<p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
-						consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in
-						iste officiis commodi quidem hic quas.</p>
+					<h2>자주하는 질문</h2>
+					<p>궁금증과 문제점을 신속하고 정확하게 해결하기 위해 노력하겠습니다.</p>
 				</div>
 				<div class="faq-list">
 					<ul>
-						<li data-aos="fade-up"><i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-							class="collapse" data-bs-target="#faq-list-1">Non consectetur a erat nam at lectus urna duis? <i
-								class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+						<li data-aos="fade-up"><i class="bx bx-help-circle icon-help"></i> 
+						<a data-bs-toggle="collapse"class="collapse" data-bs-target="#faq-list-1">
+							[공통] 마이펫닥터 이용방법은 어떻게 되나요?
+							<i class="bx bx-chevron-down icon-show"></i>
+							<i class="bx bx-chevron-up icon-close"></i>
+						</a>
 							<div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
-								<p>Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur
-									gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.</p>
+								<p>회원가입 시 의사 혹은 보호자를 선택하여 서비스를 이용할 수 있습니다. <br /><br />
+								보호자의 경우 24시간 언제나 병원 예약이 가능하고 소중한 가족의 과거 진료내역을 확인할 수 있습니다. <br />
+								의사의 경우 담당하는 환자들의 진료내역 및 정보를 조회하고 스케줄 등록을 통하여 예약 확인을 쉽게 할 수 있습니다.
+								</p>
 							</div></li>
-						<li data-aos="fade-up" data-aos-delay="100"><i class="bx bx-help-circle icon-help"></i> <a
-							data-bs-toggle="collapse" data-bs-target="#faq-list-2" class="collapsed">Feugiat scelerisque varius morbi
-								enim nunc? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i>
+						<li data-aos="fade-up" data-aos-delay="100"><i class="bx bx-help-circle icon-help"></i> 
+						<a data-bs-toggle="collapse" data-bs-target="#faq-list-2" class="collapsed">
+							[보호자] 병원 예약은 어떻게 하나요?
+						<i class="bx bx-chevron-down icon-show"></i>
+						<i class="bx bx-chevron-up icon-close"></i>
 						</a>
 							<div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
-								<p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id
-									donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit
-									ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+							<p></p>
+								<div style="font-weight: bold;">예약 하기  </div>
+									<p>
+										로그인 후 - 예약 정보에서<br />
+										예약할 날짜와 시간을 선택한 후 일정을 입력하여 예약을 할 수 있습니다.
+									</p> 
+									<br />
+								<div style="font-weight: bold;">예약 확인  </div>
+									<p>
+										로그인 후 - 예약 정보에서<br />
+										예약한 날짜와 시간이 기록된 캘린더를 통해 확인할 수 있습니다
+									</p> 
+									<br />
+								<div style="font-weight: bold;">예약 변경  </div>
+									<p>
+										로그인 후 - 예약 정보에서<br />
+										캘린더에서 예약한 날짜와 시간이 기록된 예약 내역을 선택하여 예약 정보를 변경할 수 있습니다.
+									</p>
+									
 							</div></li>
-						<li data-aos="fade-up" data-aos-delay="200"><i class="bx bx-help-circle icon-help"></i> <a
-							data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">Dolor sit amet consectetur
-								adipiscing elit? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i>
+						<li data-aos="fade-up" data-aos-delay="200"><i class="bx bx-help-circle icon-help"></i> 
+						<a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">
+							[보호자] 환자 추가나 수정은 어떻게 하나요?
+						<i class="bx bx-chevron-down icon-show"></i>
+						<i class="bx bx-chevron-up icon-close"></i>
 						</a>
 							<div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
-								<p>Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum
-									integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus
-									urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis</p>
+								<div style="font-weight: bold;">환자 추가</div>
+									<p>
+										1. 로그인 후 - 내 정보에서<br />
+										환자 등록을 통해 환자 사진/동영상 및 정보를 입력하여 등록할 수 있습니다.
+										<br />
+										2. 로그인 후 - 진료 조회에서<br />
+										환자 등록을 통해 환자 사진/동영상 및 정보를 입력하여 등록할 수 있습니다.
+									</p> 
+									<br />
+								<div style="font-weight: bold;">환자 수정</div>
+									<p>
+										로그인 후 - 내 정보에서<br />
+										환자 정보의 정보 수정을 통해 환자 사진/동영상 및 정보를 수정할 수 있습니다.
+									</p> 
+									<br />
+									<p>* 환자 정보 삭제는 불가능합니다.</p>
 							</div></li>
-						<li data-aos="fade-up" data-aos-delay="300"><i class="bx bx-help-circle icon-help"></i> <a
-							data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">Tempus quam pellentesque nec nam
-								aliquam sem et tortor consequat? <i class="bx bx-chevron-down icon-show"></i><i
-								class="bx bx-chevron-up icon-close"></i>
+						<li data-aos="fade-up" data-aos-delay="300"><i class="bx bx-help-circle icon-help"></i> 
+						<a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">
+							[의사] 스케줄 관리는 어떻게 하나요?				
+						<i class="bx bx-chevron-down icon-show"></i>
+						<i class="bx bx-chevron-up icon-close"></i>
 						</a>
 							<div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
-								<p>Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc
-									vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis
-									blandit turpis cursus in.</p>
+								<div style="font-weight: bold;">스케줄 등록</div>
+									<p>
+										로그인 후 - 스케줄 관리에서<br />
+										등록할 날짜와 시간을 선택한 후 일정을 입력하여 다음주 휴무일 등을 지정할 수 있습니다.
+									</p> 
+									<br />
+								<div style="font-weight: bold;">스케줄 수정</div>
+									<p>
+										로그인 후 - 스케줄 관리에서<br />
+										등록할 날짜와 시간을 선택한 후 일정을 수정할 수 있습니다.
+									</p> 
 							</div></li>
-						<li data-aos="fade-up" data-aos-delay="400"><i class="bx bx-help-circle icon-help"></i> <a
-							data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">Tortor vitae purus faucibus ornare.
-								Varius vel pharetra vel turpis nunc eget lorem dolor? <i class="bx bx-chevron-down icon-show"></i><i
-								class="bx bx-chevron-up icon-close"></i>
+						<li data-aos="fade-up" data-aos-delay="400"><i class="bx bx-help-circle icon-help"></i> 
+						<a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">
+							[공통] 비밀번호 수정이나 회원탈퇴는 어떻게 하나요? 						
+						<i class="bx bx-chevron-down icon-show"></i>
+						<i class="bx bx-chevron-up icon-close"></i>
 						</a>
 							<div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
-								<p>Laoreet sit amet cursus sit amet dictum sit amet justo. Mauris vitae ultricies leo integer malesuada nunc
-									vel. Tincidunt eget nullam non nisi est sit amet. Turpis nunc eget lorem dolor sed. Ut venenatis tellus in
-									metus vulputate eu scelerisque.</p>
+								<p>
+									<div style="font-weight: bold;">비밀번호 수정은 어디서 하나요?  </div>
+									로그인 후 - 마이페이지- 정보변경에서 비밀번호를 수정할수 있습니다. <br />
+									<br />
+									<div style="font-weight: bold;">회원탈퇴는 어디서 하나요? </div>
+									로그인후 - 마이페이지 내정보 -회원탈퇴 신청하시면 됩니다. <br />
+회원탈퇴 							이후에는 개인정보보호정책에 의거 14일동안 동일한 이메일로 재가입이 불가능한 점 참고하시기 바랍니다.
+								</p>
 							</div></li>
 					</ul>
 				</div>
@@ -453,87 +386,60 @@
 		<!-- ======= Testimonials Section ======= -->
 		<section id="testimonials" class="testimonials">
 			<div class="container">
-				<div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide">
-							<div class="testimonial-wrap">
-								<div class="testimonial-item">
-									<img src="img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-									<h3>Saul Goodman</h3>
-									<h4>Ceo &amp; Founder</h4>
-									<p>
-										<i class="bx bxs-quote-alt-left quote-icon-left"></i> Proin iaculis purus consequat sem cure digni ssim donec
-										porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam,
-										risus at semper. <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-									</p>
-								</div>
-							</div>
-						</div>
-						<!-- End testimonial item -->
-						<div class="swiper-slide">
-							<div class="testimonial-wrap">
-								<div class="testimonial-item">
-									<img src="img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-									<h3>Sara Wilsson</h3>
-									<h4>Designer</h4>
-									<p>
-										<i class="bx bxs-quote-alt-left quote-icon-left"></i> Export tempor illum tamen malis malis eram quae irure
-										esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure
-										amet legam anim culpa. <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-									</p>
-								</div>
-							</div>
-						</div>
-						<!-- End testimonial item -->
-						<div class="swiper-slide">
-							<div class="testimonial-wrap">
-								<div class="testimonial-item">
-									<img src="img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-									<h3>Jena Karlis</h3>
-									<h4>Store Owner</h4>
-									<p>
-										<i class="bx bxs-quote-alt-left quote-icon-left"></i> Enim nisi quem export duis labore cillum quae magna enim
-										sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint
-										minim. <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-									</p>
-								</div>
-							</div>
-						</div>
-						<!-- End testimonial item -->
-						<div class="swiper-slide">
-							<div class="testimonial-wrap">
-								<div class="testimonial-item">
-									<img src="img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-									<h3>Matt Brandon</h3>
-									<h4>Freelancer</h4>
-									<p>
-										<i class="bx bxs-quote-alt-left quote-icon-left"></i> Fugiat enim eram quae cillum dolore dolor amet nulla
-										culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem
-										dolore labore illum veniam. <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-									</p>
-								</div>
-							</div>
-						</div>
-						<!-- End testimonial item -->
-						<div class="swiper-slide">
-							<div class="testimonial-wrap">
-								<div class="testimonial-item">
-									<img src="img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-									<h3>John Larson</h3>
-									<h4>Entrepreneur</h4>
-									<p>
-										<i class="bx bxs-quote-alt-left quote-icon-left"></i> Quis quorum aliqua sint quem legam fore sunt eram irure
-										aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse
-										veniam culpa fore nisi cillum quid. <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-									</p>
-								</div>
-							</div>
-						</div>
-						<!-- End testimonial item -->
-
-					</div>
-					<div class="swiper-pagination"></div>
+				<div class="section-title">
+					<h2>최근 등록된 후기</h2>
+				<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+				  <div class="carousel-inner">
+				    <div class="carousel-item active" data-bs-interval="5000">
+				    	<div class="testimonial-item" id="postscriptBox">
+					    	<div id="text-1" style="text-align: center;">
+					    		<h3>진료병원</h3>
+								<h4>별점</h4>
+					    		<p>
+									<i class="bx bxs-quote-alt-left quote-icon-left"></i>
+									후기내용1
+									<i class="bx bxs-quote-alt-right quote-icon-right"></i>
+								</p>
+					     	</div>
+				     	</div>
+				    </div>
+				    <div class="carousel-item" data-bs-interval="5000">
+				    	<div class="testimonial-item" id="postscriptBox">
+							<div id="text-2" style="text-align: center;">
+					      		<h3>진료병원</h3>
+								<h3>별점</h3>
+					    		<p>
+									<i class="bx bxs-quote-alt-left quote-icon-left"></i>
+									후기내용2
+									<i class="bx bxs-quote-alt-right quote-icon-right"></i>
+								</p>
+					     	</div>
+				     	</div>
+				    </div>
+				    <div class="carousel-item" data-bs-interval="5000">
+				     	<div class="testimonial-item" id="postscriptBox">
+					      	<div id="text-3" style="text-align: center;">
+					    		<h3>진료병원</h3>
+								<h3>별점</h3>
+					    		<p>
+									<i class="bx bxs-quote-alt-left quote-icon-left"></i>
+									후기내용3
+									<i class="bx bxs-quote-alt-right quote-icon-right"></i>
+								</p>
+					     	</div>
+				     	</div>
+				    </div>
+				  </div>
+				  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+				    <span class="carousel-control-prev-icon"></span>
+				    <span class="visually-hidden">Previous</span>
+				  </button>
+				  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+				    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+				    <span class="visually-hidden">Next</span>
+				  </button>
 				</div>
+			</div>
 			</div>
 		</section>
 		<!-- End Testimonials Section -->

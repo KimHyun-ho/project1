@@ -44,41 +44,46 @@
 					</li>
 					<li>
 						<a class="nav-link scrollto" href="/serviceIntroduce">서비스소개</a>
-					</li>
-					<li class="dropdown">
-						<a href="#">
-							<span>수의사 전용 페이지</span>
-							<i class="bi bi-chevron-down"></i>
-						</a>
-						<ul>
-							<li>
-								<a href="/doctorInfo">나의 정보</a>
-							</li>
-							<li>
-								<a href="/patientInfoList">진료내역 조회</a>
-							</li>
-							<li>
-								<a href="/scheduleDoctor">스케줄 관리</a>
-							</li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a href="#">
-							<span>보호자 전용 페이지</span>
-							<i class="bi bi-chevron-down"></i>
-						</a>
-						<ul>
-							<li>
-								<a href="/proMypageDetail">나의 정보</a>
-							</li>
-							<li>
-								<a href="/proAllAnimalList">환자 조회</a>
-							</li>
-							<li>
-								<a href="/proSchedule">예약 정보</a>
-							</li>
-						</ul>
-					</li>
+					</li> 
+					&nbsp;&nbsp;
+					<div th:if="${session.memberRole == false || session.NaverAccesToken == null}">
+						<li class="dropdown">
+							<a href="#">
+								<span>수의사 전용 페이지</span>
+								<i class="bi bi-chevron-down"></i>
+							</a>
+							<ul>
+								<li>
+									<a href="/doctorInfo">나의 정보</a>
+								</li>
+								<li>
+									<a href="/patientInfoList">진료내역 조회</a>
+								</li>
+								<li>
+									<a href="/scheduleDoctor">스케줄 관리</a>
+								</li>
+							</ul>
+						</li>
+					</div>
+					<div th:if="${session.memberRole == true || session.NaverAccesToken == null}">
+						<li class="dropdown">
+							<a href="#">
+								<span>보호자 전용 페이지</span>
+								<i class="bi bi-chevron-down"></i>
+							</a>
+							<ul>
+								<li>
+									<a href="/proMypageDetail">나의 정보</a>
+								</li>
+								<li>
+									<a href="/proAllAnimalList">환자 조회</a>
+								</li>
+								<li>
+									<a href="/proSchedule">예약 정보</a>
+								</li>
+							</ul>
+						</li>
+					</div>
 					<li>
 						<a class="nav-link scrollto" href="/notice">공지</a>
 					</li>
@@ -92,7 +97,8 @@
 				<i class="bi bi-list mobile-nav-toggle"></i>
 			</nav>
 			<!-- .navbar -->
-			<a href="/signin" class="signin-btn">Login</a>
+			<a href="/signin" class="signin-btn" th:if="${session.NaverAccesToken == null}">Login</a>
+			<a th:onclick="|location.href='@{/naverLogout}'|" class="signin-btn" th:if="${session.NaverAccesToken != null}">Logout</a>
 		</div>
 		<!-- End Header -->
 	</header>

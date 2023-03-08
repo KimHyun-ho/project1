@@ -1,7 +1,13 @@
 package kr.human.anihospital.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.human.anihospital.mapper.LoginMapper;
 import kr.human.anihospital.vo.MemberVO;
@@ -64,4 +70,53 @@ public class LoginServiceImpl implements LoginService{
 		}
 		return memberVO;
 	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사일 경우 세션에 의사seq를 넣어주기 위해 값을 가져올 쿼리
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public int selectFindDoctorSeq(int seqMember) {
+		int seqDoctor = 0;
+		try {
+			seqDoctor = loginMapper.selectFindDoctorSeq(seqMember);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return seqDoctor;
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 최초 로그인시 정보를 insert해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void insertNaverDoctorInfo(Map<String, Object> naverDoctorJoinMap, MultipartFile doctorPicture) {
+		// 저장할 경로를 지정
+		String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+		// UUID(식별자)를 사용해 사용해 랜덤으로 이름 만들어줌
+		UUID uuid = UUID.randomUUID();
+
+		// 랜덤식별자_원래 파일 이름 = 저장될 파일이름 지정
+		String fileName = uuid + "_" + doctorPicture.getOriginalFilename();
+		
+		// File이 생성되며, 이름은 "name", projectPath 라는 경로에 담긴다
+		File saveFile = new File(projectPath, fileName);
+		
+		try {
+			doctorPicture.transferTo(saveFile);
+		} catch (IllegalStateException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		// DB에 파일 넣기
+		naverDoctorJoinMap.put("doctorPicture", fileName);
+		// 저장되는 경로 설정
+		naverDoctorJoinMap.put("doctorPicturePath", "/files/" + fileName);
+		try {
+			loginMapper.insertNaverDoctorInfo(naverDoctorJoinMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
