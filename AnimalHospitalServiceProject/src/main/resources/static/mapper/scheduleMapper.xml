@@ -54,4 +54,60 @@
 			  NOW()
 			  )
 	</insert>
+	
+	<insert id="insertTodolist" parameterType="Map">
+		INSERT INTO todolist(
+			seq_doctor,
+			todo_subject,
+			todo_content,
+			todo_write_date,
+			todo_update_date
+		) VALUES (
+			#{seqDoctor},
+			#{todoSubject},
+			#{todoContent},
+			NOW(),
+			NOW()
+		)
+	</insert>
+	
+	<select id="selectAllTodolist" resultType="Map">
+		SELECT
+			seq_todo AS seqTodo,
+			seq_doctor AS seqDoctor,
+			todo_subject AS todoSubject,
+			todo_content AS todoContent,
+			date_format(todo_write_date, '%Y-%m-%d') AS todoWriteDate,
+			date_format(todo_update_date, '%Y-%m-%d') AS todoUpdateDate,
+			TIMESTAMPDIFF(Week, date_add(NOW(), INTERVAL 6 hour), todo_update_date) AS diff,
+			TIMESTAMPDIFF(DAY, date_add(NOW(), INTERVAL 6 hour), todo_update_date) AS diff1
+		FROM
+			todolist
+		WHERE
+			seq_doctor = #{seqDoctor}
+		AND TIMESTAMPDIFF(DAY, date_add(NOW(), INTERVAL 6 hour), todo_update_date) >= 0
+		AND TIMESTAMPDIFF(week, date_add(NOW(), INTERVAL 6 hour), todo_update_date) >= 0
+		ORDER BY 
+			abs(TIMESTAMPDIFF(week, date_add(NOW(), INTERVAL 6 hour), todo_update_date)), 
+			abs(TIMESTAMPDIFF(DAY, NOW(), todo_update_date))
+		LIMIT 10
+	</select>
+	
+	<update id="updateTodolist" parameterType="Map">
+		UPDATE 
+			todolist 
+		SET
+			todo_subject = #{todoSubject},
+			todo_content = #{todoContent},
+			todo_update_date = NOW()
+		WHERE 
+			seq_todo = #{seqTodo}
+	</update>
+	
+	<delete id="deleteTodolist" parameterType="int">
+		DELETE FROM 
+			todolist 
+		WHERE 
+			seq_todo = #{seqTodo}
+	</delete>
 </mapper>  
