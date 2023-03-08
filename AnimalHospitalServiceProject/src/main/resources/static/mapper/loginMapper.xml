@@ -57,4 +57,43 @@
 		where
 			member_email_id = #{memberEmailId}
 	</select>
+	
+	<!-- 의사일 경우 세션에 의사seq를 넣어주기 위해 값을 가져올 쿼리 -->
+	<select id="selectFindDoctorSeq" parameterType="int" resultType="int">
+		select 
+			seq_doctor 
+		from 
+			doctor 
+		where 
+			seq_member =#{seqMember}
+	</select>
+	<!-- 의사일 경우 의사 테이블 정보를 insert할 쿼리 -->
+	<insert id="insertNaverDoctorInfo" parameterType="map">
+	INSERT INTO doctor
+		(seq_member ,
+		seq_animal_hospital ,
+		doctor_work_year ,
+		doctor_registration_number ,
+		doctor_update_date ,
+		doctor_work_space ,
+		doctor_say ,
+		doctor_education ,
+		doctor_picture ,
+		doctor_picture_path 
+		)
+	VALUES
+		(#{seqMember},
+		 #{seqAnimalHospital},
+		 #{doctorWorkYear},
+		 #{doctorRegistrationNumber},
+		 now(),
+		 #{doctorWorkSpace},
+		 #{doctorSay},
+		 #{doctorEducation},
+		 #{doctorPicture},
+		 #{doctorPicturePath}
+		)
+	</insert>
+	
+	<!--  -->
 </mapper>  

@@ -1,6 +1,7 @@
 package kr.human.anihospital.controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -8,6 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,10 +22,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.human.anihospital.service.LoginService;
+import kr.human.anihospital.service.ProtectorPageService;
+import kr.human.anihospital.vo.AnimalHospitalVO;
 import kr.human.anihospital.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +38,9 @@ public class NaverLoginConrtoller {
 	
 	@Autowired
 	LoginService loginService;
+	
+	@Autowired
+	ProtectorPageService protectorPageService;
 	
 	// 로그인 페이지
 	@GetMapping("/signin")
@@ -152,7 +161,14 @@ public class NaverLoginConrtoller {
 					// 아이디가 DB에 존재하면 홈으로, session에 seq넣는 작업 필요
 					session.setAttribute("seqMember", sessionMemberVO.getSeqMember());
 					session.setAttribute("memberRole", sessionMemberVO.isMemberRole());
+					log.info("session에 저장된 memberRole : {}", session.getAttribute("memberRole"));
 					page = "index";
+					if(((Boolean)session.getAttribute("memberRole")).booleanValue()==false) {
+						int seqDoctor = 0;
+						seqDoctor = loginService.selectFindDoctorSeq((int)session.getAttribute("seqMember"));
+						session.setAttribute("seqDoctor", seqDoctor);
+						log.info("seqDoctor : {}", session.getAttribute("seqDoctor"));
+					}
 				}
 				return page;
 		    }catch (Exception e1) {
@@ -169,13 +185,14 @@ public class NaverLoginConrtoller {
 		log.info("roleCheck에서 넘어온 insert 정보 : {}", memberVO);
 		loginService.insertNaverLogin(memberVO);
 		session.setAttribute("seqMember", memberVO.getSeqMember());
-		session.setAttribute("seqMember", memberVO.isMemberRole());
+		session.setAttribute("memberRole", memberVO.isMemberRole());
 		return "성공";
 	}
 	
 	// 의사 전용 회원가입
 	// 로그인시 아이디를 받아와서 아이디로 seq값을 찾아 
 	// doctor테이블에 seqMember를 insert하기 위함
+	// ##############나중에 Post로 다시 돌리기!!!!!!!!!!!!!!!################
 	@PostMapping("/doctorMemberJoin")
 	public String doctorMemberJoin(@RequestParam String memberEmailId, Model model) throws Exception {
 		log.info("roleCheck에서 넘어온 memberEmailId : {}",memberEmailId);
@@ -186,6 +203,59 @@ public class NaverLoginConrtoller {
 		log.info("seqMember : {}",seqMember);
 		model.addAttribute("seqMember", seqMember);
 		
+		List<AnimalHospitalVO> animalHospitalList = null;
+		animalHospitalList = protectorPageService.selectAllAnimalHospitalVO();
+		model.addAttribute("animalHospitalList", animalHospitalList);
+		
 		return "doctorMemberJoin";
+	}
+	
+	// 의사가 네이버 아이디로 최초 로그인시 insert할 의사 정보 
+	@PostMapping("/doctorMemberJoinOk")
+	public String doctorMemberJoinOk(@RequestParam Map<String, Object> naverDoctorJoinMap,MultipartFile file,
+									HttpSession session) throws Exception {
+		// doctorMemberJoin 에서 넘어온 의사 정보 확인
+		log.info("doctorMemberJoin에서 넘어온 의사 정보 :{} {}",naverDoctorJoinMap, file);
+		// 의사 정보 insert sql문 실행
+		loginService.insertNaverDoctorInfo(naverDoctorJoinMap, file);
+		int seqDoctor = 0;
+		seqDoctor = loginService.selectFindDoctorSeq(Integer.parseInt(naverDoctorJoinMap.get("seqMember").toString()));
+		log.info("selectFindDoctorSeq에서 넘어온 seqDoctor : {}",seqDoctor);
+		session.setAttribute("seqDoctor", seqDoctor);
+		log.info("session에 저장된 seqDoctor : {}",session.getAttribute("seqDoctor"));
+		return "redirect:/";
+	}
+	
+	// 네이버 로그아웃
+	@GetMapping("/naverLogout")
+	public String naverLogout(HttpSession session)  {
+		String clientId = "jjZSe4Dzr_Kpcinyf4bH";// 애플리케이션 클라이언트 아이디값";
+		String clientSecret = "TNFD4HY8OF";// 애플리케이션 클라이언트 시크릿값";
+		String accessToken = session.getAttribute("NaverAccesToken").toString();
+		String apiUrl = "https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id="+clientId+
+				"&client_secret="+clientSecret+"&access_token="+accessToken+"&service_provider=NAVER";
+		try {
+			URL url = new URL(apiUrl);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("POST");
+			int responseCode = con.getResponseCode();
+			BufferedReader br;
+			if (responseCode == 200) { // 정상 호출
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			} else { // 에러 발생
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			}
+			String inputLine;
+			StringBuilder res = new StringBuilder();
+			while ((inputLine = br.readLine()) != null) {
+				res.append(inputLine);
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		session.invalidate();
+		
+		return "redirect:/";
 	}
 }

@@ -32,35 +32,34 @@
             </ul>
           </div>
            -->
-
-          <div class="col-lg-2 col-md-6 footer-links">
-            <h4>의사 전용 페이지</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="/">HOME</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/serviceIntroduce">서비스 소개</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/doctorInfo">나의 정보</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/patientInfoList">진료내역 조회</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/scheduleDoctor">스케줄 관리</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/notice">공지</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/hospitalMap">병원정보</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/pharmacyMap">약국정보</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-links">
-            <h4>보호자 전용 페이지</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="/">HOME</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/serviceIntroduce">서비스소개</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/proMypageDetail">나의 정보</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/proAllAnimalList">환자조회</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/proSchedule">예약 정보</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/notice">공지</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/hospitalMap">병원정보</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/pharmacyMap">약국정보</a></li>
-            </ul>
-          </div>
-
+	<div class="col-lg-2 col-md-6 footer-links">
+	      <h4>공통 페이지</h4>
+	      <ul>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/">HOME</a></li>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/serviceIntroduce">서비스 소개</a></li>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/notice">공지</a></li>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/hospitalMap">병원정보</a></li>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/pharmacyMap">약국정보</a></li>
+	      </ul>
+	</div>
+	<div class="col-lg-3 col-md-6 footer-links">
+		<div th:if="${session.memberRole == false}">
+	      <h4>의사 전용 페이지</h4>
+	      <ul>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/doctorInfo">나의 정보</a></li>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/patientInfoList">진료내역 조회</a></li>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/scheduleDoctor">스케줄 관리</a></li>
+	      </ul>
+	    </div>
+	    <div th:if="${session.memberRole == true }">
+	      <h4>보호자 전용 페이지</h4>
+	      <ul>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/proMypageDetail">나의 정보</a></li>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/proAllAnimalList">환자조회</a></li>
+	        <li><i class="bx bx-chevron-right"></i> <a href="/proSchedule">예약 정보</a></li>
+	      </ul>
+	    </div>
+	</div>
           <div class="col-lg-4 col-md-6 footer-newsletter">
             <h4>마이펫닥터를 방문해주셔서 감사합니다. <br> 고객님들의 소중한 반려동물들의 건강을 책임지는 <br>서비스를 제공하겠습니다. <br>꾸준히 서비스를 늘려갈 예정이오니 <br> 많은 관심 부탁드립니다.</h4>
           </div>
