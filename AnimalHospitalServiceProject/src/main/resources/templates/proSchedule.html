@@ -36,7 +36,7 @@
 		  e.initEvent('change', true, true );
 		  return this.dispatchEvent(e);
 	};
-	window.addEventListener('DOMContentLoaded', ()=>{
+	/* window.addEventListener('DOMContentLoaded', ()=>{
 		  const f=document.querySelector('#file');
 		  const b=document.querySelector('#btn1');
 		  f.addEventListener('change',e=>{
@@ -47,7 +47,7 @@
 		    	f.value="";
 		    	f.change();
 		  });
-	});
+	}); */
 
 	function handleOnChange1(e) {
 		  const text = e.options[e.selectedIndex].text;
@@ -65,7 +65,7 @@
 	    document.getElementById('textResult').textContent = ta;
 	  }
   
-	window.onload = function () {
+	/* window.onload = function () {
 		var cancel = document.getElementById('cancel');
 		cancel.addEventListener('click', function () {
 			var result = window.confirm('정말로 예약을 취소하시겠습니까?');
@@ -75,7 +75,7 @@
 				location.href='/scheduleProtector';
 			}
 		});
-	}
+	} */
 </script>
 <style type="text/css">
 #gridContainer {
@@ -161,7 +161,7 @@ input[name="selectDoctorBtn"] {
 }
 
 #calendar{
-   width:90%;
+   width:132%;
    margin:20px auto;
 }
 </style>
@@ -206,118 +206,6 @@ input[name="selectDoctorBtn"] {
 						<input type="button" class="btn btn-primary" name="selectDoctorBtn" id="selectDoctortBtn" value="조회하기">
 						<br /> <br />
 						<div id="calendar"></div>
-					</div>
-					<div id="rightContainer">
-						<div id="reservation">
-							<h5>
-								<b>예약 확인</b>
-							</h5>
-							<div align="right">
-								<select name="patient">
-									<option value="" selected="selected">환자선택하기</option>
-									<option value="patient1">두둥</option>
-									<option value="patient2">나비</option>
-									<option value="patient3">초코</option>
-								</select>
-							</div>
-						</div>
-						<hr style="border: none; border-top: 1px dashed gray;" />
-						<div>
-							<table>
-								<tr>
-									<td>A동물 병원</td>
-								</tr>
-								<tr>
-									<td>2023년 3월 2일 15:00</td>
-								</tr>
-								<tr>
-									<td>내원이유 : 건강검진</td>
-								</tr>
-							</table>
-							<div align="right">
-								<input type="button" class="btn btn-primary btn-sm" value="예약수정"
-									style="border-radius: 50px; width: 90px; margin: auto; text-align: center; color: white;">
-								<input type="button" class="btn btn-primary btn-sm" value="예약취소" onclick="clickEvent()" id="cancel"
-									style="border-radius: 50px; width: 90px; margin: auto; text-align: center; color: white;">
-							</div>
-							<hr style="border: none; border-top: 1px dashed gray;" />
-						</div>
-						<hr style="border: none; height: 30px; box-shadow: 0 30px 30px -30px inset;" />
-						<!-- 여기까지가 예약 확인 -->
-						<div>
-							<form action="">
-								<h5>
-									<b>예약하기</b>
-								</h5>
-								<select onchange="handleOnChange1(this)" id="selectPatient">
-									<option value="" selected="selected">환자선택하기</option>
-									<option value="patient1">두둥</option>
-									<option value="patient2">나비</option>
-									<option value="patient3">초코</option>
-								</select>
-								<input type="button" class="btn btn-primary btn-sm" onclick="location.href='/patientAdd'" value="환자추가"
-									style="border-radius: 50px; width: 90px; margin: auto; text-align: center; color: white; float: right;" />
-								<br /> <br />
-								<textarea style="width: 100%" rows="5" cols="30" id="textarea" class="form-control"
-									placeholder="증상 혹은 내원 이유를 입력한 후 입력 버튼을 눌러주세요"></textarea>
-								<div class="fileSelectArea">
-									<div align="right">
-										<div>
-											<input type="button" class="btn btn-outline-primary btn-sm" value="입력" id="preview" onclick="clickBtn()"
-												style="border-radius: 50px; width: 75px; margin: auto; margin-top: 5px;">
-										</div>
-										<br />
-										<div align="left" id="app">
-											<label>
-												<input type="file" class="form-control" accept=".jpg,.jpeg,.png,.gif,.bmp,.tif,.m4v,.mp4,.avi" name="file"
-													id="file">
-												&nbsp;사진/동영상 추가&nbsp;
-											</label>
-											<input type="button" class="btn btn-primary btn-sm" id="btn1" value="파일취소"
-												style="border-radius: 50px; width: 90px; margin: auto;" />
-										</div>
-									</div>
-									<hr style="border: none; border-top: 1px dashed gray;" />
-									<h6 style="text-align: center;">
-										<b>예약내역 확인</b>
-									</h6>
-									<table>
-										<tr>
-											<td>선택 병원 :
-												<div id="selectedHospital"></div>
-											</td>
-										</tr>
-										<tr>
-											<td>선택 환자 :
-												<div id="selectedPatient"></div>
-											</td>
-										</tr>
-										<tr>
-											<td>선택 일자 : 2023년 3월 4일</td>
-											<!-- 자동입력 필요  -->
-										</tr>
-										<tr>
-											<td>선택 시간 : 15:00</td>
-											<!-- 자동입력 필요  -->
-										</tr>
-										<tr>
-											<td>내원 이유 :
-												<div id="textResult"></div>
-											</td>
-										</tr>
-										<tr>
-											<td>사진 및 동영상 :
-												<p id="fileName">선택된 파일이 없습니다</p>
-											</td>
-										</tr>
-									</table>
-									<div align="right">
-										<input type="submit" class="btn btn-primary btn-sm" value="예약하기"
-											style="border-radius: 50px; width: 90px; margin: auto;">
-									</div>
-								</div>
-							</form>
-						</div>
 					</div>
 				</div>
 			</div>

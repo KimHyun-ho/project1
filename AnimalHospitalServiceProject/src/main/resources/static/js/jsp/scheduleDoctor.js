@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             })
                                 .done(function() {
                                     alert("새 일정이 저장 되었습니다. : " + result);
+                                    location.reload();
                                 })
                                 .fail(function(error) {
                                      alert("insert 데이터 전송 실패 : " + error);

@@ -53,6 +53,35 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 컨트롤러에 데이터 전달
 		return scheduleProtectorList;
 	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 풀캘린더에 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void insertScheduleProtector(Map<String, Object> scheduleProtectorMap) {
+		// 데이터가 잘 넘어오는지 로그 찍어보기
+		log.info("insertScheduleDoctor실행, 넘어온 값(서비스) : {}", scheduleProtectorMap);
+		try {
+			// mapper를 불러 insert처리하기
+			scheduleMapper.insertScheduleProtector(scheduleProtectorMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 추가하기 위해 해당 환자seq를 조회하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public int selectSeqAnimalForInsertScheduleProtector(Map<String, Object> seqMemAniNameMap) {
+		int seqAnimal = 0;
+		try {
+			seqAnimal = scheduleMapper.selectSeqAnimalForInsertScheduleProtector(seqMemAniNameMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return seqAnimal;
+	}
 
 	//----------------------------------------------------------------------------------------------------
 	// 의사 스케줄을 풀캘린더에 추가해줄 메서드

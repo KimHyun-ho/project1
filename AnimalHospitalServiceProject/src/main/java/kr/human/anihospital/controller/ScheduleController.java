@@ -282,6 +282,75 @@ public class ScheduleController {
 	}
 	
 	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 풀캘린더에 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@PostMapping("/scheduleProtectorInsertOk")
+	@ResponseBody
+	public String insertScheduleProtector(@RequestBody List<Map<String, Object>> scheduleProtectorList) throws Exception {
+		// 화면에서 추가한 캘린더에 추가한 데이터가 잘 넘어왔는지 찍어보기
+		log.info("insertScheduleProtector 실행, 화면에서 넘어온 값(컨트롤러) : {}", scheduleProtectorList);
+		// 한국 표준 시간으로 시간 포멧 설정
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
+		// 맵에서 시작, 종료 시간 꺼내 변수에 담아두기
+		LocalDateTime startDate = null;
+		LocalDateTime endDate = null;
+		String startDateToString = null;
+		for (Map<String, Object> list : scheduleProtectorList) {
+			String startDateString = (String) list.get("start");
+	        String endDateString = (String) list.get("end");
+	        // 한국 표준 시간으로 시간 포멧 설정
+			startDate = LocalDateTime.parse(startDateString, dateTimeFormatter).plusHours(9);
+	        endDate = LocalDateTime.parse(endDateString, dateTimeFormatter).plusHours(9);
+	        startDateToString = "%" + startDate.toString().substring(0, 10) + " " + startDate.toString().subSequence(11, 16) + "%";
+		}
+		int seqDoctor = 1;
+		// seq조회할 일정 시작시간 포멧 설정
+		// 수정한 값들 새로운 그릇에 담기
+		Map<String, Object> scheduleDoctororMap = new HashMap<>();
+		for(int i = 0; i < scheduleProtectorList.size(); i++) {
+			scheduleDoctororMap.put("seqDoctor", seqDoctor);
+			scheduleDoctororMap.put("animalName", scheduleProtectorList.get(i).get("animalName"));
+			scheduleDoctororMap.put("scheduleDoctorHolidayStart", startDate);
+			scheduleDoctororMap.put("scheduleDoctorHolidayEnd", endDate);
+			scheduleDoctororMap.put("scheduleDoctorContent", scheduleProtectorList.get(i).get("title"));
+		}
+		// 추가한 일정을 의사 스케줄 테이블에 insert를 수행해줄 서비스 호출
+		scheduleService.insertScheduleDoctor(scheduleDoctororMap);
+		
+		// 의사 스케줄 seq값을 조회할 조건 시간 맵에 담기
+		Map<String, String> startEndMap = new HashMap<>();
+		startEndMap.put("startDate", startDateToString);
+		log.info("startEndMap(컨트롤러) : {}", startEndMap);
+		
+		// 의사 스케줄 테이블에 추가후 생성된 seq값 받아오기
+		int seqDoctorSchedule = scheduleService.selectSeqDoctorSchedule(startEndMap);
+		// 값이 제대로 넘어오는지 로그 찍어보기
+		log.info("seqDoctorSchedule(컨트롤러) : {}", seqDoctorSchedule);
+		
+		int seqMember = 4;
+		// 환자 seq번호 조회할 조건 담기
+		Map<String, Object> scheduleProtectorMap = new HashMap<>();
+		scheduleProtectorMap.put("seqMember", seqMember);
+		scheduleProtectorMap.put("animalName", scheduleDoctororMap.get("animalName"));
+		// seq번호 조회를 위해 서비스부르기
+		int seqAnimal = scheduleService.selectSeqAnimalForInsertScheduleProtector(scheduleProtectorMap);
+		log.info("seqAnimal(컨트롤러) : {}", seqAnimal);
+		
+		// 가져온 값들 포함해서 새 그릇에 담기
+		Map<String, Object> insertScheduleProtectorMap = new HashMap<>();
+		insertScheduleProtectorMap.put("seqAnimal", seqAnimal);
+		insertScheduleProtectorMap.put("seqDoctorSchedule", seqDoctorSchedule);
+		insertScheduleProtectorMap.put("scheduleProtectorHolidayStart", scheduleDoctororMap.get("scheduleDoctorHolidayStart"));
+		insertScheduleProtectorMap.put("scheduleProtectorHolidayEnd", scheduleDoctororMap.get("scheduleDoctorHolidayEnd"));
+		insertScheduleProtectorMap.put("scheduleProtectorContent", scheduleDoctororMap.get("scheduleDoctorContent"));
+		
+		scheduleService.insertScheduleProtector(insertScheduleProtectorMap);
+		// 수정한 값들이 잘 담겨 있는지 로그 찍어보기
+		log.info("insertScheduleProtector 실행, 서비스에 넘길값(컨트롤러) : {}", scheduleProtectorMap);
+		return "scheduleProtector";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
 	// TO DO LIST를 화면에 뿌려줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	@GetMapping("/scheduleDoctor")
