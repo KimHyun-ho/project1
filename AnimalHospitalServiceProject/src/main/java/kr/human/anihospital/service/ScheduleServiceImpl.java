@@ -84,7 +84,21 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 	
 	//----------------------------------------------------------------------------------------------------
-	// 의사 스케줄을 수정하기 위한 seq값 조회하는 메서드
+	// 의사 스케줄을 풀캘린더에 삭제해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void deleteDoctorSchedule(int seqDoctorSchedule) {
+		// 데이터가 잘 넘어오는지 로그 찍어보기
+		log.info("seqDoctorSchedule(서비스) : {}", seqDoctorSchedule);
+		try {
+			scheduleMapper.deleteDoctorSchedule(seqDoctorSchedule);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 수정, 삭제하기 위한 seq값 조회하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
 	public int selectSeqDoctorSchedule(Map<String, String> startEndMap) {

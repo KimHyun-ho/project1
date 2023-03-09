@@ -1,9 +1,7 @@
 package kr.human.anihospital.controller;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -12,7 +10,6 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,8 +82,8 @@ public class ScheduleController {
 			String startDateString = (String) list.get("start");
 	        String endDateString = (String) list.get("end");
 	        // 한국 표준 시간으로 시간 포멧 설정
-			startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
-	        endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+			startDate = LocalDateTime.parse(startDateString, dateTimeFormatter).plusHours(9);
+	        endDate = LocalDateTime.parse(endDateString, dateTimeFormatter).plusHours(9);
 		}
 		int seqDoctor = 1;
 		// 수정한 값들 새로운 그릇에 담기
@@ -148,6 +145,35 @@ public class ScheduleController {
 		// 수정한 값들이 잘 담겨 있는지 로그 찍어보기
 		log.info("updateScheduleDoctor 실행, 서비스에 넘길값(컨트롤러) : {}", scheduleDoctorMap);
 		return "scheduleDoctor";
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 풀캘린더에 삭제해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@PostMapping("/scheduleDoctorDeleteOk")
+	@ResponseBody
+	public String deleteDoctorSchedule(@RequestBody List<Map<String, Object>> scheduleDoctorList) throws Exception {
+		// 화면에서 추가한 캘린더에 추가한 데이터가 잘 넘어왔는지 찍어보기
+		log.info("deleteDoctorSchedule 실행, 화면에서 넘어온 값(컨트롤러) : {}", scheduleDoctorList);
+		// 시작, 종료 시간 꺼내 변수에 담아두기
+		String startDate = null;
+		// 데이터가 JSON DATE Format(yyyy-MM-dd'T'HH:mm:ss.SSS'Z')으로 넘어오기 때문에 
+		// DB에서 조건절에 넣으려면 날짜와 시간 포멧을 바꿔줘야 한다.
+		String start = (String) scheduleDoctorList.get(0).get("start");
+		startDate = start.substring(0, 10) + " " + start.subSequence(11, 19);
+		// seq값을 조회할 조건 시간 맵에 담기
+		Map<String, String> startEndMap = new HashMap<>();
+		startEndMap.put("startDate", startDate);
+		log.info("startEndMap(컨트롤러) : {}", startEndMap);
+		
+		// 의사 스케줄을 업데이트 해줄 seq값을 가져오기 위해 서비스 호출
+		int seqDoctorSchedule = scheduleService.selectSeqDoctorSchedule(startEndMap);
+		// 값이 제대로 넘어오는지 로그 찍어보기
+		log.info("seqDoctorSchedule(컨트롤러) : {}", seqDoctorSchedule);
+		
+		// 삭제 처리를 해줄 서비스 호출
+		scheduleService.deleteDoctorSchedule(seqDoctorSchedule);
+		return "scheduleDoctorDeleteOk";
 	}
 	
 	//----------------------------------------------------------------------------------------------------

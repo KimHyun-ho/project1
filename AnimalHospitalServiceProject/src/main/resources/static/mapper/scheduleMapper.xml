@@ -37,6 +37,7 @@
 			a.seq_member = #{seqMember}
 	</select>
 	
+	<!-- 의사의 스케줄 추가 -->
 	<insert id="insertScheduleDoctor" parameterType="Map">
 		insert into doctorschedule 
 			(seq_doctor,
@@ -56,6 +57,7 @@
 			  )
 	</insert>
 	
+	<!-- 의사의 스케줄 수정 -->
 	<update id="updateScheduleDoctor" parameterType="Map">
 		update doctorschedule SET
 			 schedule_doctor_holiday_start = #{scheduleDoctorHolidayStart},
@@ -68,6 +70,7 @@
 			seq_doctor_schedule = #{seqDoctorSchedule}
 	</update>
 	
+	<!-- to do list 추가 -->
 	<insert id="insertTodolist" parameterType="Map">
 		INSERT INTO todolist(
 			seq_doctor,
@@ -84,6 +87,7 @@
 		)
 	</insert>
 	
+	<!-- to do list 조회 -->
 	<select id="selectAllTodolist" resultType="Map">
 		SELECT
 			seq_todo AS seqTodo,
@@ -106,6 +110,7 @@
 		LIMIT 10
 	</select>
 	
+	<!-- to do list 수정 -->
 	<update id="updateTodolist" parameterType="Map">
 		UPDATE 
 			todolist 
@@ -117,6 +122,7 @@
 			seq_todo = #{seqTodo}
 	</update>
 	
+	<!-- to do list 삭제 -->
 	<delete id="deleteTodolist" parameterType="int">
 		DELETE FROM 
 			todolist 
@@ -124,6 +130,7 @@
 			seq_todo = #{seqTodo}
 	</delete>
 	
+	<!-- 의사의 스케줄을 수정하기 위해 seq값 조회 -->
 	<select id="selectSeqDoctorSchedule" parameterType="Map" resultType="int">
 		SELECT 
 			seq_doctor_schedule as seqDoctorSchedule
@@ -132,4 +139,12 @@
 		WHERE 
 			schedule_doctor_holiday_start = #{startDate}
 	</select>
+	
+	<!-- 의사의 스케줄을 삭제 -->
+	<delete id="deleteDoctorSchedule" parameterType="int">
+		DELETE FROM 
+			doctorschedule 
+		WHERE 
+			seq_doctor_schedule = #{seqDoctorSchedule}
+	</delete>
 </mapper>  

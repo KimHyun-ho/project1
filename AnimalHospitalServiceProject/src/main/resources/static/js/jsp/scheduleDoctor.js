@@ -40,30 +40,27 @@ document.addEventListener('DOMContentLoaded', function() {
 				    dayMaxEventRows: true,
 				    locale: 'ko',
 				    // 하루에 생성 가능한 일정 수 조절
-					/*views: {
+					views: {
 						timeGrid: {
 							dayMaxEventRows: 6
 						}
-					},*/
-					// 일정 삭제시 선택한 일정의 ID값 넘겨받기
-					// drop: function (arg) {
-				        /*if (document.getElementById('drop-remove').checked) {
-				            arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-				        }*/
-				    // },
-				    // 캘린더에서 이벤트를 생성할 수 있다.
+					},
+                    // -------------------------------------------------------
+				    // 변경된 일정 수정하기
+                    // -------------------------------------------------------
 				    eventChange: function(info){
                         console.log(info);
                         if(confirm("'일정을 수정하시겠습니까 ?")){
-	                        var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+							// Json 데이터를 받기 위한 배열 선언
+	                        var events = new Array();
 	                        var obj = new Object();
-	 
+	 						// 데이터 담기
 	                        obj.title = info.event._def.title;
 	                        obj.start = info.event._instance.range.start;
 	                        obj.end = info.event._instance.range.end;
 	                        events.push(obj);
-	 
 	                        console.log(events);
+	                        // 수정 처리를 해줄 컨트롤러로 데이터 전송
 	                        $(function updateData() {
 	                            $.ajax({
 	                                 url: "/scheduleDoctorUpdateOk",
@@ -85,6 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
 							 location.reload();
 						 }
                     },
+                    // -------------------------------------------------------
+                    // 원하는 시간 드래그로 지정 후 일정 추가하기
+                    // -------------------------------------------------------
 				    select: function (arg) { 
                         var title = prompt('일정을 입력해주세요.');
                         if (title) {
@@ -102,9 +102,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         var events = new Array();
                         // Json 을 담기 위해 Object 선언
                         var obj = new Object();
-                            obj.title = title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
-                            obj.start = arg.start; // 시작
-                            obj.end = arg.end; // 끝
+                            obj.title = title;
+                            obj.start = arg.start;
+                            obj.end = arg.end;
                             events.push(obj);
                         var jsondata = JSON.stringify(events);
                         console.log(jsondata);
@@ -125,6 +125,41 @@ document.addEventListener('DOMContentLoaded', function() {
                                 });
                             calendar.unselect()
                         });
+                    },
+                    // -------------------------------------------------------
+                    // 선택한 일정 삭제하기
+                    // -------------------------------------------------------
+                    eventClick: function (info){
+                        if(confirm("일정을 삭제하시겠습니까?")){
+                            // 확인 클릭 시
+                            info.event.remove();
+	                        console.log(info.event);
+	                        var events = new Array();
+	                        var obj = new Object();
+	                        	obj.title = info.event._def.title;
+	                        	obj.start = info.event._instance.range.start;
+	                        	events.push(obj);
+	                        console.log(events);
+	                        $(function deleteData(){
+	                            $.ajax({
+	                                url: "/scheduleDoctorDeleteOk",
+	                                method: "Post",
+	                                dataType: "text",
+	                                data: JSON.stringify(events),
+	                                contentType: 'application/json',
+	                            })
+	                               .done(function() {
+	                                    alert("일정이 삭제 되었습니다.");
+	                                    location.reload();
+		                           })
+		                           .fail(function(error) {
+		                                alert("데이터 삭제 실패 : " + error);
+		                           });
+		                        calendar.unselect()
+	                        });
+                        } else {
+							alert("삭제 작업이 취소 되었습니다.");
+						}
                     },
                     // JSON으로 값 넘겨주기
 				    events: data

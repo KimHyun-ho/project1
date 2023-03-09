@@ -28,7 +28,12 @@ public interface ScheduleMapper {
 	void updateScheduleDoctor(Map<String, Object> scheduleDoctorMap) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
-	// 의사 스케줄을 수정하기 위한 seq값 조회하는 메서드
+	// 의사 스케줄을 풀캘린더에 삭제해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	void deleteDoctorSchedule(int seqDoctorSchedule) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 수정, 삭제하기 위한 seq값 조회하는 메서드
 	//----------------------------------------------------------------------------------------------------
 	int selectSeqDoctorSchedule(Map<String, String> startEndMap) throws Exception;
 	
