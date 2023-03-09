@@ -44,9 +44,9 @@
 	    <section class="inner-page">
 	      <div class="container">
 	          <br />
-	          <button type="button" id="kakao_login" class="w-40 btn kakao_login_btn" style="margin:auto;display:block;"><img src="img/kakao_login_btn.png" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=(받은 토큰값)&redirect_uri=http://localhost:8080&response_type=code'" style="border-radius: 50px; width:300px;height:50px;"></button>
+	          <button type="button" id="kakao_login" class="w-40 btn kakao_login_btn" style="margin:auto;display:block;"><img src="img/kakao_login_btn.png" th:onclick="'location.href=\''+ @{${kakaoApiURL}} + '\''" style="border-radius: 50px; width:300px;height:50px;"></button>
 <!-- 	          <div id="naverIdLogin" style="margin:auto;display:block;" th:onclick="${apiURL}"></div> -->
-	          <button type="button" id="naver_login" class="w-40 btn naver_login_btn" style="margin:auto;display:block;" th:onclick="'location.href=\''+ @{${apiURL}} + '\''"><img src="img/naver_login_btn.png" style="border-radius: 50px; width:300px;height:50px;"></button>
+	          <button type="button" id="naver_login" class="w-40 btn naver_login_btn" style="margin:auto;display:block;" th:onclick="'location.href=\''+ @{${naverApiURL}} + '\''"><img src="img/naver_login_btn.png" style="border-radius: 50px; width:300px;height:50px;"></button>
 	          <button type="button" id="google_login" class="w-40 btn google_login_btn" style="margin:auto;display:block;"><img src="img/google_login_btn.png" style="border-radius: 50px; width:300px;height:50px;"></button>
 	      <br />
 	      	<div class="col-md-3 form-group" style="margin: auto;">
