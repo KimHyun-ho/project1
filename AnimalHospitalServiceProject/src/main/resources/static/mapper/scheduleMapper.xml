@@ -5,6 +5,7 @@
 	<!-- 공지 전체 리스트 데이터 가져오기 -->
 	<select id="selectScheduleDoctorArrJson" resultType="Map">
 		 	SELECT
+		 		seq_doctor_schedule AS seqDoctorSchedule,
 				seq_doctor AS seqDoctor,
 				schedule_doctor_holiday_start AS scheduleDoctorHolidayStart,
 				schedule_doctor_holiday_end AS scheduleDoctorHolidayEnd,
@@ -54,6 +55,18 @@
 			  NOW()
 			  )
 	</insert>
+	
+	<update id="updateScheduleDoctor" parameterType="Map">
+		update doctorschedule SET
+			 schedule_doctor_holiday_start = #{scheduleDoctorHolidayStart},
+			 schedule_doctor_holiday_end = #{scheduleDoctorHolidayEnd},
+			 schedule_doctor_content = #{scheduleDoctorContent},
+			 schedule_doctor_update_date = NOW()
+		WHERE 
+			seq_doctor = #{seqDoctor}
+		AND
+			seq_doctor_schedule = #{seqDoctorSchedule}
+	</update>
 	
 	<insert id="insertTodolist" parameterType="Map">
 		INSERT INTO todolist(
@@ -110,4 +123,13 @@
 		WHERE 
 			seq_todo = #{seqTodo}
 	</delete>
+	
+	<select id="selectSeqDoctorSchedule" parameterType="Map" resultType="int">
+		SELECT 
+			seq_doctor_schedule as seqDoctorSchedule
+		FROM 
+			doctorschedule
+		WHERE 
+			schedule_doctor_holiday_start = #{startDate}
+	</select>
 </mapper>  
