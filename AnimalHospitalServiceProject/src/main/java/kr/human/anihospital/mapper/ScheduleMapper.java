@@ -18,6 +18,16 @@ public interface ScheduleMapper {
 	List<Map<String, Object>> selectAllProSchedule(int seqMember) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 풀캘린더에 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	void insertScheduleProtector(Map<String, Object> scheduleProtectorMap) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 추가하기 위해 해당 환자seq를 조회하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	int selectSeqAnimalForInsertScheduleProtector(Map<String, Object> seqMemAniNameMap) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
 	// 의사 스케줄을 풀캘린더에 추가해줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	void insertScheduleDoctor(Map<String, Object> scheduleDoctorMap) throws Exception;

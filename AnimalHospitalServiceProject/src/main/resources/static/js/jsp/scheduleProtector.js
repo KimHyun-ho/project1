@@ -36,18 +36,14 @@ document.addEventListener('DOMContentLoaded', function() {
 				    droppable: true,
 				    // 월간 캘린더에 more 생성
 				    dayMaxEventRows: true,
+				    // 한국어 설정
+				    locale: 'ko',
 				    // 하루에 생성 가능한 일정 수 조절
-					/*views: {
+					views: {
 						timeGrid: {
 							dayMaxEventRows: 6
 						}
-					},*/
-					// 일정 삭제시 선택한 일정의 ID값 넘겨받기
-					// drop: function (arg) {
-				        /*if (document.getElementById('drop-remove').checked) {
-				            arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-				        }*/
-				    // },
+					},
 				    // JSON으로 값 넘겨주기
 				    events: data
 			  });
@@ -123,22 +119,60 @@ $(function(){
 					selectable: true,
 					// 달력 수정 권한 설정
 					editable: true,
-					// 일정 삭제 권한 설정
-				    droppable: true,
 				    // 월간 캘린더에 more 생성
 				    dayMaxEventRows: true,
 				    // 하루에 생성 가능한 일정 수 조절
-					/*views: {
+					views: {
 						timeGrid: {
 							dayMaxEventRows: 6
 						}
-					},*/
-					// 일정 삭제시 선택한 일정의 ID값 넘겨받기
-					// drop: function (arg) {
-				        /*if (document.getElementById('drop-remove').checked) {
-				            arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-				        }*/
-				    // },
+					},
+					// -------------------------------------------------------
+                    // 원하는 시간 드래그로 지정 후 일정 추가하기
+                    // -------------------------------------------------------
+				    select: function (arg) { 
+                        var [title, animalName] = prompt('일정과 반려동물 이름을 입력해주세요. 입력 예) 슬개골 탈구,아롱이').split(",");
+                        if (title) {
+                            calendar.addEvent({
+                                title: title,
+                                start: arg.start,
+                                end: arg.end,
+                                allDay: arg.allDay,
+                            })
+                        } else if (!title) {
+							alert('취소되었습니다.');
+							return false;
+						}
+						// Json 데이터를 받기 위한 배열 선언
+                        var events = new Array();
+                        // Json 을 담기 위해 Object 선언
+                        var obj = new Object();
+                            obj.title = title;
+                            obj.animalName = animalName;
+                            obj.start = arg.start;
+                            obj.end = arg.end;
+                            events.push(obj);
+                        var jsondata = JSON.stringify(events);
+                        console.log(jsondata);
+						// 작성한 데이터 저장
+                        $(function saveData(jsondata) {
+                            $.ajax({
+                                url: "/scheduleProtectorInsertOk",
+                                method: "POST",
+                                dataType: "text",
+                                data: JSON.stringify(events),
+                                contentType: 'application/json',
+                            })
+                                .done(function() {
+                                    alert("새 일정이 저장 되었습니다.");
+                                    location.reload();
+                                })
+                                .fail(function(error) {
+                                     alert("insert 데이터 전송 실패 : " + error);
+                                });
+                            calendar.unselect()
+                        });
+                    },
 				    // JSON으로 값 넘겨주기
 				    events: data
 			  });
