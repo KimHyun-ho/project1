@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import kr.human.anihospital.service.DoctorPageService;
 import kr.human.anihospital.vo.DiagnosisInfoVO;
 import kr.human.anihospital.vo.DocPatientInfoVO;
@@ -32,11 +33,11 @@ public class DoctorPageController {
 	// ### 수의사 전용 페이지 -> 나의 정보 조회 ####
 	// #############################################
 	@GetMapping("/doctorInfo")
-	public String doctorInfo(Model model) {
+	public String doctorInfo(Model model, HttpSession session) {
 		// #########################################################
 		// ## seqMember는 로그인 정보 Session에서 받아와야 합니다.##
 		// #########################################################
-		int seqMember = 1;
+		int seqMember = (int) session.getAttribute("seqMember");
 		DoctorInfoVO doctorInfoVO = doctorPageService.selectOneDoctorInfoVO(seqMember);
 		model.addAttribute("doctorInfo", doctorInfoVO);
 		log.info("의사정보 : {}", doctorInfoVO);
