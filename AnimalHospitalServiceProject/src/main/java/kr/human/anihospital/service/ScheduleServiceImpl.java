@@ -68,6 +68,38 @@ public class ScheduleServiceImpl implements ScheduleService {
 			e.printStackTrace();
 		}
 	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 풀캘린더에 수정해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void updateScheduleDoctor(Map<String, Object> scheduleDoctorMap) {
+		// 데이터가 잘 넘어오는지 로그 찍어보기
+		log.info("updateScheduleDoctor실행, 넘어온 값(서비스) : {}", scheduleDoctorMap);
+		try {
+			scheduleMapper.updateScheduleDoctor(scheduleDoctorMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 수정하기 위한 seq값 조회하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public int selectSeqDoctorSchedule(Map<String, String> startEndMap) {
+		// 결과값 담을 그릇 준비 및 초기화
+		int seqDoctorSchedule = 0;
+		try {
+			// 그릇에 실행 결과 담기
+			seqDoctorSchedule = scheduleMapper.selectSeqDoctorSchedule(startEndMap);
+			// 데이터가 잘 넘어오는지 로그 찍어보기
+			log.info("selectSeqDoctorSchedule실행, 넘어온 값(서비스) : {}", seqDoctorSchedule);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return seqDoctorSchedule;
+	}
 
 	//----------------------------------------------------------------------------------------------------
 	// TO DO LIST를 추가해줄 메서드

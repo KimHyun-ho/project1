@@ -23,6 +23,16 @@ public interface ScheduleMapper {
 	void insertScheduleDoctor(Map<String, Object> scheduleDoctorMap) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 풀캘린더에 수정해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	void updateScheduleDoctor(Map<String, Object> scheduleDoctorMap) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
+	// 의사 스케줄을 수정하기 위한 seq값 조회하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	int selectSeqDoctorSchedule(Map<String, String> startEndMap) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
 	// TO DO LIST를 추가해줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	void insertTodolist(Map<String, Object> todolistMap) throws Exception;

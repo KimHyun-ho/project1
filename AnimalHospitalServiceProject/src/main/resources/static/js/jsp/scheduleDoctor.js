@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				    droppable: true,
 				    // 월간 캘린더에 more 생성
 				    dayMaxEventRows: true,
+				    locale: 'ko',
 				    // 하루에 생성 가능한 일정 수 조절
 					/*views: {
 						timeGrid: {
@@ -50,50 +51,83 @@ document.addEventListener('DOMContentLoaded', function() {
 				            arg.draggedEl.parentNode.removeChild(arg.draggedEl);
 				        }*/
 				    // },
-				    // JSON으로 값 넘겨주기
-				    events: data,
 				    // 캘린더에서 이벤트를 생성할 수 있다.
+				    eventChange: function(info){
+                        console.log(info);
+                        if(confirm("'일정을 수정하시겠습니까 ?")){
+	                        var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+	                        var obj = new Object();
+	 
+	                        obj.title = info.event._def.title;
+	                        obj.start = info.event._instance.range.start;
+	                        obj.end = info.event._instance.range.end;
+	                        events.push(obj);
+	 
+	                        console.log(events);
+	                        $(function updateData() {
+	                            $.ajax({
+	                                 url: "/scheduleDoctorUpdateOk",
+	                                 method: "post",
+	                                 dataType: "text",
+	                                 data: JSON.stringify(events),
+	                                 contentType: 'application/json',
+	                             })
+	                             	.done(function() {
+	                                    alert("일정이 수정 되었습니다.");
+	                                    location.reload();
+	                                })
+	                                .fail(function(error) {
+	                                     alert("데이터 수정 실패 : " + error);
+	                                });
+	                         })
+                         } else {
+							 alert("수정 작업이 취소 되었습니다.");
+							 location.reload();
+						 }
+                    },
 				    select: function (arg) { 
-                            var title = prompt('일정을 입력해주세요.');
-                            if (title) {
-                                calendar.addEvent({
-                                    title: title,
-                                    start: arg.start,
-                                    end: arg.end,
-                                    allDay: arg.allDay,
+                        var title = prompt('일정을 입력해주세요.');
+                        if (title) {
+                            calendar.addEvent({
+                                title: title,
+                                start: arg.start,
+                                end: arg.end,
+                                allDay: arg.allDay,
+                            })
+                        } else if (!title) {
+							alert('취소되었습니다.');
+							return false;
+						}
+						// Json 데이터를 받기 위한 배열 선언
+                        var events = new Array();
+                        // Json 을 담기 위해 Object 선언
+                        var obj = new Object();
+                            obj.title = title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
+                            obj.start = arg.start; // 시작
+                            obj.end = arg.end; // 끝
+                            events.push(obj);
+                        var jsondata = JSON.stringify(events);
+                        console.log(jsondata);
+						// 작성한 데이터 저장
+                        $(function saveData(jsondata) {
+                            $.ajax({
+                                url: "/scheduleDoctorInsertOk",
+                                method: "POST",
+                                dataType: "text",
+                                data: JSON.stringify(events),
+                                contentType: 'application/json',
+                            })
+                                .done(function() {
+                                    alert("새 일정이 저장 되었습니다. : " + result);
                                 })
-                            } else if (!title) {
-								alert('취소되었습니다.');
-								return false;
-							}
- 							// Json 데이터를 받기 위한 배열 선언
-                            var events = new Array();
-                            // Json 을 담기 위해 Object 선언
-                            var obj = new Object();
-                                obj.title = title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
-                                obj.start = arg.start; // 시작
-                                obj.end = arg.end; // 끝
-                                events.push(obj);
-                            var jsondata = JSON.stringify(events);
-                            console.log(jsondata);
- 							// 작성한 데이터 저장
-                            $(function saveData(jsondata) {
-                                $.ajax({
-                                    url: "/scheduleDoctorInsertOk",
-                                    method: "POST",
-                                    dataType: "text",
-                                    data: JSON.stringify(events),
-                                    contentType: 'application/json',
-                                })
-                                    .done(function() {
-                                        alert("새 일정이 저장 되었습니다. : " + result);
-                                    })
-                                    .fail(function(error) {
-                                         alert("insert 데이터 전송 실패 : " + error);
-                                    });
-                                calendar.unselect()
-                            });
-                        }
+                                .fail(function(error) {
+                                     alert("insert 데이터 전송 실패 : " + error);
+                                });
+                            calendar.unselect()
+                        });
+                    },
+                    // JSON으로 값 넘겨주기
+				    events: data
 			  });
 			  // 캘린더 화면에 띄우기
 			  calendar.render();
