@@ -114,7 +114,7 @@
 							<i class="fas fa-user-md"></i> <span data-purecounter-start="0" data-purecounter-end="85"
 								data-purecounter-duration="1" class="purecounter"></span>
 							<p>Doctors</p>
-							<h4>123</h4>
+							<h4 th:text="${doctorCount}"></h4>
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
@@ -122,7 +122,7 @@
 							<i class="fa-solid fa-heart-pulse"></i><span data-purecounter-start="0" data-purecounter-end="150"
 								data-purecounter-duration="1" class="purecounter"></span>
 							<p>Client</p>
-							<h4>123</h4>
+							<h4 th:text="${ProtectorCount}"></h4>
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6 mt-5 mt-md-0">
@@ -130,7 +130,7 @@
 							<i class="far fa-hospital"></i> <span data-purecounter-start="0" data-purecounter-end="18"
 								data-purecounter-duration="1" class="purecounter"></span>
 							<p>Hospital</p>
-							<h4>123</h4>
+							<h4 th:text="${hospitalCount}"></h4>
 						</div>
 					</div>
 					<div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
@@ -138,7 +138,7 @@
 							<i class="fas fa-flask"></i> <span data-purecounter-start="0" data-purecounter-end="12"
 								data-purecounter-duration="1" class="purecounter"></span>
 							<p>Pharmacy</p>
-							<h4>123</h4>
+							<h4 th:text="${pharmacyCount}"></h4>
 						</div>
 					</div>
 				</div>
@@ -156,7 +156,7 @@
 					<div class="col-lg-3">
 						<div class="d-flex align-items-start">
 						  	<ul class="nav nav-tabs flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width: 250px; ">
-						    	<li class="nav-link active" id="v-pills-feed-tab" data-bs-toggle="pill" data-bs-target="#v-pills-feed" type="button" role="tab" aria-controls="v-pills-feed" aria-selected="true" style="font-size: 20px;">추천사료</li>
+						    	<li class="nav-link active" id="v-pills-feed-tab" data-bs-toggle="pill" data-bs-target="#v-pills-feed" type="button" role="tab" aria-controls="v-pills-feed" aria-selected="true" style="font-size: 20px;">사료</li>
 						    	<li class="nav-link" id="v-pills-supplements-tab" data-bs-toggle="pill" data-bs-target="#v-pills-supplements" type="button" role="tab" aria-controls="v-pills-supplements" aria-selected="false" style="font-size: 20px;">영양제</li>
 							</ul>
 						</div>
@@ -167,11 +167,9 @@
 						    	<div class="row gy-4">
 									<div class="col-lg-8 details order-2 order-lg-1">
 										<h3>Feed</h3>
-										<p class="fst-italic">추천 사료 이름</p>
-										<p>
-											효능 또는 알레르기 정보 및 부작용 정보를 적는 칸입니다.
-											효능 또는 알레르기 정보 및 부작용 정보를 적는 칸입니다.
-										</p>
+										<p class="fst-italic" th:text="'사료 이름 : ' + ${feedMap.feedName}"></p>
+										<p th:text="'알레르기 정보 : ' + ${feedMap.feedAllergySymptom}"></p>
+										<p th:text="'단점 : ' + ${feedMap.feedSideEffect}"></p>
 									</div>
 									<div class="col-lg-4 text-center order-1 order-lg-2">
 										<img src="img/feed.png" alt="feed.png" class="img-fluid">
@@ -182,11 +180,8 @@
 						    	<div class="row gy-4">
 									<div class="col-lg-8 details order-2 order-lg-1">
 										<h3>Supplement</h3>
-										<p class="fst-italic">추천 영양제 이름</p>
-										<p>
-											효능 또는 알레르기 정보 및 부작용 정보를 적는 칸입니다.
-											효능 또는 알레르기 정보 및 부작용 정보를 적는 칸입니다.
-										</p>
+										<p class="fst-italic" th:text="'영양제 이름 : ' + ${supplementsMap.supplementsName}"></p>
+										<p th:text="'부작용 : ' + ${supplementsMap.supplementsSideEffect}"></p>
 									</div>
 									<div class="col-lg-4 text-center order-1 order-lg-2">
 										<img src="img/supplements.png" alt="supplements.png" class="img-fluid">
@@ -207,62 +202,18 @@
 					<p>해당 월의 환자 수가 가장 많은 의사들을 소개합니다.</p>
 				</div>
 				<div class="row">
-					<div class="col-lg-6">
-						<div class="member d-flex align-items-start">
-							<div class="pic">
-								<img src="img/doctors/doctors-1.jpg" class="img-fluid" alt="">
+					<div class="col-lg-6" th:each="bestDoctorList : ${bestDoctorList}">
+						<div class="member d-flex align-items-start" >
+							<div class="pic" th:if="${bestDoctorList.doctorPicturePath == null}">
+								<img src="img/person.png" class="img-fluid" alt="" >
+							</div>
+							<div class="pic" th:if="${bestDoctorList.doctorPicturePath != null}">
+								<img th:src="${bestDoctorList.doctorPicturePath}" class="img-fluid" alt="...">
 							</div>
 							<div class="member-info">
-								<h4>의사이름</h4>
-								<span>소속병원</span>
-								<p>인사말 <br />
-									혹은<br />
-									경력
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 mt-4 mt-lg-0">
-						<div class="member d-flex align-items-start">
-							<div class="pic">
-								<img src="img/doctors/doctors-2.jpg" class="img-fluid" alt="">
-							</div>
-							<div class="member-info">
-								<h4>의사이름</h4>
-								<span>소속병원</span>
-								<p>인사말 <br />
-									혹은<br />
-									경력
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 mt-4">
-						<div class="member d-flex align-items-start">
-							<div class="pic">
-								<img src="img/doctors/doctors-3.jpg" class="img-fluid" alt="">
-							</div>
-							<div class="member-info">
-								<h4>의사이름</h4>
-								<span>소속병원</span>
-								<p>인사말 <br />
-									혹은<br />
-									경력
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 mt-4">
-						<div class="member d-flex align-items-start">
-							<div class="pic">
-								<img src="img/doctors/doctors-4.jpg" class="img-fluid" alt="">
-							</div>
-							<div class="member-info">
-								<h4>의사이름</h4>
-								<span>소속병원</span>
-								<p>인사말 <br />
-									혹은<br />
-									경력
+								<h4 th:text=${bestDoctorList.memberName}></h4>
+								<span th:text=${bestDoctorList.animalHospitalName}></span>
+								<p th:text=${bestDoctorList.doctorSay}>
 								</p>
 							</div>
 						</div>
@@ -390,46 +341,28 @@
 					<h2>최근 등록된 후기</h2>
 				<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
 				  <div class="carousel-inner">
-				    <div class="carousel-item active" data-bs-interval="5000">
+				  
+				    <div class="carousel-item active" data-bs-interval="5000" th:each="recentPostscriptList : ${recentPostscriptList}">
 				    	<div class="testimonial-item" id="postscriptBox">
 					    	<div id="text-1" style="text-align: center;">
-					    		<h3>진료병원</h3>
-								<h4>별점</h4>
+					    		<h3 th:text="${recentPostscriptList.animalHospitalName}"></h3>
+								<div th:switch="${recentPostscriptList.postscriptSatisfaction}">
+									<h4 th:case="'1'">★</h4>
+									<h4 th:case="'2'">★★</h4>
+									<h4 th:case="'3'">★★★</h4>
+									<h4 th:case="'4'">★★★★</h4>
+									<h4 th:case="'5'">★★★★★</h4>
+								</div>
 					    		<p>
-									<i class="bx bxs-quote-alt-left quote-icon-left"></i>
-									후기내용1
+									<i class="bx bxs-quote-alt-left quote-icon-left" ></i>
+									[[${recentPostscriptList.postscriptContent}]]
 									<i class="bx bxs-quote-alt-right quote-icon-right"></i>
 								</p>
 					     	</div>
 				     	</div>
 				    </div>
-				    <div class="carousel-item" data-bs-interval="5000">
-				    	<div class="testimonial-item" id="postscriptBox">
-							<div id="text-2" style="text-align: center;">
-					      		<h3>진료병원</h3>
-								<h3>별점</h3>
-					    		<p>
-									<i class="bx bxs-quote-alt-left quote-icon-left"></i>
-									후기내용2
-									<i class="bx bxs-quote-alt-right quote-icon-right"></i>
-								</p>
-					     	</div>
-				     	</div>
-				    </div>
-				    <div class="carousel-item" data-bs-interval="5000">
-				     	<div class="testimonial-item" id="postscriptBox">
-					      	<div id="text-3" style="text-align: center;">
-					    		<h3>진료병원</h3>
-								<h3>별점</h3>
-					    		<p>
-									<i class="bx bxs-quote-alt-left quote-icon-left"></i>
-									후기내용3
-									<i class="bx bxs-quote-alt-right quote-icon-right"></i>
-								</p>
-					     	</div>
-				     	</div>
-				    </div>
-				  </div>
+				    
+				 </div>
 				  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
 				    <span class="carousel-control-prev-icon"></span>
 				    <span class="visually-hidden">Previous</span>
@@ -439,7 +372,7 @@
 				    <span class="visually-hidden">Next</span>
 				  </button>
 				</div>
-			</div>
+				</div>
 			</div>
 		</section>
 		<!-- End Testimonials Section -->

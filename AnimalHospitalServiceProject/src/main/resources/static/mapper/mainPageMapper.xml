@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.anihospital.mapper.MainpageMapper">
+	<!-- 의사 인원 -->
+	<select id="selectCountDoctorCount" resultType="int">
+		select 
+			count(member_role) 
+		from 
+			account a 
+		where
+			member_role = false;
+	</select>
+	<!-- 보호자 인원 -->
+	<select id="selectCountProCount" resultType="int">
+		 select 
+			count(member_role) 
+		from 
+			account a 
+		where
+			member_role = true;
+	</select>
+	
+	<!-- 병원 수 -->
+	<select id="selectCountHospitalCount" resultType="int">
+		select 
+			count(*) 
+		from 
+			animalhospital a
+	</select>
+	
+	<!-- 약국 수 -->
+	<select id="selectCountPharmacyCount" resultType="int">
+		select 
+			count(*) 
+		from 
+			pharmacylocation p
+	</select>
+	
+	<!-- 환자 수가 많은 상위 4명의 의사 -->
+	<select id="selectBestDoctor" resultType="doctorInfoVO">
+	SELECT 
+		dia.seq_doctor seqDoctor,
+		ac.member_name memberName,
+		a.animal_hospital_name animalHospitalName,
+		d.doctor_say doctorSay,
+		d.doctor_picture doctorPicture,
+		d.doctor_picture_path doctorPicturePath
+	FROM
+		diagnosis dia , doctor d , account ac ,animalhospital a
+	WHERE
+		dia.seq_doctor = d.seq_doctor and
+		d.seq_member = ac.seq_member and
+		d.seq_animal_hospital = a.seq_animal_hospital 
+	GROUP BY 
+		dia.seq_doctor
+	LIMIT 4
+	</select>
+	
+	<!-- 최근 후기 2개 조회 -->
+	<select id="selectRecentPostscript" resultType="map">
+	select 
+		a.animal_hospital_name animalHospitalName,
+		p.postscript_satisfaction postscriptSatisfaction,
+		p.postscript_content postscriptContent
+	from 
+		postscript p, diagnosis d, animalhospital a 
+	where 
+		p.seq_diagnosis = d.seq_diagnosis and 
+		d.seq_animal_hospital = a.seq_animal_hospital
+	order by p.postscript_reporting_date desc
+	LIMIT 3
+	</select>
+	
+	<!-- 추천 사료 랜덤으로 띄우기 -->
+	<select id="selectOneFeed" resultType="map">
+	select 
+		feed_name feedName,
+		feed_allergy_symptom feedAllergySymptom,
+		feed_side_effect feedSideEffect 
+	from 
+		feed f 
+	ORDER BY RAND() 
+	LIMIT 1
+	</select>
+	
+	<!-- 추천 영양제 랜덤으로 띄우기 -->
+	<select id="selectOneSupplements" resultType="map">
+	select 
+		s.supplements_name supplementsName,
+		s.supplements_side_effect supplementsSideEffect
+	from 
+		supplements s 
+	ORDER BY RAND() 
+	LIMIT 1
+	</select>
+	
+</mapper>  
