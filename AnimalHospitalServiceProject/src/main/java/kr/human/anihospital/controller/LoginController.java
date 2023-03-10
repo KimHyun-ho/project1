@@ -48,7 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-public class LoginConrtoller {
+public class LoginController {
 
 	@Autowired
 	LoginService loginService;
@@ -416,5 +416,22 @@ public class LoginConrtoller {
 			@RequestParam String memberBirthDay) {
 		memberVO.setMemberBirthdate(memberBirthYear + "-" + memberBirthDay);
 		return "roleCheck";
+	}
+
+	@GetMapping("/kakaoLogout")
+	public String kakaoLogout(HttpSession session) {
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer " + session.getAttribute("kakaoAccessToken"));
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		HttpEntity<MultiValueMap<String, String>> requestForKakaoToken = new HttpEntity<>(headers);
+
+		// ResponseEntity 객체는 다음과 같이 선언한다.
+		// (요청하는 주소, 요청방식, HttpEntity(HttpBody + HttpHeader), 리턴 타입)
+		ResponseEntity<String> responseEntity = restTemplate.exchange(loginAPIVO.getKakaoLogoutURI(),
+				HttpMethod.POST, requestForKakaoToken, String.class);
+		log.info("로그아웃 : {}", responseEntity.getBody());
+		session.invalidate();
+		return "redirect:/";
 	}
 }

@@ -19,4 +19,5 @@ public class LoginAPIVO {
 	private final String kakaoRedirectUri = "http://localhost:8080/auth/kakao/callback";
 	private final String kakaoRequestTokenURI = "https://kauth.kakao.com/oauth/token";
 	private final String kakaoRequestUserInfoURI = "https://kapi.kakao.com/v2/user/me";
+	private final String kakaoLogoutURI = "https://kapi.kakao.com/v1/user/logout";
 }
