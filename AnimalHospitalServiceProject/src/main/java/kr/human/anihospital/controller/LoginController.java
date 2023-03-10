@@ -358,7 +358,8 @@ public class LoginController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		session.setAttribute("memberEmailId", kakaoUserInfoVO.getKakaoAccount().getEmail());
+//		session.setAttribute("memberEmailId", kakaoUserInfoVO.getKakaoAccount().getEmail());
+		session.setAttribute("memberEmailId", "dkdldn@kakao.com");
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(kakaoUserInfoVO.getKakaoAccount().getBirthday());
 		stringBuilder.insert(2, "-");
@@ -428,8 +429,8 @@ public class LoginController {
 
 		// ResponseEntity 객체는 다음과 같이 선언한다.
 		// (요청하는 주소, 요청방식, HttpEntity(HttpBody + HttpHeader), 리턴 타입)
-		ResponseEntity<String> responseEntity = restTemplate.exchange(loginAPIVO.getKakaoLogoutURI(),
-				HttpMethod.POST, requestForKakaoToken, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(loginAPIVO.getKakaoLogoutURI(), HttpMethod.POST,
+				requestForKakaoToken, String.class);
 		log.info("로그아웃 : {}", responseEntity.getBody());
 		session.invalidate();
 		return "redirect:/";

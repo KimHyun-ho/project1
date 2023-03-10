@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import kr.human.anihospital.service.ProtectorPageService;
 import kr.human.anihospital.vo.AnimalHospitalVO;
 import kr.human.anihospital.vo.DoctorInfoVO;
@@ -34,10 +35,9 @@ public class ProtectorPageController {
 	// 보호자 정보 페이지에서 보호자,환자 정보,환자의 진료리스트를 화면에 표시해줄 메서드
 	// ----------------------------------------------------------------------------------------------------
 	@GetMapping("/proMypageDetail")
-	public String ProMypageDetail(@RequestParam(required = false, defaultValue = "4") int seqMember,
-			@RequestParam(defaultValue = "1") int c, @RequestParam(defaultValue = "10") int p,
-			@RequestParam(defaultValue = "10") int b, Model model) throws Exception {
-
+	public String ProMypageDetail(@RequestParam(defaultValue = "1") int c, @RequestParam(defaultValue = "10") int p,
+			@RequestParam(defaultValue = "10") int b, Model model, HttpSession session) throws Exception {
+		int seqMember = (int) session.getAttribute("seqMember");
 		// ----------------------------------------------------------------------------
 		// 보호자,환자 정보 화면에 넘겨주기 시작
 		// ----------------------------------------------------------------------------
@@ -118,9 +118,10 @@ public class ProtectorPageController {
 	// ----------------------------------------------------------------------------------------------------
 	@PostMapping("/proPatientAddOk")
 	public String proPatientAdd(@RequestParam Map<String, Object> insertPatientMap, MultipartFile file,
-			MultipartFile vidfile) throws Exception {
+			MultipartFile vidfile, HttpSession session) throws Exception {
 		// 세션에서 보호자 seq를 가져와서 insertPatientMap에 넣기
-		insertPatientMap.put("seqMember", 4);
+		int seqMember = (int) session.getAttribute("seqMember");
+		insertPatientMap.put("seqMember", seqMember);
 		// proPatientAdd 페이지에서 받아온 값 확인
 		log.info("proPatientAdd에서 넘어온 환자 insert 정보 : {} {} {}", insertPatientMap, file, vidfile);
 		// proPatientAdd 페이지에서 받아온 환자 추가 정보를 넣어서 insert하기
@@ -132,10 +133,11 @@ public class ProtectorPageController {
 	// 한 명의 보호자에 따른 환자의 진료내역 리스트를 화면에 표시해줄 메서드
 	// ----------------------------------------------------------------------------------------------------
 	@GetMapping(value = "/proAllAnimalList")
-	public String selectAllProAnimalListVO(@RequestParam(required = false, defaultValue = "4") int seqMember,
-			@RequestParam(defaultValue = "1") int c, @RequestParam(defaultValue = "10") int p,
-			@RequestParam(defaultValue = "10") int b, Model model) throws Exception {
+	public String selectAllProAnimalListVO(@RequestParam(defaultValue = "1") int c,
+			@RequestParam(defaultValue = "10") int p, @RequestParam(defaultValue = "10") int b, Model model,
+			HttpSession session) throws Exception {
 		// 화면에 넘길 데이터를 담을 그릇 준비
+		int seqMember = (int) session.getAttribute("seqMember");
 		PagingVO<ProAnimalListVO> pagingVO = protectorPageService.selectAllProAnimalListVO(seqMember, c, p, b);
 		// 데이터 그릇에 담기
 		// 받아온 데이터 화면에 넘겨주기
@@ -193,8 +195,9 @@ public class ProtectorPageController {
 	// 후기 작성 페이지 보여주는 메서드
 	// ----------------------------------------------------------------------------------------------------
 	@GetMapping("/proPostscriptAdd")
-	public String proPostscriptAdd(@RequestParam int seqDiagnosis, @RequestParam int seqMember,
-			@RequestParam int seqAnimal, Model model) {
+	public String proPostscriptAdd(@RequestParam int seqDiagnosis, @RequestParam int seqAnimal, Model model,
+			HttpSession session) {
+		int seqMember = (int) session.getAttribute("seqMember");
 		model.addAttribute("seqDiagnosis", seqDiagnosis);
 		model.addAttribute("seqMember", seqMember);
 		model.addAttribute("seqAnimal", seqAnimal);
@@ -206,7 +209,8 @@ public class ProtectorPageController {
 	// ----------------------------------------------------------------------------------------------------
 	@GetMapping("/proPostscriptEdit")
 	public String proPostscriptAdd(@RequestParam int seqPostscript, @RequestParam int seqDiagnosis,
-			@RequestParam int seqMember, @RequestParam int seqAnimal, Model model) {
+			@RequestParam int seqAnimal, Model model, HttpSession session) {
+		int seqMember = (int) session.getAttribute("seqMember");
 		model.addAttribute("seqPostscript", seqPostscript);
 		model.addAttribute("seqDiagnosis", seqDiagnosis);
 		model.addAttribute("seqMember", seqMember);

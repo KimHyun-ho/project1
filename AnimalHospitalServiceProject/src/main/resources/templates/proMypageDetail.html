@@ -108,7 +108,7 @@ h3 {
 									<img th:src="${proMyPageDetailVOList.animalPicturePath}" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%;">
 								</div>
 								<div class="col-md-4" th:if="${proMyPageDetailVOList.animalPicturePath == null}">
-									<img src="img/fabric.jpg" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%;">
+									<img src="img/default.png" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%;">
 								</div>
 								<div class="col-md-8">
 									<div class="card-body">
@@ -218,7 +218,7 @@ h3 {
 													<td th:if="${#lists.isEmpty(postscriptList)}" colspan="5" style="text-align: center;">등록된 후기가 없습니다.</td>
 												<tr th:each="postscriptList : ${postscriptList}"
 													th:onclick="|location.href='@{/proDiagnosis(seqDiagnosis=${postscriptList.seqDiagnosis},seqMember=${postscriptList.seqMember}, seqAnimal=${postscriptList.seqAnimal})}'|"
-													style="font-size: 10pt; text-align: center; vertical-align: middle;cursor: pointer;">
+													style="font-size: 10pt; text-align: center; vertical-align: middle; cursor: pointer;">
 													<td th:text="${postscriptList.animalName}" style="text-align: center;"></td>
 													<td style="text-align: center">
 														<span th:switch="${postscriptList.postscriptSatisfaction}">
@@ -227,22 +227,15 @@ h3 {
 															<span th:case="'3'">★★★</span>
 															<span th:case="'4'">★★★★</span>
 															<span th:case="'5'">★★★★★</span>
-													</span></td>
-													<td style="text-align: center;">
-														<span th:if="${#strings.length(postscriptList.animalHospitalName) gt 6}"
-		                                					th:text="${#strings.substring(postscriptList.animalHospitalName,0,6)} + '...'">
-		                                				</span>
-	                            						<span th:unless="${#strings.length(postscriptList.animalHospitalName) gt 6}"
-		                                					th:text="${postscriptList.animalHospitalName}">
-		                                				</span>
+														</span>
 													</td>
 													<td style="text-align: center;">
-														<span th:if="${#strings.length(postscriptList.postscriptContent) gt 15}"
-		                                					th:text="${#strings.substring(postscriptList.postscriptContent,0,15)} + '...'">
-		                                				</span>
-	                            						<span th:unless="${#strings.length(postscriptList.postscriptContent) gt 15}"
-		                                					th:text="${postscriptList.postscriptContent}">
-		                                				</span>
+														<span th:if="${#strings.length(postscriptList.animalHospitalName) gt 6}" th:text="${#strings.substring(postscriptList.animalHospitalName,0,6)} + '...'"> </span>
+														<span th:unless="${#strings.length(postscriptList.animalHospitalName) gt 6}" th:text="${postscriptList.animalHospitalName}"> </span>
+													</td>
+													<td style="text-align: center;">
+														<span th:if="${#strings.length(postscriptList.postscriptContent) gt 15}" th:text="${#strings.substring(postscriptList.postscriptContent,0,15)} + '...'"> </span>
+														<span th:unless="${#strings.length(postscriptList.postscriptContent) gt 15}" th:text="${postscriptList.postscriptContent}"> </span>
 													</td>
 													<td th:text="${postscriptList.diagnosisDate}" style="text-align: center;"></td>
 
