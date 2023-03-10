@@ -69,11 +69,12 @@ public class DoctorPageController {
 	// #############################################
 	@GetMapping("/patientInfoList")
 	public String patientInfoList(@RequestParam(defaultValue = "1") int c, @RequestParam(defaultValue = "10") int p,
-			@RequestParam(defaultValue = "10") int b, @RequestParam(defaultValue = "") String animalName, Model model) {
+			@RequestParam(defaultValue = "10") int b, @RequestParam(defaultValue = "") String animalName, Model model,
+			HttpSession session) {
 		// #########################################################
 		// ## seqDoctor는 로그인 정보 Session에서 받아와야 합니다.##
 		// #########################################################
-		int seqDoctor = 1;
+		int seqDoctor = (int) session.getAttribute("seqDoctor");
 		if (animalName == null || animalName.equals("") || animalName.trim().length() == 0) {
 			PagingVO<DocPatientInfoVO> pagingVO = doctorPageService.selectAllPatientInfoVO(seqDoctor, c, p, b);
 			model.addAttribute("patientInfoList", pagingVO.getList());
@@ -147,11 +148,12 @@ public class DoctorPageController {
 
 	@PostMapping("/diagnosisAddOk")
 	public String diagnosisAddOk(@RequestParam Map<String, Object> map, @RequestParam List<Integer> seqMedicineList,
-			@RequestParam List<String> medicineNameList, @RequestParam List<String> medicationGuideList) {
+			@RequestParam List<String> medicineNameList, @RequestParam List<String> medicationGuideList,
+			HttpSession session) {
 		// #########################################################
 		// ## seqDoctor는 로그인 정보 Session에서 받아와야 합니다.##
 		// #########################################################
-		int seqDoctor = 1;
+		int seqDoctor = (int) session.getAttribute("seqDoctor");
 		int seqAnimalHospital = doctorPageService.selectOneDoctorInfoVO(seqDoctor).getSeqAnimalHospital();
 		map.put("seqDoctor", seqDoctor);
 		map.put("seqAnimalHospital", seqAnimalHospital);
@@ -173,7 +175,7 @@ public class DoctorPageController {
 		doctorPageService.insertFeedExcelUpload(feedJsonMap);
 		return "diagnosisAdd";
 	}
-	
+
 	// #####################################################################################################
 	// #### 수의사 전용 페이지 -> 진료내역 조회 -> 환자 정보및 이전 진료 내역 -> 진료내용 작성(추천사료 추가) ####
 	// #####################################################################################################
