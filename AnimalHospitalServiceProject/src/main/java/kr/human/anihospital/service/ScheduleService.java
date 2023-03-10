@@ -55,6 +55,11 @@ public interface ScheduleService {
 	int selectSeqProtectorSchedule(Map<String, String> startEndMap) throws Exception;
 	
 	//----------------------------------------------------------------------------------------------------
+	// 보호자의 스케줄을 풀캘린더에 삭제해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	void deleteProtectorSchedule(int seqProtectorSchedule) throws Exception;
+	
+	//----------------------------------------------------------------------------------------------------
 	// TO DO LIST를 추가해줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	void insertTodolist(Map<String, Object> todolistMap) throws Exception;

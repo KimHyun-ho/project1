@@ -173,6 +173,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}
 		return seqProtectorSchedule;
 	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자의 스케줄을 풀캘린더에 삭제해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void deleteProtectorSchedule(int seqProtectorSchedule) {
+		try {
+			scheduleMapper.deleteProtectorSchedule(seqProtectorSchedule);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	//----------------------------------------------------------------------------------------------------
 	// TO DO LIST를 추가해줄 메서드
