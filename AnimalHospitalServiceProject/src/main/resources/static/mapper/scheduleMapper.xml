@@ -59,6 +59,17 @@
 			  )
 	</insert>
 	
+	<!-- 보호자의 스케줄 수정 -->
+	<update id="updateScheduleProtector" parameterType="Map">
+		UPDATE protectorschedule SET
+			schedule_protector_holiday_start = #{scheduleProtectorHolidayStart},
+			schedule_protector_holiday_end = #{scheduleProtectorHolidayEnd},
+			schedule_protector_content = #{scheduleProtectorContent},
+			schedule_protector_update_date = NOW()
+		WHERE 
+			seq_protector_schedule = #{seqProtectorSchedule}
+	</update>
+	
 	<select id="selectSeqAnimalForInsertScheduleProtector" parameterType="Map" resultType="int">
 		SELECT 
 			seq_animal AS seqAnimal
@@ -171,6 +182,16 @@
 			doctorschedule
 		WHERE 
 			schedule_doctor_holiday_start LiKE #{startDate}
+	</select>
+	
+	<!-- 보호자의 스케줄을 수정하기 위해 seq값 조회 -->
+	<select id="selectSeqProtectorSchedule" parameterType="Map" resultType="int">
+		SELECT 
+			seq_protector_schedule AS seqProtectorSchedule
+		FROM 
+			protectorschedule
+		WHERE 
+			schedule_protector_holiday_start LIKE #{startDate}
 	</select>
 	
 	<!-- 의사의 스케줄을 삭제 -->

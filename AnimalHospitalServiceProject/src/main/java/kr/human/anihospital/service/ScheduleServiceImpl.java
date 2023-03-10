@@ -36,54 +36,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	// 보호자 스케줄을 풀캘린더에 표시해줄 메서드
-	//----------------------------------------------------------------------------------------------------
-	@Override
-	public List<Map<String, Object>> selectAllProSchedule(int seqMember) {
-		// 데이터 담을 그릇 준비
-		List<Map<String, Object>> scheduleProtectorList = null;
-		try {
-			// 데이터 조회를 위해 mapper호출
-			scheduleProtectorList = scheduleMapper.selectAllProSchedule(seqMember);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// 데이터가 잘 담겨있는지 로그찍어보기
-		log.info("selectAllProSchedule실행 매퍼에서 돌아온 값(서비스) : {}", scheduleProtectorList);
-		// 컨트롤러에 데이터 전달
-		return scheduleProtectorList;
-	}
-	
-	//----------------------------------------------------------------------------------------------------
-	// 보호자 스케줄을 풀캘린더에 추가해줄 메서드
-	//----------------------------------------------------------------------------------------------------
-	@Override
-	public void insertScheduleProtector(Map<String, Object> scheduleProtectorMap) {
-		// 데이터가 잘 넘어오는지 로그 찍어보기
-		log.info("insertScheduleDoctor실행, 넘어온 값(서비스) : {}", scheduleProtectorMap);
-		try {
-			// mapper를 불러 insert처리하기
-			scheduleMapper.insertScheduleProtector(scheduleProtectorMap);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	//----------------------------------------------------------------------------------------------------
-	// 보호자 스케줄을 추가하기 위해 해당 환자seq를 조회하는 메서드
-	//----------------------------------------------------------------------------------------------------
-	@Override
-	public int selectSeqAnimalForInsertScheduleProtector(Map<String, Object> seqMemAniNameMap) {
-		int seqAnimal = 0;
-		try {
-			seqAnimal = scheduleMapper.selectSeqAnimalForInsertScheduleProtector(seqMemAniNameMap);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return seqAnimal;
-	}
-
-	//----------------------------------------------------------------------------------------------------
 	// 의사 스케줄을 풀캘린더에 추가해줄 메서드
 	//----------------------------------------------------------------------------------------------------
 	@Override
@@ -142,6 +94,84 @@ public class ScheduleServiceImpl implements ScheduleService {
 			e.printStackTrace();
 		}
 		return seqDoctorSchedule;
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 풀캘린더에 표시해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public List<Map<String, Object>> selectAllProSchedule(int seqMember) {
+		// 데이터 담을 그릇 준비
+		List<Map<String, Object>> scheduleProtectorList = null;
+		try {
+			// 데이터 조회를 위해 mapper호출
+			scheduleProtectorList = scheduleMapper.selectAllProSchedule(seqMember);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// 데이터가 잘 담겨있는지 로그찍어보기
+		log.info("selectAllProSchedule실행 매퍼에서 돌아온 값(서비스) : {}", scheduleProtectorList);
+		// 컨트롤러에 데이터 전달
+		return scheduleProtectorList;
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 풀캘린더에 추가해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void insertScheduleProtector(Map<String, Object> scheduleProtectorMap) {
+		// 데이터가 잘 넘어오는지 로그 찍어보기
+		log.info("insertScheduleDoctor실행, 넘어온 값(서비스) : {}", scheduleProtectorMap);
+		try {
+			// mapper를 불러 insert처리하기
+			scheduleMapper.insertScheduleProtector(scheduleProtectorMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 추가하기 위해 해당 환자seq를 조회하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public int selectSeqAnimalForInsertScheduleProtector(Map<String, Object> seqMemAniNameMap) {
+		// 데이터 담을 그릇 준비
+		int seqAnimal = 0;
+		try {
+			// mapper를 불러 데이터 담아오기
+			seqAnimal = scheduleMapper.selectSeqAnimalForInsertScheduleProtector(seqMemAniNameMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// 서비스로 데이터 보내기
+		return seqAnimal;
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 풀캘린더에 수정해줄 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public void updateScheduleProtector(Map<String, Object> scheduleDoctorMap) {
+		try {
+			// update를 위해 mapper호출
+			scheduleMapper.updateScheduleProtector(scheduleDoctorMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	// 보호자 스케줄을 수정, 삭제하기 위한 seq값 조회하는 메서드
+	//----------------------------------------------------------------------------------------------------
+	@Override
+	public int selectSeqProtectorSchedule(Map<String, String> startEndMap) {
+		int seqProtectorSchedule = 0;
+		try {
+			seqProtectorSchedule = scheduleMapper.selectSeqProtectorSchedule(startEndMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return seqProtectorSchedule;
 	}
 
 	//----------------------------------------------------------------------------------------------------

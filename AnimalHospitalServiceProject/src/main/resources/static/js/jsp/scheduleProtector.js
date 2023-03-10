@@ -131,15 +131,16 @@ $(function(){
                     // 원하는 시간 드래그로 지정 후 일정 추가하기
                     // -------------------------------------------------------
 				    select: function (arg) { 
-                        var [title, animalName] = prompt('일정과 반려동물 이름을 입력해주세요. 입력 예) 슬개골 탈구,아롱이').split(",");
-                        if (title) {
+                        var title = prompt('일정을 입력해주세요.', "");
+                        var animalName = prompt('반려동물 이름을 입력해주세요.', "");
+                        if (title && animalName) {
                             calendar.addEvent({
                                 title: title,
                                 start: arg.start,
                                 end: arg.end,
                                 allDay: arg.allDay,
-                            })
-                        } else if (!title) {
+                            });
+                        } else if (!title && !animalName) {
 							alert('취소되었습니다.');
 							return false;
 						}
@@ -172,6 +173,43 @@ $(function(){
                                 });
                             calendar.unselect()
                         });
+                    },
+                    // -------------------------------------------------------
+				    // 변경된 일정 수정하기
+                    // -------------------------------------------------------
+				    eventChange: function(info){
+                        console.log(info);
+                        if(confirm("'일정을 수정하시겠습니까 ?")){
+							// Json 데이터를 받기 위한 배열 선언
+	                        var events = new Array();
+	                        var obj = new Object();
+	 						// 데이터 담기
+	                        obj.title = info.event._def.title;
+	                        obj.start = info.event._instance.range.start;
+	                        obj.end = info.event._instance.range.end;
+	                        events.push(obj);
+	                        console.log(events);
+	                        // 수정 처리를 해줄 컨트롤러로 데이터 전송
+	                        $(function updateData() {
+	                            $.ajax({
+	                                 url: "/scheduleProtectorUpdateOk",
+	                                 method: "post",
+	                                 dataType: "text",
+	                                 data: JSON.stringify(events),
+	                                 contentType: 'application/json',
+	                             })
+	                             	.done(function() {
+	                                    alert("일정이 수정 되었습니다.");
+	                                    location.reload();
+	                                })
+	                                .fail(function(error) {
+	                                     alert("데이터 수정 실패 : " + error);
+	                                });
+	                         })
+                         } else {
+							 alert("수정 작업이 취소 되었습니다.");
+							 location.reload();
+						 }
                     },
 				    // JSON으로 값 넘겨주기
 				    events: data
