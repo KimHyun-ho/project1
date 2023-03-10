@@ -211,6 +211,41 @@ $(function(){
 							 location.reload();
 						 }
                     },
+                    // -------------------------------------------------------
+                    // 선택한 일정 삭제하기
+                    // -------------------------------------------------------
+                    eventClick: function (info){
+                        if(confirm("일정을 삭제하시겠습니까?")){
+                            // 확인 클릭 시
+                            info.event.remove();
+	                        console.log(info.event);
+	                        var events = new Array();
+	                        var obj = new Object();
+	                        	obj.title = info.event._def.title;
+	                        	obj.start = info.event._instance.range.start;
+	                        	events.push(obj);
+	                        console.log(events);
+	                        $(function deleteData(){
+	                            $.ajax({
+	                                url: "/scheduleProtectorDeleteOk",
+	                                method: "Post",
+	                                dataType: "text",
+	                                data: JSON.stringify(events),
+	                                contentType: 'application/json',
+	                            })
+	                               .done(function() {
+	                                    alert("일정이 삭제 되었습니다.");
+	                                    location.reload();
+		                           })
+		                           .fail(function(error) {
+		                                alert("데이터 삭제 실패 : " + error);
+		                           });
+		                        calendar.unselect()
+	                        });
+                        } else {
+							alert("삭제 작업이 취소 되었습니다.");
+						}
+                    },
 				    // JSON으로 값 넘겨주기
 				    events: data
 			  });

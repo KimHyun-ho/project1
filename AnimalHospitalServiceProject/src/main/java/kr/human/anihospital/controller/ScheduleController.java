@@ -416,6 +416,43 @@ public class ScheduleController {
 		return "scheduleProtector";
 	}
 	
+	@PostMapping("/scheduleProtectorDeleteOk")
+	@ResponseBody
+	public String deleteScheduleProtector(@RequestBody List<Map<String, Object>> scheduleProtectorList) throws Exception {
+		// 화면에서 추가한 캘린더에 추가한 데이터가 잘 넘어왔는지 찍어보기
+		log.info("deleteScheduleProtector 실행, 화면에서 넘어온 값(컨트롤러) : {}", scheduleProtectorList);
+		
+		// 시작, 종료 시간 꺼내 변수에 담아두기
+		String startDate = null;
+		// 데이터가 JSON DATE Format(yyyy-MM-dd'T'HH:mm:ss.SSS'Z')으로 넘어오기 때문에 
+		// DB에서 조건절에 넣으려면 날짜와 시간 포멧을 바꿔줘야 한다.
+		String start = (String) scheduleProtectorList.get(0).get("start");
+		startDate = start.substring(0, 10) + " " + start.subSequence(11, 19);
+		
+		// seq값을 조회할 조건 시간 맵에 담기
+		Map<String, String> startEndMap = new HashMap<>();
+		startEndMap.put("startDate", startDate);
+		log.info("startEndMap(컨트롤러) : {}", startEndMap);
+		
+		// 삭제하고자 하는 데이터의 seq번호를 가져오기 위해 서비스 호출
+		int seqProtectorSchedule = scheduleService.selectSeqProtectorSchedule(startEndMap);
+		// seq값이 잘 담겨 있는지 로그 찍어보기
+		log.info("seqProtectorSchedule(컨트롤러) : {}", seqProtectorSchedule);
+		
+		// 삭제 처리를 해줄 서비스 호출
+		scheduleService.deleteProtectorSchedule(seqProtectorSchedule);
+		
+		// 의사 스케줄을 삭제 해줄 seq값을 가져오기 위해 서비스 호출
+		int seqDoctorSchedule = scheduleService.selectSeqDoctorSchedule(startEndMap);
+		// 값이 제대로 넘어오는지 로그 찍어보기
+		log.info("seqDoctorSchedule(컨트롤러) : {}", seqDoctorSchedule);
+		
+		// 삭제 처리를 해줄 서비스 호출
+		scheduleService.deleteDoctorSchedule(seqDoctorSchedule);
+		
+		return "scheduleProtector";
+	}
+	
 	//----------------------------------------------------------------------------------------------------
 	// TO DO LIST를 화면에 뿌려줄 메서드
 	//----------------------------------------------------------------------------------------------------
