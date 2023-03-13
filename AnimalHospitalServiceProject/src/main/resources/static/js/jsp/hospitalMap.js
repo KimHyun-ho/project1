@@ -6,6 +6,8 @@
 
 /* 네이버 지도 API : 병원정보*/
 window.onload = function() {
+	var kakaoToken = document.getElementById('hiddenKakaoAccessToken').value;
+	var naverToken = document.getElementById('hiddenNaverAccessToken').value;
 	var position = new naver.maps.LatLng(37.276983, 127.027534);
 
 	var map = new naver.maps.Map('map', {
@@ -36,19 +38,31 @@ window.onload = function() {
 					},
 					zIndex: 100
 				}); //marker 
-				var contentString = [
-					'<div class="iw_inner">',
-					'<h5><b>' + data[i].animalHospitalName + '</b></h5>',
-					'   <p style="font-size:11pt">' + data[i].animalHospitalAddress + '<br />',
-					'' + data[i].animalHospitalPhoneNo + '<br />',
-					'</p>',
-					'</div>',
-					'<form action="hospitalEdit" method="post">',
-					'<input type="hidden" name="seq" value="' + data[i].seqAnimalHospital + '" />',
-					'<input type="submit" class="btn btn-primary" name="notice_add" id="notice_add" value="수정하기" ',
-					'style="border-radius: 50px; width: 90px; text-align: center; float: right; color: white;">',
-					'</form>'
-				].join('');
+				if (kakaoToken.trim().length == 0 && naverToken.trim().length == 0) {
+					var contentString = [
+						'<div class="iw_inner">',
+						'<h5><b>' + data[i].animalHospitalName + '</b></h5>',
+						'   <p style="font-size:11pt">' + data[i].animalHospitalAddress + '<br />',
+						'' + data[i].animalHospitalPhoneNo + '<br />',
+						'</p>',
+						'</div>'
+					].join('');
+				} else {
+					var contentString = [
+						'<div class="iw_inner">',
+						'<h5><b>' + data[i].animalHospitalName + '</b></h5>',
+						'   <p style="font-size:11pt">' + data[i].animalHospitalAddress + '<br />',
+						'' + data[i].animalHospitalPhoneNo + '<br />',
+						'</p>',
+						'</div>',
+						'<form action="hospitalEdit" method="post">',
+						'<input type="hidden" name="seq" value="' + data[i].seqAnimalHospital + '" />',
+						'<input type="submit" class="btn btn-primary" name="notice_add" id="notice_add" value="수정하기" ',
+						'style="border-radius: 50px; width: 90px; text-align: center; float: right; color: white;">',
+						'</form>'
+					].join('');
+				}
+
 
 				var infoWindow = new naver.maps.InfoWindow({
 					content: contentString,

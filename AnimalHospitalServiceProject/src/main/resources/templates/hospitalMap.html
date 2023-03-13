@@ -33,6 +33,8 @@
 </head>
 <body>
 	<div th:replace="~{fragment/header :: #header}"></div>
+	<input id="hiddenKakaoAccessToken" type="hidden" th:value="${session.kakaoAccessToken}">
+	<input id="hiddenNaverAccessToken" type="hidden" th:value="${session.naverAccessToken}">
 	<main id="main">
 		<!-- ======= Breadcrumbs Section ======= -->
 		<section class="breadcrumbs">
@@ -60,7 +62,9 @@
 		</div>
 
 		<div class="row">
-			<p><br /></p>
+			<p>
+				<br />
+			</p>
 			<div class="col-md-1 form-group" style="margin: auto;">
 				<input type="button" class="btn btn-primary" name="move_pre_page" id="move_pre_page" value="추가하기" onclick="location='/hospitalAdd'"
 					style="border-radius: 50px; width: 110px; text-align: center; color: white;">

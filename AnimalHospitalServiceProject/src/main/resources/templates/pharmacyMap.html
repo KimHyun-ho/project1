@@ -31,6 +31,8 @@
 </head>
 <body>
 	<div th:replace="~{fragment/header :: #header}"></div>
+	<input id="hiddenKakaoAccessToken" type="hidden" th:value="${session.kakaoAccessToken}">
+	<input id="hiddenNaverAccessToken" type="hidden" th:value="${session.naverAccessToken}">
 	<main id="main">
 		<!-- ======= Breadcrumbs Section ======= -->
 		<section class="breadcrumbs">

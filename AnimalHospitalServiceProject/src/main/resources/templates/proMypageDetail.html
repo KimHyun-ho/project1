@@ -76,7 +76,6 @@ h3 {
 							<form action="proMypageEdit" method="post" name="proMypageEdit" id="proMypageEdit">
 								<h3>내 정보</h3>
 								<input type="submit" class="btn btn-primary" value="정보수정" style="border-radius: 50px; width: 90px; margin: auto; text-align: center; color: white;">
-								<input type="button" class="btn btn-primary" id="withdrawal" onclick="clickEvent()" value="회원탈퇴" style="border-radius: 50px; width: 90px; margin: auto; text-align: center; color: white;">
 								<input type="hidden" name="seqMember" th:value=${proMyPageDetailVOList[0].seqMember}>
 								<input type="hidden" name="memberGender" th:value=${proMyPageDetailVOList[0].memberGender}>
 								<input type="hidden" name="memberBirthdate" th:value=${proMyPageDetailVOList[0].memberBirthdate}>

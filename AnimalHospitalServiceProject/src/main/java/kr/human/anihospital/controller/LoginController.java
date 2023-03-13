@@ -358,8 +358,7 @@ public class LoginController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-//		session.setAttribute("memberEmailId", kakaoUserInfoVO.getKakaoAccount().getEmail());
-		session.setAttribute("memberEmailId", "dkdldn@kakao.com");
+		session.setAttribute("memberEmailId", kakaoUserInfoVO.getKakaoAccount().getEmail());
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(kakaoUserInfoVO.getKakaoAccount().getBirthday());
 		stringBuilder.insert(2, "-");

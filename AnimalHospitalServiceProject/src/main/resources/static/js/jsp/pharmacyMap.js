@@ -7,7 +7,8 @@
 /* 네이버 지도 : 약국 */
 
 $(function() {
-
+	var kakaoToken = document.getElementById('hiddenKakaoAccessToken').value;
+	var naverToken = document.getElementById('hiddenNaverAccessToken').value;
 	var position = new naver.maps.LatLng(37.276983, 127.027534);
 
 	var map = new naver.maps.Map('mapPharmacy', {
@@ -37,19 +38,31 @@ $(function() {
 					},
 					zIndex: 100
 				});
-				var contentString = [
-					'<div class="iw_inner" id="iw_inner' + i + '">',
-					'<h5><b>' + data[i].animalPharmacyName + '</b></h5>',
-					'   <p style="font-size:11pt">' + data[i].animalPharmacyAddress + '<br />',
-					'' + data[i].animalPharmacyPhoneNo + '<br />',
-					'</p>',
-					'</div>',
-					'<form action="pharmacyInfoEdit" method="post">',
-					'<input type="hidden" name="seq" value="' + data[i].seqPharmacyLocation + '" />',
-					'<input type="submit" class="btn btn-primary" name="notice_add" id="notice_add" value="수정하기" ',
-					'style="border-radius: 50px; width: 90px; text-align: center; float: right; color: white;">',
-					'</form>'
-				].join('');
+				if (kakaoToken.trim().length == 0 && naverToken.trim().length == 0) {
+					var contentString = [
+						'<div class="iw_inner" id="iw_inner' + i + '">',
+						'<h5><b>' + data[i].animalPharmacyName + '</b></h5>',
+						'   <p style="font-size:11pt">' + data[i].animalPharmacyAddress + '<br />',
+						'' + data[i].animalPharmacyPhoneNo + '<br />',
+						'</p>',
+						'</div>'
+					].join('');
+				} else {
+					var contentString = [
+						'<div class="iw_inner" id="iw_inner' + i + '">',
+						'<h5><b>' + data[i].animalPharmacyName + '</b></h5>',
+						'   <p style="font-size:11pt">' + data[i].animalPharmacyAddress + '<br />',
+						'' + data[i].animalPharmacyPhoneNo + '<br />',
+						'</p>',
+						'</div>',
+						'<form action="pharmacyInfoEdit" method="post">',
+						'<input type="hidden" name="seq" value="' + data[i].seqPharmacyLocation + '" />',
+						'<input type="submit" class="btn btn-primary" name="notice_add" id="notice_add" value="수정하기" ',
+						'style="border-radius: 50px; width: 90px; text-align: center; float: right; color: white;">',
+						'</form>'
+					].join('');
+				}
+
 				var infoWindow = new naver.maps.InfoWindow({
 					content: contentString,
 					maxWidth: 300,
